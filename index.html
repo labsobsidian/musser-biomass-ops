@@ -424,15 +424,15 @@
 
         <div class="calc-settings">
           <div class="calc-field">
-            <label>Delivery miles</label>
-            <input type="number" id="calc-miles" value="18" min="0" max="200" onchange="recalcQuote()" oninput="recalcQuote()">
+            <label>Freight miles</label>
+            <input type="number" id="calc-miles" value="250" min="0" max="1500" onchange="recalcQuote()" oninput="recalcQuote()">
           </div>
           <div class="calc-field">
             <label>Customer type</label>
             <select id="calc-customer-type" onchange="recalcQuote()">
               <option value="retail">Retail</option>
-              <option value="commercial">Commercial (−8%)</option>
-              <option value="wholesale">Wholesale (−12%)</option>
+              <option value="commercial">Commercial</option>
+              <option value="wholesale">Wholesale</option>
             </select>
           </div>
         </div>
@@ -1057,15 +1057,14 @@ async function initPricingCalc() {
     // fallback: minimal hardcoded mirror so UI works even if API is down
     priceBookCache = {
       priceBook: {
-        firewood_seasoned_oak: { label: 'Seasoned Oak Firewood', unit: 'cord', price: 285 },
-        firewood_seasoned_mixed: { label: 'Seasoned Mixed Hardwood', unit: 'cord', price: 245 },
-        mulch_hardwood_double: { label: 'Double-Ground Hardwood Mulch', unit: 'yard', price: 38 },
-        bundled_kiln_dried: { label: 'Kiln-Dried Bundle (0.75 cu ft)', unit: 'bundle', price: 7.50 }
+        forest_fuel_pellets:    { label: 'Forest Fuel Heating Pellets', unit: 'load', unitDetail: '1,100 bags @ 40 lb', pricePerLoad: 5720.00 },
+        forest_fuel_briquettes: { label: 'Forest Fuel Briquettes',      unit: 'load', unitDetail: '2,112 6-packs',     pricePerLoad: 5280.00 },
+        alpha_fiber:            { label: 'Alpha Fiber',                  unit: 'load', unitDetail: '1,170 bales @ 25 lb', pricePerLoad: 6201.00 }
       }
     };
   }
-  // Seed with one default line
-  addCalcLine('firewood_seasoned_oak', 2);
+  // Seed with one default line — 1 load of pellets
+  addCalcLine('forest_fuel_pellets', 1);
 }
 
 function addCalcLine(presetSku, presetQty) {
@@ -1082,7 +1081,9 @@ function addCalcLine(presetSku, presetQty) {
     for (const [sku, entry] of Object.entries(priceBookCache.priceBook)) {
       const opt = document.createElement('option');
       opt.value = sku;
-      opt.textContent = `${entry.label} — $${entry.price}/${entry.unit}`;
+      const price = entry.pricePerLoad != null ? entry.pricePerLoad : entry.price;
+      const detail = entry.unitDetail ? ` (${entry.unitDetail})` : '';
+      opt.textContent = `${entry.label}${detail} — $${Number(price).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}/${entry.unit}`;
       sel.appendChild(opt);
     }
   }
@@ -1090,8 +1091,8 @@ function addCalcLine(presetSku, presetQty) {
 
   const qty = document.createElement('input');
   qty.type = 'number';
-  qty.min = '0.5';
-  qty.step = '0.5';
+  qty.min = '1';
+  qty.step = '1';
   qty.value = presetQty != null ? presetQty : '1';
   qty.oninput = recalcQuote;
   qty.onchange = recalcQuote;
@@ -1169,7 +1170,7 @@ function renderQuoteSummary(quote) {
   html += `<div class="qs-line"><span>Subtotal</span><span>$${(quote.subtotal || 0).toFixed(2)}</span></div>`;
   if (quote.delivery) {
     const dnote = quote.delivery.note || '';
-    html += `<div class="qs-line"><span>Delivery${dnote ? ' · ' + dnote : ''}</span><span>$${(quote.delivery.total || 0).toFixed(2)}</span></div>`;
+    html += `<div class="qs-line"><span>Freight${dnote ? ' · ' + dnote : ''}</span><span>$${(quote.delivery.total || 0).toFixed(2)}</span></div>`;
   }
   html += `<div class="qs-line strong"><span>Grand total</span><span>$${(quote.total || 0).toFixed(2)}</span></div>`;
   bd.innerHTML = html;

@@ -1,5 +1,5 @@
 # PRICING.md — Musser Biomass
-_Last updated: 2026-04-24_
+_Last updated: 2026-04-26_
 _Authoritative pricing source. Used by: Lumber Buddy brain, `/api/quote` endpoint, and the GHL Conversation AI prompt._
 
 ---
@@ -8,116 +8,85 @@ _Authoritative pricing source. Used by: Lumber Buddy brain, `/api/quote` endpoin
 
 **For the team:** This is the single source of truth for product pricing. When prices change, change them here. The Lumber Buddy chat reads this doc automatically. The pricing calculator in `/api/quote.js` mirrors this table — **update both in the same commit** or the two will drift.
 
-**For AI agents:** When a customer asks about pricing, quote from this table. Show your work (quantity × unit price, then delivery, then total). If a product or quantity isn't listed here, say "Let me get you a quote from the team" — do not invent numbers.
-
-**All prices are placeholders pending Musser's real price sheet.**
+**For AI agents:** When a customer asks about pricing, quote from this table. Show your work (loads × unit price + freight = total). If a product or quantity isn't listed here, say "Let me get you a quote from the team" — do not invent numbers.
 
 ---
 
 ## Product price list
 
-### Firewood (sold by the cord — 128 cubic feet)
+Everything Musser ships goes out as **full truckloads**. One load = one product, one truck.
 
-| SKU | Product | Unit price |
-|---|---|---|
-| `firewood_seasoned_oak` | Seasoned Oak Firewood | $285 / cord |
-| `firewood_seasoned_mixed` | Seasoned Mixed Hardwood | $245 / cord |
-| `firewood_green_mixed` | Green Mixed Hardwood | $195 / cord |
-| `firewood_kiln_dried_bulk` | Kiln-Dried Firewood (bulk) | $365 / cord |
+| SKU | Product | Per-unit price | Units per load | Price per load |
+|---|---|---|---|---|
+| `forest_fuel_pellets` | Forest Fuel Heating Pellets (40 lb bag) | $5.20 / bag | 1,100 bags | $5,720.00 |
+| `forest_fuel_briquettes` | Forest Fuel Briquettes (6-pack) | $2.50 / 6-pack | 2,112 packs | $5,280.00 |
+| `alpha_fiber` | Alpha Fiber (25 lb bale) | $5.30 / bale | 1,170 bales | $6,201.00 |
 
-### Bundled firewood
-
-| SKU | Product | Unit price |
-|---|---|---|
-| `bundled_kiln_dried` | Kiln-Dried Bundle (~0.75 cu ft) | $7.50 / bundle |
-| `bundled_camp_pack` | Campground Pack (case of 12) | $72 / case |
-
-### Mulch (sold by the cubic yard)
-
-| SKU | Product | Unit price |
-|---|---|---|
-| `mulch_hardwood_double` | Double-Ground Hardwood Mulch | $38 / yard |
-| `mulch_dyed_black` | Dyed Black Mulch | $48 / yard |
-| `mulch_dyed_brown` | Dyed Brown Mulch | $48 / yard |
-| `mulch_playground` | Certified Playground Mulch | $58 / yard |
-
-### Bark & landscape (by the cubic yard)
-
-| SKU | Product | Unit price |
-|---|---|---|
-| `bark_nuggets` | Pine Bark Nuggets | $52 / yard |
-| `bark_fines` | Pine Bark Fines | $42 / yard |
-
-### Byproducts & industrial (by the cubic yard)
-
-| SKU | Product | Unit price |
-|---|---|---|
-| `sawdust_bulk` | Bulk Sawdust | $22 / yard |
-| `wood_chips_bulk` | Bulk Wood Chips | $28 / yard |
+**Quantity is sold in whole loads only.** A customer ordering "half a load" gets quoted for one full load (or referred to the team for a custom arrangement).
 
 ---
 
-## Delivery pricing
+## Freight
 
-- **Free delivery radius:** 10 miles from the yard.
-- **Per-mile rate beyond free radius:** $4.50 per billable mile (miles over 10).
-- **Minimum delivery fee (once past free radius):** $35.
-- **Loading surcharge:** $25 flat fee on every delivery (covers machine time loading the truck).
+- **Rate:** $2.95 per mile
+- **No minimum freight charge**
+- **No fuel surcharge**
+- **No deadhead** (no charge for the return leg)
+- Each load = one truck trip. Multi-load orders to the same destination are quoted with freight × number of loads (since each load is its own truck).
 
 **Examples:**
-- Delivery 8 miles away → loading surcharge only = **$25**
-- Delivery 15 miles away → 5 billable miles × $4.50 = $22.50; below $35 minimum, so delivery = $35 + $25 loading = **$60**
-- Delivery 30 miles away → 20 billable miles × $4.50 = $90 + $25 loading = **$115**
 
-Customers outside a 50-mile radius should be flagged to Ops for a custom quote — we may or may not take the run depending on fleet schedule.
+- Hamilton, NY (~522 mi) → freight = 522 × $2.95 = **$1,540** per load
+- Spartansburg, PA (~372 mi) → freight = 372 × $2.95 = **$1,097.40** per load
 
 ---
 
-## Customer-type discounts
+## Customer-type adjustments
 
-Applied as a percentage off the list price, before delivery.
+Reserved for future use — currently every customer gets the same pricing.
 
-| Customer type | Discount |
+| Customer type | Adjustment |
 |---|---|
 | Retail (default) | 0% |
-| Commercial (landscapers, contractors) | 8% |
-| Wholesale (resellers, garden centers) | 12% |
+| Commercial | 0% |
+| Wholesale | 0% |
+
+When Musser sets actual differentiated rates, update both this table and the corresponding values in `/api/quote.js`.
 
 ---
 
-## Bulk discounts (stack on top of customer discount)
+## Worked examples (matches real shipments)
 
-- **Firewood, 5+ cords** → additional 5% off firewood lines
-- **Mulch, 10+ yards** → additional 5% off mulch lines
+**Example 1 — Town & Country Store (Hamilton, NY)**
 
----
+- 1 load Forest Fuel Heating Pellets (1,100 bags @ $5.20)
+- Distance: ~522 miles
+- Product subtotal: 1,100 × $5.20 = $5,720.00
+- Freight: 522 × $2.95 = $1,540.00 (1 load)
+- **Total: $7,260.00**
+- Effective delivered price: $6.60 per bag
 
-## Worked examples
+**Example 2 — TJ Coal and Stove (Spartansburg, PA)**
 
-**Example 1 — Retail homeowner, 2 cords seasoned oak, 18 miles away**
+- 1 load Forest Fuel Briquettes (2,112 packs @ $2.50)
+- Distance: ~372 miles
+- Product subtotal: 2,112 × $2.50 = $5,280.00
+- Freight: 372 × $2.95 = $1,097.40 (1 load)
+- **Total: $6,377.40**
+- Effective delivered price: ~$3.02 per 6-pack
 
-- 2 cords × $285 = $570
-- Delivery: 8 billable miles × $4.50 = $36; above $35 minimum → $36 + $25 loading = $61
-- **Total: $631**
+**Example 3 — Hypothetical multi-load order**
 
-**Example 2 — Commercial landscaper, 15 yards double-ground mulch, 12 miles away**
-
-- 15 yards × $38 = $570
-- Commercial discount 8% + bulk discount 5% = 13% off → $570 × 0.87 = $495.90
-- Delivery: 2 billable miles × $4.50 = $9; below $35 minimum → $35 + $25 loading = $60
-- **Total: $555.90**
-
-**Example 3 — Pickup order, 1 pallet (40) kiln-dried bundles**
-
-- 40 bundles × $7.50 = $300
-- No delivery (pickup)
-- **Total: $300**
+- 2 loads Alpha Fiber (2,340 bales @ $5.30) to a destination 200 miles away
+- Product subtotal: 2 × $6,201.00 = $12,402.00
+- Freight: 2 loads × 200 mi × $2.95 = $1,180.00
+- **Total: $13,582.00**
 
 ---
 
 ## What to say when you don't know
 
-If the product isn't listed, the quantity is unusual (a truckload, a bulk rail shipment, an annual contract), or the customer is outside the normal delivery range, the correct answer is always:
+If the request is partial-load, mixed-product on a single truck, ongoing contract pricing, an unusual destination (international, oversize permit territory), or anything outside the standard price list, the correct answer is always:
 
 > "Let me get you a custom quote — I'll have someone from Musser Biomass call you within one business day with firm pricing."
 

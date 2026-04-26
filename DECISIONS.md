@@ -51,3 +51,26 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 - Price changes require editing `PRICING.md` + `api/quote.js` in the same commit
 - Whenever GHL Conversation AI is updated, re-paste the current `PRICING.md`
 - At some point we may generate `quote.js` price book from `PRICING.md` at build time — revisit if drift bites us
+
+---
+
+## 2026-04-26 — Real Musser pricing wired (replaces placeholders)
+
+**Decision:** Replaced placeholder firewood/mulch/bark price book with Musser's actual product line per Mick: three SKUs (`forest_fuel_pellets`, `forest_fuel_briquettes`, `alpha_fiber`) sold as whole truckloads, with per-mile freight at $2.95/mi (no minimum, no fuel surcharge, no deadhead).
+
+**Context:** Initial scaffold used invented firewood/mulch products as plausible defaults for demo purposes. Real Musser business is wood byproducts (heating pellets, briquettes, fiber bales) shipped as whole loads to commercial accounts in NY/PA/etc.
+
+**Math validation:**
+- Town & Country (Hamilton, NY) shipment: calculator returns $7,259.90 vs. Mick's reported $7,260 (10¢ rounding in Mick's number — 522 mi × $2.95 = $1,539.90 exact)
+- TJ Coal (Spartansburg, PA) shipment: calculator returns $6,377.40 — exact match
+
+**Changes:**
+- `PRICING.md` rewritten end-to-end to reflect three-SKU whole-load model
+- `api/quote.js` `PRICE_BOOK` and freight logic rewritten to match
+- `index.html` Pricing tab: dropdown now shows price-per-load with unit detail (e.g. "1,100 bags @ 40 lb"); qty input is integer-only (whole loads); default seed = 1 load of pellets; default freight miles bumped from 18 to 250 (realistic for cross-state shipping); customer-type labels stripped of (-8%/-12%) suffixes since all currently 0%; "Delivery" relabeled to "Freight" to match Mick's terminology
+- Customer-type discounts kept in code (retail/commercial/wholesale) but all set to 0% — reserved for future use when Musser sets differentiated rates
+
+**Open items:**
+- Per-load freight assumption: each load = one truck trip, so multi-load orders charge freight × loads. Not explicit in Mick's messages but consistent with "no deadhead" and full-truckload model. Confirm with Mick.
+- DEMO_CONTEXT.md still references firewood/mulch (Shenandoah Valley narrative). Leave as-is for now since it's seeded demo color, not customer-facing — replace when we have real Musser narrative content.
+- Existing customers (Town & Country, TJ Coal) are documented in PROJECT_STATE? No — currently only in PRICING.md examples. Consider adding to a CUSTOMERS.md if list grows.
