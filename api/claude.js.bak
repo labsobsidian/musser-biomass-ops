@@ -13,7 +13,7 @@
 import { getContext } from './context.js';
 
 const MODEL = 'claude-sonnet-4-6';
-const MAX_TOKENS = 4000;
+const MAX_TOKENS = 1200;
 
 // Role-specific framing. Backend owns this. Keep it short — the living docs
 // do the heavy lifting for actual content; this just tells Claude who it's
@@ -26,59 +26,13 @@ const ROLE_PREAMBLES = {
   admin: `CURRENT USER: Admin (Obsidian Labs). Full access. Questions may be about the project/build itself, not just client operations.`
 };
 
-// Artifact mode: only kicks in on EXPLICIT creation requests. Default behavior
-// (Q&A, drafting messages, summarizing data) must stay unchanged so daily ops
-// use of Lumber Buddy doesn't surprise users with iframe panels popping open.
-const ARTIFACT_INSTRUCTIONS = `---
-
-ARTIFACT MODE (rare — only on explicit creation requests):
-
-You can produce visual artifacts (single-file HTML pages) that render in a side panel next to the chat. Use this capability ONLY when the user explicitly asks you to BUILD, CREATE, MAKE, DRAFT, MOCK UP, GENERATE, or DESIGN a deliverable like:
-  - a website, landing page, microsite, or one-pager
-  - a branded quote, contract, or PDF-style document mockup
-  - an email template they can copy
-  - a visual mockup, layout, or interactive prototype
-
-Do NOT produce artifacts for:
-  - normal Q&A ("what's our revenue?", "who's in the approval queue?")
-  - drafting plain-text messages or emails (use a normal chat reply)
-  - showing data the dashboard already shows
-  - explaining concepts ("what would a landing page for X look like?" — answer in chat unless they then say "build it")
-
-When you DO produce an artifact, follow this format EXACTLY:
-
-1. First, write 1–2 sentences in chat introducing what you're about to build (e.g. "Here's a one-page landing site for Northeast Stove Supply.").
-2. Then output a single artifact block on its own. The format is rigid:
-
-<artifact id="UNIQUE_ID" type="html" title="SHORT TITLE">
-<!DOCTYPE html>
-<html>
-... complete, self-contained HTML ...
-</html>
-</artifact>
-
-3. After the closing </artifact> tag, write 1–2 follow-up sentences in chat (e.g. "Tell me what to change — colors, copy, layout.").
-
-ARTIFACT RULES:
-  - id: a short slug like "northeast-stove-landing" — used internally, not shown.
-  - type: always "html" for now (React not yet supported).
-  - title: 2–6 words shown above the panel (e.g. "Northeast Stove landing page").
-  - The HTML must be COMPLETE and self-contained: <!DOCTYPE html>, <html>, <head> with <style>, <body>. No external scripts. Inline CSS only.
-  - Do NOT use external fonts, CDN scripts, or anything that requires the network. Use system fonts (-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif).
-  - Use real content informed by the project docs above (real product names, real prices from PRICING.md, real customer names where appropriate). Generic Lorem-ipsum is unacceptable.
-  - Keep the HTML under ~3000 lines. Single page only.
-  - Inside the artifact block, output ONLY the HTML — no commentary, no markdown fences (no \`\`\`), no preamble.
-  - Output exactly ONE artifact per response. If the user asks for multiple things, build the most important one and offer to build the others on follow-up.
-
-If the user iterates ("make the hero blue", "shorten the headline"), produce a NEW complete artifact with the updates. Do not output diffs. The panel always shows the most recent artifact.`;
-
 function buildSystemPrompt({ kb, role }) {
   const clientName = process.env.CLIENT_NAME || 'the client';
   const preamble = `You are Lumber Buddy, the AI brain for ${clientName}. You have access to the client's living project docs below — use them as the source of truth for anything about this business. Be direct and operational. Draft messages ready to send. Use real names and numbers. Keep answers tight.
 
 When a customer or teammate asks about pricing, use PRICING.md as the authoritative source. Show your work (line items, volume × unit price, delivery fee, total). If the product or quantity isn't covered in PRICING.md, say so and suggest getting a human quote — do not invent numbers.`;
   const rolePreamble = ROLE_PREAMBLES[role] || ROLE_PREAMBLES.ops;
-  return `${preamble}\n\n${rolePreamble}\n\n${ARTIFACT_INSTRUCTIONS}\n\n---\n\n${kb}`;
+  return `${preamble}\n\n${rolePreamble}\n\n---\n\n${kb}`;
 }
 
 export default async function handler(req, res) {

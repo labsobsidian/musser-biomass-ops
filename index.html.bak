@@ -106,11 +106,9 @@
   .owner-lock svg{width:11px;height:11px;flex-shrink:0;}
 
   /* ── LUMBER BUDDY TAB ── */
-  .buddy-layout{display:grid;grid-template-columns:1fr 280px;gap:16px;height:calc(100vh - 142px);min-height:540px;transition:grid-template-columns 0.25s ease;}
-  .buddy-layout.has-artifact{grid-template-columns:minmax(360px,1fr) minmax(420px,1.1fr) 0px;gap:14px;}
-  .buddy-layout.has-artifact .buddy-sidebar{display:none;}
+  .buddy-layout{display:grid;grid-template-columns:1fr 280px;gap:16px;height:calc(100vh - 142px);min-height:540px;}
 
-  .chat-outer{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--white);display:flex;flex-direction:column;min-width:0;}
+  .chat-outer{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--white);display:flex;flex-direction:column;}
   .chat-header{background:var(--black);padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
   .chat-logo-wrap{width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--gold);border-radius:6px;flex-shrink:0;}
   .chat-logo-wrap svg{width:18px;height:18px;color:var(--black);}
@@ -136,19 +134,6 @@
   .msg-action-btn:hover{border-color:var(--gold);color:var(--black);background:var(--gold-light);}
   .msg-action-btn:disabled{opacity:0.5;cursor:not-allowed;}
 
-  /* Artifact pill (in-chat reference to a generated artifact) */
-  .msg-pill-slot:not(:empty){margin-top:8px;}
-  .artifact-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:var(--white);border:1px solid var(--gold);border-radius:8px;cursor:pointer;font-size:12px;color:var(--black);transition:all 0.15s;max-width:fit-content;}
-  .artifact-pill:hover{background:var(--gold-light);border-color:var(--brown-dark);}
-  .artifact-pill-icon{width:24px;height:24px;border-radius:5px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .artifact-pill-icon svg{width:13px;height:13px;color:var(--black);}
-  .artifact-pill-text{display:flex;flex-direction:column;line-height:1.3;}
-  .artifact-pill-title{font-weight:500;}
-  .artifact-pill-status{font-size:10px;color:var(--brown-mid);text-transform:uppercase;letter-spacing:0.05em;}
-  .artifact-pill.streaming .artifact-pill-status{color:var(--amber);}
-  .artifact-pill.streaming .artifact-pill-status::after{content:' ●';animation:pulse 1s infinite;}
-  @keyframes pulse{50%{opacity:0.3;}}
-
   /* Quick prompts */
   .quick-strip{padding:8px 14px 0;display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;border-top:1px solid var(--border);}
   .qchip{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--brown-mid);cursor:pointer;white-space:nowrap;transition:all 0.15s;font-family:'DM Sans',sans-serif;}
@@ -173,36 +158,6 @@
   .cs-live{background:var(--teal-light);color:#085041;}
   .cs-pending{background:var(--surface);color:var(--brown-mid);}
   .cs-tool-live{background:var(--gold-light);color:#7A5808;border:1px solid var(--gold);}
-
-  /* Artifact panel */
-  .artifact-panel{display:none;flex-direction:column;background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;min-width:0;}
-  .buddy-layout.has-artifact .artifact-panel{display:flex;}
-  .artifact-panel-header{padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;gap:10px;flex-shrink:0;}
-  .artifact-panel-title{flex:1;font-size:13px;font-weight:500;color:var(--black);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .artifact-tabs{display:flex;gap:0;background:var(--white);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
-  .artifact-tab{font-family:'DM Sans',sans-serif;font-size:11px;padding:4px 10px;background:var(--white);border:none;color:var(--brown-mid);cursor:pointer;font-weight:500;}
-  .artifact-tab.active{background:var(--black);color:white;}
-  .artifact-actions{display:flex;gap:6px;}
-  .artifact-action-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--white);color:var(--brown-mid);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
-  .artifact-action-btn:hover{border-color:var(--black);color:var(--black);background:var(--gold-light);}
-  .artifact-action-btn svg{width:14px;height:14px;}
-  .artifact-action-btn.copied{background:var(--success-bg);border-color:var(--success);color:var(--success);}
-
-  .artifact-body{flex:1;overflow:hidden;position:relative;background:var(--bg);}
-  .artifact-iframe{width:100%;height:100%;border:none;background:white;display:block;}
-  .artifact-code{width:100%;height:100%;overflow:auto;padding:14px;font-family:Menlo,Consolas,monospace;font-size:11px;line-height:1.55;color:var(--black);background:var(--white);white-space:pre;display:none;}
-  .artifact-panel.code-view .artifact-iframe{display:none;}
-  .artifact-panel.code-view .artifact-code{display:block;}
-
-  .artifact-empty-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);color:var(--brown-mid);font-size:12px;gap:8px;}
-  .artifact-empty-overlay svg{width:36px;height:36px;color:var(--brown-light);}
-
-  /* Mobile fallback: artifact panel becomes a full-screen modal */
-  @media (max-width: 980px) {
-    .buddy-layout.has-artifact{grid-template-columns:1fr;}
-    .buddy-layout.has-artifact .chat-outer{display:none;}
-    .buddy-layout.has-artifact .artifact-panel{position:fixed;inset:0;z-index:90;border-radius:0;}
-  }
 
   /* ══ PRICING TAB ══ */
   .pricing-layout{display:grid;grid-template-columns:1fr 340px;gap:16px;}
@@ -293,8 +248,8 @@
   .hidden{display:none !important;}
 
   /* Scrollbar */
-  .chat-messages::-webkit-scrollbar,.buddy-sidebar::-webkit-scrollbar,.artifact-code::-webkit-scrollbar{width:6px;}
-  .chat-messages::-webkit-scrollbar-thumb,.buddy-sidebar::-webkit-scrollbar-thumb,.artifact-code::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  .chat-messages::-webkit-scrollbar,.buddy-sidebar::-webkit-scrollbar{width:6px;}
+  .chat-messages::-webkit-scrollbar-thumb,.buddy-sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 </style>
 </head>
 <body>
@@ -351,7 +306,7 @@
 
 <!-- ══ LUMBER BUDDY ══ -->
 <div class="page active" id="page-buddy">
-  <div class="buddy-layout" id="buddy-layout">
+  <div class="buddy-layout">
     <div class="chat-outer">
       <div class="chat-header">
         <div class="chat-logo-wrap">
@@ -375,39 +330,11 @@
         </button>
       </div>
     </div>
-
-    <!-- Artifact panel (hidden until an artifact is generated) -->
-    <div class="artifact-panel" id="artifact-panel">
-      <div class="artifact-panel-header">
-        <div class="artifact-panel-title" id="artifact-panel-title">Untitled</div>
-        <div class="artifact-tabs">
-          <button class="artifact-tab active" id="artifact-tab-preview" onclick="switchArtifactTab('preview')">Preview</button>
-          <button class="artifact-tab" id="artifact-tab-code" onclick="switchArtifactTab('code')">Code</button>
-        </div>
-        <div class="artifact-actions">
-          <button class="artifact-action-btn" id="artifact-copy-btn" onclick="copyArtifactCode()" title="Copy code">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-          </button>
-          <button class="artifact-action-btn" onclick="openArtifactInNewTab()" title="Open in new tab">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </button>
-          <button class="artifact-action-btn" onclick="closeArtifact()" title="Close">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
-        </div>
-      </div>
-      <div class="artifact-body">
-        <iframe class="artifact-iframe" id="artifact-iframe" sandbox="allow-same-origin" title="Artifact preview"></iframe>
-        <pre class="artifact-code" id="artifact-code"></pre>
-      </div>
-    </div>
-
     <div class="buddy-sidebar">
       <div class="conn-card">
         <div class="conn-card-header">Live tools</div>
         <div class="conn-row"><div><div class="conn-name">Pricing Calculator</div><div class="conn-detail">Reads PRICING.md · /api/quote</div></div><span class="conn-status cs-tool-live">Live</span></div>
         <div class="conn-row"><div><div class="conn-name">Send to CEO</div><div class="conn-detail">Via Resend · /api/send-email</div></div><span class="conn-status cs-tool-live">Live</span></div>
-        <div class="conn-row"><div><div class="conn-name">Artifact builder</div><div class="conn-detail">HTML mockups in side panel</div></div><span class="conn-status cs-tool-live">Live</span></div>
       </div>
       <div class="conn-card">
         <div class="conn-card-header">Data connections</div>
@@ -751,9 +678,9 @@ const PROMPTS = {
   ],
   owner: [
     "Quote 1 load pellets to ZIP 13346",
-    "Build a one-page mockup for Northeast Stove Supply",
     "Revenue by product line this month",
     "What's in the approval queue?",
+    "Should we commit to Northeast Stove Supply?",
     "Draft a CEO update email"
   ],
   yard: [
@@ -767,17 +694,17 @@ const PROMPTS = {
     "Total miles on this route"
   ],
   admin: [
-    "Build a landing page for selling pellets to NY stove dealers",
     "What's in PRICING.md?",
     "Quote 1 load pellets + 1 load briquettes to ZIP 16434",
-    "Draft a branded quote PDF mockup for Town & Country"
+    "What integrations are pending?",
+    "Show me today's demo narrative"
   ]
 };
 
 function greetingFor(role) {
   const name = currentFirstName || ROLES[role].displayName;
   if (role === 'admin') {
-    return `Hi ${name}. I'm Lumber Buddy for Musser Biomass. Admin preview — switch roles via the toggle to see what each team member sees. Three tools are live: pricing calculator (with ZIP-to-ZIP freight), send-to-CEO, and the artifact builder (try "build me a landing page for Northeast Stove Supply"). Everything else is seeded demo data for now.`;
+    return `Hi ${name}. I'm Lumber Buddy for Musser Biomass. Admin preview — switch roles via the toggle to see what each team member sees. Two tools are live: pricing calculator (with ZIP-to-ZIP freight) and send-to-CEO. Everything else is seeded demo data for now.`;
   }
   if (role === 'owner') {
     return `Morning ${name}. 2 quotes need your approval totaling $24,540. Revenue MTD is $112,400, up 22% vs last April. Northeast Stove Supply is the big decision this week — 2-load opener, $220k/year if it goes. Where do you want to start?`;
@@ -786,7 +713,7 @@ function greetingFor(role) {
     return `Morning. Pellet line running, briquette press queued for Wed. 4 loads of Forest Fuel pellets ready to ship, only 2 loads of briquettes finished — Friday's TJ Coal order needs press priority. Alpha Fiber is healthy at 3 loads.`;
   }
   if (role === 'driver') {
-    return `Morning. Long-haul day: 1 load Forest Fuel pellets to Town & Country in Hamilton NY (~522 mi). BOL is loaded, signed at receiving. Yard return Wed AM, then pre-trip for the Spartansburg PA run.`;
+    return `Morning. Long-haul day: 1 load Forest Fuel pellets to Town & Country in Hamilton NY (~522 mi). BOL is loaded, signed at receiving. Yard return Wed AM, then pre-trip for the Spartansburg PA briquette run.`;
   }
   // ops
   return `Morning ${name}. 9 loads scheduled this week (5 pellets, 3 briquettes, 1 fiber), 2 quotes waiting on owner approval ($24,540 total). Briquette stock is tight — press is queued for Wed. What do you want to tackle first?`;
@@ -897,7 +824,6 @@ function applyRole(role) {
   history = [];
   lastBrainMessage = '';
   document.getElementById('chat-messages').innerHTML = '';
-  closeArtifact(); // reset artifact panel on role switch
   buildQuickStrip(role);
   const displayName = currentFirstName && role !== 'admin'
     ? currentFirstName.charAt(0).toUpperCase() + currentFirstName.slice(1).toLowerCase()
@@ -906,6 +832,7 @@ function applyRole(role) {
 }
 
 function switchRole(newRole, btn) {
+  // Admin switcher: 'ops', 'owner', 'yard', 'driver'
   applyRole(newRole);
 }
 
@@ -914,6 +841,7 @@ function showPage(tab, el) {
   document.getElementById('page-' + tab).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   if (el) el.classList.add('active');
+  // Initialize pricing calc when tab opens (idempotent)
   if (tab === 'pricing') initPricingCalc();
 }
 
@@ -953,6 +881,7 @@ function addMsg(role, text, opts = {}) {
   d.appendChild(b);
   c.appendChild(d);
 
+  // Add "Send to CEO" action on brain messages (except greeting)
   if (role === 'brain' && opts.withActions !== false && history.length > 0) {
     lastBrainMessage = text;
     const actions = document.createElement('div');
@@ -981,20 +910,11 @@ function addStreamingMsg() {
   const b = document.createElement('div');
   b.className = 'msg-bubble';
   b.style.whiteSpace = 'pre-wrap';
-  // Two children: a text span (updated via textContent) and a pill slot
-  // (populated when an artifact is detected). Keeping them separate so
-  // updating the text doesn't blow away the pill DOM.
-  const textSpan = document.createElement('span');
-  textSpan.className = 'msg-text';
-  const pillSlot = document.createElement('div');
-  pillSlot.className = 'msg-pill-slot';
-  b.appendChild(textSpan);
-  b.appendChild(pillSlot);
   d.appendChild(av);
   d.appendChild(b);
   c.appendChild(d);
   c.scrollTop = c.scrollHeight;
-  return { bubble: b, textSpan, pillSlot, wrapper: d };
+  return { bubble: b, wrapper: d };
 }
 
 async function fire(text) { if (!loading) await run(text); }
@@ -1009,229 +929,14 @@ async function sendMsg() {
   await run(text);
 }
 
-// ══════════════════════════════════════════════════════════════════════
-// ARTIFACT SYSTEM
-// ══════════════════════════════════════════════════════════════════════
-//
-// Stream-aware parser: while the model is streaming text, we scan for
-// <artifact ...> opening tag. Once detected, we route subsequent content
-// to the artifact panel iframe instead of the chat bubble. On </artifact>
-// we finalize. Chat bubble shows a clickable pill instead of raw HTML.
-//
-// State machine has three phases per stream:
-//   'chat'     — appending to current chat bubble normally
-//   'artifact' — inside <artifact>...</artifact>, code goes to panel
-//   'chat'     — back to appending to chat bubble (post-closing-tag)
-//
-// We rerender the iframe periodically (debounced ~250ms) for the live-
-// build effect. Final render happens on close tag.
-//
-
-const ARTIFACT_OPEN_RE = /<artifact\s+([^>]*?)>/i;
-const ARTIFACT_CLOSE_RE = /<\/artifact>/i;
-
-let currentArtifact = null;   // { id, type, title, code, finalized }
-let artifactRenderTimer = null;
-
-function parseArtifactAttrs(attrStr) {
-  const out = {};
-  const re = /(\w+)\s*=\s*"([^"]*)"/g;
-  let m;
-  while ((m = re.exec(attrStr)) !== null) {
-    out[m[1]] = m[2];
-  }
-  return out;
-}
-
-function openArtifact({ id, type, title }) {
-  currentArtifact = {
-    id: id || 'artifact-' + Date.now(),
-    type: type || 'html',
-    title: title || 'Untitled',
-    code: '',
-    finalized: false
-  };
-  const layout = document.getElementById('buddy-layout');
-  layout.classList.add('has-artifact');
-  document.getElementById('artifact-panel-title').textContent = currentArtifact.title;
-  // Reset to preview tab
-  switchArtifactTab('preview');
-  // Reset iframe + code view
-  const iframe = document.getElementById('artifact-iframe');
-  iframe.srcdoc = '<html><body style="font-family:system-ui;color:#9A826A;padding:32px;font-size:13px;">Building…</body></html>';
-  document.getElementById('artifact-code').textContent = '';
-}
-
-function appendToArtifact(chunk) {
-  if (!currentArtifact) return;
-  currentArtifact.code += chunk;
-  document.getElementById('artifact-code').textContent = currentArtifact.code;
-  // Debounced iframe rerender (every ~250ms while streaming)
-  if (artifactRenderTimer) return;
-  artifactRenderTimer = setTimeout(() => {
-    artifactRenderTimer = null;
-    renderArtifactIframe();
-  }, 250);
-}
-
-function renderArtifactIframe() {
-  if (!currentArtifact) return;
-  const iframe = document.getElementById('artifact-iframe');
-  // Use srcdoc so we don't need to manage object URLs. The sandbox attribute
-  // (set in HTML) keeps the iframe isolated — no allow-same-origin so artifact
-  // code can't reach into the parent page.
-  iframe.srcdoc = currentArtifact.code;
-}
-
-function finalizeArtifact() {
-  if (!currentArtifact) return;
-  if (artifactRenderTimer) {
-    clearTimeout(artifactRenderTimer);
-    artifactRenderTimer = null;
-  }
-  currentArtifact.finalized = true;
-  renderArtifactIframe();
-  // Mark any streaming pill as done
-  document.querySelectorAll('.artifact-pill.streaming').forEach(p => {
-    p.classList.remove('streaming');
-    const status = p.querySelector('.artifact-pill-status');
-    if (status) status.textContent = 'Ready';
-  });
-}
-
-function addArtifactPill(pillSlot) {
-  const pill = document.createElement('div');
-  pill.className = 'artifact-pill streaming';
-  pill.innerHTML = `
-    <div class="artifact-pill-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-      </svg>
-    </div>
-    <div class="artifact-pill-text">
-      <div class="artifact-pill-title">${currentArtifact.title.replace(/</g,'&lt;')}</div>
-      <div class="artifact-pill-status">Building…</div>
-    </div>
-  `;
-  pill.onclick = () => {
-    document.getElementById('buddy-layout').classList.add('has-artifact');
-    switchArtifactTab('preview');
-  };
-  pillSlot.appendChild(pill);
-}
-
-function closeArtifact() {
-  document.getElementById('buddy-layout').classList.remove('has-artifact');
-}
-
-function switchArtifactTab(tab) {
-  const panel = document.getElementById('artifact-panel');
-  const previewBtn = document.getElementById('artifact-tab-preview');
-  const codeBtn = document.getElementById('artifact-tab-code');
-  if (tab === 'code') {
-    panel.classList.add('code-view');
-    previewBtn.classList.remove('active');
-    codeBtn.classList.add('active');
-  } else {
-    panel.classList.remove('code-view');
-    previewBtn.classList.add('active');
-    codeBtn.classList.remove('active');
-  }
-}
-
-function copyArtifactCode() {
-  if (!currentArtifact) return;
-  const btn = document.getElementById('artifact-copy-btn');
-  navigator.clipboard.writeText(currentArtifact.code).then(() => {
-    btn.classList.add('copied');
-    setTimeout(() => btn.classList.remove('copied'), 1500);
-  }).catch(() => {
-    // Fallback: select code-view text
-    const codeEl = document.getElementById('artifact-code');
-    const range = document.createRange();
-    range.selectNodeContents(codeEl);
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-  });
-}
-
-function openArtifactInNewTab() {
-  if (!currentArtifact) return;
-  const blob = new Blob([currentArtifact.code], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  window.open(url, '_blank', 'noopener');
-  // URL is left to the browser to GC; revoking immediately would close the tab.
-  setTimeout(() => URL.revokeObjectURL(url), 60000);
-}
-
-// Stream consumer: takes raw incoming text, splits into chat-bound text vs.
-// artifact-bound code, and updates the appropriate UI. Returns the text that
-// should be appended to the chat bubble.
-function consumeStreamChunk(buffer, state) {
-  // state: { phase: 'chat'|'artifact', chatOut: '', tail: '' }
-  // Strategy for tags split across chunks: when we don't see a complete tag,
-  // hold back from the RIGHTMOST '<' onward — anything before it is safe to
-  // flush; the held-back portion may be the start of an artifact tag and
-  // gets prepended to the next chunk.
-  let working = state.tail + buffer;
-  state.tail = '';
-
-  while (working.length > 0) {
-    if (state.phase === 'chat') {
-      const m = ARTIFACT_OPEN_RE.exec(working);
-      if (m) {
-        state.chatOut += working.slice(0, m.index);
-        const attrs = parseArtifactAttrs(m[1]);
-        openArtifact(attrs);
-        state.justOpenedArtifact = true;
-        working = working.slice(m.index + m[0].length);
-        state.phase = 'artifact';
-      } else {
-        const idx = working.lastIndexOf('<');
-        if (idx === -1) {
-          state.chatOut += working;
-          working = '';
-        } else {
-          state.chatOut += working.slice(0, idx);
-          state.tail = working.slice(idx);
-          break;
-        }
-      }
-    } else if (state.phase === 'artifact') {
-      const m = ARTIFACT_CLOSE_RE.exec(working);
-      if (m) {
-        appendToArtifact(working.slice(0, m.index));
-        finalizeArtifact();
-        working = working.slice(m.index + m[0].length);
-        state.phase = 'chat';
-        state.justClosedArtifact = true;
-      } else {
-        const idx = working.lastIndexOf('<');
-        if (idx === -1) {
-          appendToArtifact(working);
-          working = '';
-        } else {
-          appendToArtifact(working.slice(0, idx));
-          state.tail = working.slice(idx);
-          break;
-        }
-      }
-    }
-  }
-}
-
 async function run(text) {
   loading = true;
   document.getElementById('send-btn').disabled = true;
   addMsg('user', text);
   history.push({ role: 'user', content: text });
 
-  const { bubble, textSpan, pillSlot, wrapper } = addStreamingMsg();
+  const { bubble, wrapper } = addStreamingMsg();
   let fullReply = '';
-  const streamState = { phase: 'chat', chatOut: '', tail: '', justOpenedArtifact: false, justClosedArtifact: false };
-  let pillAttached = false;
 
   try {
     const resp = await fetch('/api/claude', {
@@ -1257,19 +962,8 @@ async function run(text) {
         try {
           const parsed = JSON.parse(data);
           if (parsed.type === 'content_block_delta' && parsed.delta?.type === 'text_delta') {
-            const t = parsed.delta.text;
-            fullReply += t;
-            streamState.justOpenedArtifact = false;
-            streamState.justClosedArtifact = false;
-            consumeStreamChunk(t, streamState);
-            // Show chat-bound text live (tail included so user sees something
-            // even when we're holding back a few chars; on the next chunk it
-            // will either resolve into a tag or get flushed normally)
-            textSpan.textContent = streamState.chatOut + streamState.tail;
-            if (streamState.justOpenedArtifact && !pillAttached) {
-              addArtifactPill(pillSlot);
-              pillAttached = true;
-            }
+            fullReply += parsed.delta.text;
+            bubble.textContent = fullReply;
             const c = document.getElementById('chat-messages');
             c.scrollTop = c.scrollHeight;
           }
@@ -1277,21 +971,10 @@ async function run(text) {
       }
     }
 
-    // Stream ended: flush any remaining tail
-    if (streamState.tail) {
-      if (streamState.phase === 'chat') streamState.chatOut += streamState.tail;
-      else appendToArtifact(streamState.tail);
-      streamState.tail = '';
-    }
-    textSpan.textContent = streamState.chatOut.trim();
-    if (streamState.phase === 'artifact' && currentArtifact && !currentArtifact.finalized) {
-      finalizeArtifact();
-    }
-
     if (fullReply) {
-      // Store the full reply (with artifact tags) so the model can iterate
       history.push({ role: 'assistant', content: fullReply });
-      lastBrainMessage = streamState.chatOut.trim() || '[artifact generated]';
+      lastBrainMessage = fullReply;
+      // Attach Send-to-CEO action to this bubble
       const actions = document.createElement('div');
       actions.className = 'msg-actions';
       const btn = document.createElement('button');
@@ -1299,18 +982,18 @@ async function run(text) {
       btn.innerHTML = '✉ Send to CEO';
       btn.onclick = () => openEmailModal({
         subject: 'Lumber Buddy update · ' + new Date().toLocaleDateString(),
-        body: lastBrainMessage
+        body: fullReply
       });
       actions.appendChild(btn);
       wrapper.after(actions);
       const c = document.getElementById('chat-messages');
       c.scrollTop = c.scrollHeight;
     } else {
-      textSpan.textContent = 'No response. Try again.';
+      bubble.textContent = 'No response. Try again.';
     }
 
   } catch(e) {
-    textSpan.textContent = 'Deploy to Vercel and set env vars (ANTHROPIC_API_KEY, GITHUB_TOKEN, CLIENT_REPO, CLIENT_NAME, CLIENT_SLUG) to activate the live brain.';
+    bubble.textContent = 'Deploy to Vercel and set env vars (ANTHROPIC_API_KEY, GITHUB_TOKEN, CLIENT_REPO, CLIENT_NAME, CLIENT_SLUG) to activate the live brain.';
   }
 
   loading = false;
@@ -1346,10 +1029,12 @@ let calcLineCounter = 0;
 async function initPricingCalc() {
   if (calcInitialized) return;
   calcInitialized = true;
+  // Fetch price book from /api/quote GET
   try {
     const r = await fetch('/api/quote');
     if (r.ok) priceBookCache = await r.json();
   } catch(e) {
+    // fallback: minimal hardcoded mirror so UI works even if API is down
     priceBookCache = {
       priceBook: {
         forest_fuel_pellets:    { label: 'Forest Fuel Heating Pellets', unit: 'load', unitDetail: '1,100 bags @ 40 lb', pricePerLoad: 5720.00 },
@@ -1358,6 +1043,7 @@ async function initPricingCalc() {
       }
     };
   }
+  // Seed with one default line — 1 load of pellets
   addCalcLine('forest_fuel_pellets', 1);
 }
 
@@ -1368,6 +1054,7 @@ function addCalcLine(presetSku, presetQty) {
   row.className = 'calc-row';
   row.id = id;
 
+  // Build SKU dropdown
   const sel = document.createElement('select');
   sel.onchange = recalcQuote;
   if (priceBookCache && priceBookCache.priceBook) {
@@ -1396,6 +1083,7 @@ function addCalcLine(presetSku, presetQty) {
   unit.value = priceBookCache?.priceBook?.[sel.value]?.unit || '';
   unit.style.background = 'var(--bg)';
   unit.style.color = 'var(--brown-mid)';
+  // keep unit in sync with sku
   sel.addEventListener('change', () => {
     unit.value = priceBookCache?.priceBook?.[sel.value]?.unit || '';
   });
@@ -1431,6 +1119,8 @@ async function recalcQuote() {
     return;
   }
 
+  // Only send the ZIPs to /api/quote when destination is a complete 5-digit ZIP.
+  // Until then, the user is mid-typing and we don't want a flurry of bad requests.
   const body = { items: lines, customerType };
   if (/^\d{5}$/.test(destinationZip)) {
     body.originZip = originZip;
@@ -1549,6 +1239,7 @@ async function sendEmailToCeo() {
   }
 }
 
+// Close modal on overlay click
 document.getElementById('email-modal').addEventListener('click', (e) => {
   if (e.target.id === 'email-modal') closeEmailModal();
 });
