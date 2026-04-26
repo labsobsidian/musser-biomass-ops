@@ -34,10 +34,16 @@ Everything Musser ships goes out as **full truckloads**. One load = one product,
 - **No deadhead** (no charge for the return leg)
 - Each load = one truck trip. Multi-load orders to the same destination are quoted with freight × number of loads (since each load is its own truck).
 
+### How miles are computed
+
+Musser ships from **ZIP 24368** (Sugar Grove, VA — the plant). When a customer gives us their delivery ZIP, the pricing calculator looks up the centroid of both ZIPs (via Zippopotam.us, free public API), computes the great-circle distance between them, and multiplies by **1.20** to estimate driving miles. This is accurate to within ~5% of Google Maps driving distance for typical US shipping lanes.
+
+For unusual lanes (mountain detours, ferry crossings, oversize-permit routes) or whenever the driver's actual mileage differs materially, override the calculator's estimate by entering miles directly — the calculator will use that number instead of the ZIP-derived estimate.
+
 **Examples:**
 
-- Hamilton, NY (~522 mi) → freight = 522 × $2.95 = **$1,540** per load
-- Spartansburg, PA (~372 mi) → freight = 372 × $2.95 = **$1,097.40** per load
+- Hamilton, NY 13346 (~522 mi from 24368) → freight = 522 × $2.95 = **$1,540** per load
+- Spartansburg, PA 16434 (~372 mi from 24368) → freight = 372 × $2.95 = **$1,097.40** per load
 
 ---
 

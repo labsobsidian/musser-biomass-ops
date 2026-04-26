@@ -340,7 +340,7 @@
         <div class="conn-card-header">Data connections</div>
         <div class="conn-row"><div><div class="conn-name">GoHighLevel CRM</div><div class="conn-detail">Contacts, pipeline, Conversation AI</div></div><span class="conn-status cs-pending">Pending</span></div>
         <div class="conn-row"><div><div class="conn-name">QuickBooks</div><div class="conn-detail">Revenue + invoicing sync</div></div><span class="conn-status cs-pending">Pending</span></div>
-        <div class="conn-row"><div><div class="conn-name">Inventory DB</div><div class="conn-detail">Cords, yards, bundles · Supabase</div></div><span class="conn-status cs-pending">Pending</span></div>
+        <div class="conn-row"><div><div class="conn-name">Inventory DB</div><div class="conn-detail">Loads, bags, bales · Supabase</div></div><span class="conn-status cs-pending">Pending</span></div>
         <div class="conn-row"><div><div class="conn-name">Project docs</div><div class="conn-detail">Living docs · GitHub</div></div><span class="conn-status cs-live">Live</span></div>
       </div>
     </div>
@@ -349,62 +349,62 @@
 
 <!-- ══ OPERATIONS ══ -->
 <div class="page" id="page-operations">
-  <div class="demo-banner"><div class="demo-dot"></div>Demo mode — inventory + orders will sync from QuickBooks/Supabase once connected.</div>
+  <div class="demo-banner"><div class="demo-dot"></div>Demo mode — production + load schedule will sync from QuickBooks/Supabase once connected.</div>
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-label">Orders due today</div><div class="stat-value">7</div><div class="stat-sub">4 firewood · 2 mulch · 1 bark</div></div>
-    <div class="stat-card"><div class="stat-label">Trucks scheduled</div><div class="stat-value">3 of 4</div><div class="stat-sub">1 open slot this afternoon</div></div>
-    <div class="stat-card"><div class="stat-label">Yard production</div><div class="stat-value">4.2 cords</div><div class="stat-sub">Splitter running · kiln load 47</div></div>
-    <div class="stat-card"><div class="stat-label">Fleet utilization</div><div class="stat-value">72%</div><div class="stat-sub">Headroom for peak season</div></div>
+    <div class="stat-card"><div class="stat-label">Loads scheduled this week</div><div class="stat-value">9</div><div class="stat-sub">5 pellets · 3 briquettes · 1 fiber</div></div>
+    <div class="stat-card"><div class="stat-label">Trucks committed</div><div class="stat-value">9 of 12</div><div class="stat-sub">3 open slots · room for spot loads</div></div>
+    <div class="stat-card"><div class="stat-label">Production rate</div><div class="stat-value">2.1 loads/day</div><div class="stat-sub">Pellet line running · briquette press up</div></div>
+    <div class="stat-card"><div class="stat-label">On-time delivery (30d)</div><div class="stat-value">96%</div><div class="stat-sub">2 late loads — driver-side delays</div></div>
   </div>
   <div class="two-col">
     <div class="card">
-      <div class="card-header"><div class="card-title">Today's deliveries</div><span style="font-size:12px;color:var(--brown-light)">Sorted by route</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">1</div><div><div class="op-name">Bridgewater Landscaping</div><div class="op-detail">12 yd double-ground · 8:30 AM · Truck 2</div></div></div><span class="badge b-won">Scheduled</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">2</div><div><div class="op-name">R. Henderson (residential)</div><div class="op-detail">2 cords seasoned oak · 10:00 AM · Truck 2</div></div></div><span class="badge b-won">Scheduled</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">3</div><div><div class="op-name">Shenandoah Nursery</div><div class="op-detail">20 yd pine bark nuggets · 11:30 AM · Truck 3</div></div></div><span class="badge b-won">Scheduled</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">4</div><div><div class="op-name">Evergreen Landscapes</div><div class="op-detail">15 yd dyed brown · 1:45 PM · Truck 3</div></div></div><span class="badge b-pending">Loading</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">5</div><div><div class="op-name">J. Ashworth (residential)</div><div class="op-detail">1 cord kiln-dried · 3:15 PM · Truck 2</div></div></div><span class="badge b-new">Queued</span></div>
+      <div class="card-header"><div class="card-title">This week's loads</div><span style="font-size:12px;color:var(--brown-light)">Sorted by ship date</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">1</div><div><div class="op-name">Town &amp; Country Store</div><div class="op-detail">1 load Forest Fuel pellets · Hamilton NY · Tue</div></div></div><span class="badge b-won">Loaded</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">2</div><div><div class="op-name">TJ Coal &amp; Stove</div><div class="op-detail">1 load Forest Fuel briquettes · Spartansburg PA · Wed</div></div></div><span class="badge b-won">Scheduled</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">3</div><div><div class="op-name">Town &amp; Country Store</div><div class="op-detail">1 load Alpha Fiber · Hamilton NY · Thu</div></div></div><span class="badge b-won">Scheduled</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">4</div><div><div class="op-name">TJ Coal &amp; Stove</div><div class="op-detail">2 loads Forest Fuel briquettes · Spartansburg PA · Fri</div></div></div><span class="badge b-pending">Pressing</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">5</div><div><div class="op-name">Town &amp; Country Store</div><div class="op-detail">1 load Forest Fuel pellets · Hamilton NY · Fri</div></div></div><span class="badge b-new">Queued</span></div>
     </div>
     <div class="card">
-      <div class="card-header"><div class="card-title">Inventory pulse</div><span style="font-size:12px;color:var(--brown-light)">Yard stock</span></div>
-      <div class="kpi-row"><span class="kpi-label">Seasoned oak (cords)</span><span class="kpi-value">42 <span style="color:var(--teal);font-size:11px">healthy</span></span></div>
-      <div class="kpi-row"><span class="kpi-label">Seasoned mixed (cords)</span><span class="kpi-value">18 <span style="color:var(--amber);font-size:11px">low · splitter queue</span></span></div>
-      <div class="kpi-row"><span class="kpi-label">Kiln-dried bulk (cords)</span><span class="kpi-value">6 <span style="color:var(--brown-light);font-size:11px">load 47 pulls Thu</span></span></div>
-      <div class="kpi-row"><span class="kpi-label">Retail bundles (units)</span><span class="kpi-value">~2,800</span></div>
-      <div class="kpi-row"><span class="kpi-label">Double-ground mulch (yd)</span><span class="kpi-value">180</span></div>
-      <div class="kpi-row"><span class="kpi-label">Dyed black mulch (yd)</span><span class="kpi-value">40 <span style="color:var(--amber);font-size:11px">reorder trigger</span></span></div>
-      <div class="kpi-row"><span class="kpi-label">Pine bark nuggets (yd)</span><span class="kpi-value">92</span></div>
+      <div class="card-header"><div class="card-title">Production pulse</div><span style="font-size:12px;color:var(--brown-light)">Finished goods on hand</span></div>
+      <div class="kpi-row"><span class="kpi-label">Forest Fuel pellets (loads ready)</span><span class="kpi-value">4 <span style="color:var(--teal);font-size:11px">healthy</span></span></div>
+      <div class="kpi-row"><span class="kpi-label">Forest Fuel briquettes (loads ready)</span><span class="kpi-value">2 <span style="color:var(--amber);font-size:11px">low · press queue Wed</span></span></div>
+      <div class="kpi-row"><span class="kpi-label">Alpha Fiber (loads ready)</span><span class="kpi-value">3 <span style="color:var(--teal);font-size:11px">healthy</span></span></div>
+      <div class="kpi-row"><span class="kpi-label">Pellet bags on hand (40 lb)</span><span class="kpi-value">~4,400</span></div>
+      <div class="kpi-row"><span class="kpi-label">Briquette 6-packs on hand</span><span class="kpi-value">~4,200</span></div>
+      <div class="kpi-row"><span class="kpi-label">Alpha Fiber bales on hand (25 lb)</span><span class="kpi-value">~3,500</span></div>
+      <div class="kpi-row"><span class="kpi-label">Raw fiber inventory</span><span class="kpi-value">11 days <span style="color:var(--amber);font-size:11px">reorder window opening</span></span></div>
     </div>
   </div>
 </div>
 
 <!-- ══ SALES ══ -->
 <div class="page" id="page-sales">
-  <div class="alert-bar"><div class="alert-dot"></div><span id="sales-alert-text">2 quotes awaiting approval — <strong style="margin-left:4px">$16,800 total.</strong></span></div>
+  <div class="alert-bar"><div class="alert-dot"></div><span id="sales-alert-text">2 quotes awaiting approval — <strong style="margin-left:4px">$24,540 total.</strong></span></div>
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-label">Open quotes</div><div class="stat-value">11</div><div class="stat-sub">$52,400 total value</div></div>
-    <div class="stat-card"><div class="stat-label">Close rate (30d)</div><div class="stat-value">62%</div><div class="stat-sub stat-up">↑ 4% vs prior month</div></div>
-    <div class="stat-card"><div class="stat-label">Avg order value</div><div class="stat-value">$612</div><div class="stat-sub">Retail + commercial blended</div></div>
-    <div class="stat-card"><div class="stat-label">Pipeline value</div><div class="stat-value">$52,400</div><div class="stat-sub">11 open quotes</div></div>
+    <div class="stat-card"><div class="stat-label">Open quotes</div><div class="stat-value">7</div><div class="stat-sub">$84,200 total value</div></div>
+    <div class="stat-card"><div class="stat-label">Close rate (30d)</div><div class="stat-value">71%</div><div class="stat-sub stat-up">↑ 6% vs prior month</div></div>
+    <div class="stat-card"><div class="stat-label">Avg load price</div><div class="stat-value">$5,734</div><div class="stat-sub">Product avg, freight separate</div></div>
+    <div class="stat-card"><div class="stat-label">Pipeline value</div><div class="stat-value">$84,200</div><div class="stat-sub">7 open quotes</div></div>
   </div>
   <div class="two-col">
     <div class="card">
       <div class="card-header"><div class="card-title">Needs approval</div></div>
       <div class="op-row">
-        <div class="op-row-left"><div class="op-avatar">BR</div><div><div class="op-name">Blue Ridge Stables</div><div class="op-detail">40 yd playground mulch · 33 mi · first-time wholesale</div><div style="font-size:13px;margin-top:4px;font-weight:500">$2,180 quote</div></div></div>
-        <div class="approval-actions"><button class="btn btn-approve" onclick="approveJob(this,2180)">Approve</button><button class="btn btn-adjust">Adjust</button></div>
+        <div class="op-row-left"><div class="op-avatar">NE</div><div><div class="op-name">Northeast Stove Supply (new wholesale)</div><div class="op-detail">2 loads Forest Fuel pellets · Binghamton NY · first-time</div><div style="font-size:13px;margin-top:4px;font-weight:500">$13,178 quote (incl. freight)</div></div></div>
+        <div class="approval-actions"><button class="btn btn-approve" onclick="approveJob(this,13178)">Approve</button><button class="btn btn-adjust">Adjust</button></div>
       </div>
       <div class="op-row">
-        <div class="op-row-left"><div class="op-avatar">PR</div><div><div class="op-name">Pine Ridge Hardware (chain)</div><div class="op-detail">Weekly bundle delivery · 8 locations · $14,600/mo</div><div style="font-size:13px;margin-top:4px;font-weight:500">$14,600/mo ongoing</div></div></div>
-        <div class="approval-actions"><button class="btn btn-approve" onclick="approveJob(this,14600)">Approve</button><button class="btn btn-adjust">Adjust</button></div>
+        <div class="op-row-left"><div class="op-avatar">AC</div><div><div class="op-name">Appalachian Coal &amp; Stove</div><div class="op-detail">1 load briquettes · Bristol TN · returning customer</div><div style="font-size:13px;margin-top:4px;font-weight:500">$5,861 quote (incl. freight)</div></div></div>
+        <div class="approval-actions"><button class="btn btn-approve" onclick="approveJob(this,5861)">Approve</button><button class="btn btn-adjust">Adjust</button></div>
       </div>
     </div>
     <div class="card">
       <div class="card-header"><div class="card-title">Recent quotes sent</div></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">HC</div><div><div class="op-name">Holston Creek Cabins</div><div class="op-detail">8 cords seasoned oak · sent 2 days ago</div></div></div><span class="badge b-pending">Awaiting</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">JP</div><div><div class="op-name">J. Parker</div><div class="op-detail">1 cord green mixed · sent yesterday</div></div></div><span class="badge b-pending">Awaiting</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">VV</div><div><div class="op-name">Valley View HOA</div><div class="op-detail">28 yd playground mulch · sent 3 days ago</div></div></div><span class="badge b-won">Accepted</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">EL</div><div><div class="op-name">Evergreen Landscapes</div><div class="op-detail">15 yd dyed brown · sent 4 days ago</div></div></div><span class="badge b-won">Accepted</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">TC</div><div><div class="op-name">Town &amp; Country Store</div><div class="op-detail">3 loads pellets, restock · sent yesterday</div></div></div><span class="badge b-pending">Awaiting</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">TJ</div><div><div class="op-name">TJ Coal &amp; Stove</div><div class="op-detail">2 loads briquettes · sent 2 days ago</div></div></div><span class="badge b-won">Accepted</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">HV</div><div><div class="op-name">Hudson Valley Hearth</div><div class="op-detail">1 load pellets, sample order · sent 3 days ago</div></div></div><span class="badge b-pending">Awaiting</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">PA</div><div><div class="op-name">Pocono Pellet Co.</div><div class="op-detail">2 loads briquettes · sent 5 days ago</div></div></div><span class="badge b-won">Accepted</span></div>
     </div>
   </div>
 </div>
@@ -424,8 +424,12 @@
 
         <div class="calc-settings">
           <div class="calc-field">
-            <label>Freight miles</label>
-            <input type="number" id="calc-miles" value="250" min="0" max="1500" onchange="recalcQuote()" oninput="recalcQuote()">
+            <label>Origin ZIP</label>
+            <input type="text" id="calc-from-zip" value="24368" maxlength="5" readonly style="background:var(--surface);color:var(--brown-mid);cursor:not-allowed" title="Locked — Musser ships from 24368">
+          </div>
+          <div class="calc-field">
+            <label>Destination ZIP</label>
+            <input type="text" id="calc-to-zip" placeholder="13346" maxlength="5" inputmode="numeric" pattern="\d{5}" onchange="recalcQuote()" oninput="if(this.value.length===5) recalcQuote()">
           </div>
           <div class="calc-field">
             <label>Customer type</label>
@@ -436,6 +440,7 @@
             </select>
           </div>
         </div>
+        <div id="calc-distance-info" style="margin-top:8px;padding:10px 12px;background:var(--surface);border-radius:6px;font-size:13px;color:var(--brown-mid);display:none"></div>
       </div>
     </div>
 
@@ -485,27 +490,26 @@
 <!-- ══ FINANCE ══ -->
 <div class="page" id="page-finance">
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-label">Revenue MTD</div><div class="stat-value">$94,800</div><div class="stat-sub stat-up">↑ 19% vs April '25</div></div>
-    <div class="stat-card"><div class="stat-label">Outstanding</div><div class="stat-value">$28,600</div><div class="stat-sub">11 open invoices</div></div>
-    <div class="stat-card"><div class="stat-label">Gross margin</div><div class="stat-value">34%</div><div class="stat-sub">Steady vs. last year</div></div>
-    <div class="stat-card"><div class="stat-label">Projected month</div><div class="stat-value">$132,000</div><div class="stat-sub">At current run rate</div></div>
+    <div class="stat-card"><div class="stat-label">Revenue MTD</div><div class="stat-value">$112,400</div><div class="stat-sub stat-up">↑ 22% vs April '25</div></div>
+    <div class="stat-card"><div class="stat-label">Outstanding</div><div class="stat-value">$36,200</div><div class="stat-sub">6 open invoices</div></div>
+    <div class="stat-card"><div class="stat-label">Gross margin</div><div class="stat-value">31%</div><div class="stat-sub">Steady vs. last year</div></div>
+    <div class="stat-card"><div class="stat-label">Projected month</div><div class="stat-value">$148,000</div><div class="stat-sub">At current run rate</div></div>
   </div>
   <div class="two-col">
     <div class="card">
       <div class="card-header"><div class="card-title">Revenue by product line</div><span style="font-size:12px;color:var(--brown-light)">MTD</span></div>
-      <div class="kpi-row"><span class="kpi-label">Firewood (bulk)</span><span class="kpi-value">$42,800</span></div>
-      <div class="kpi-row"><span class="kpi-label">Bundled firewood</span><span class="kpi-value">$18,200</span></div>
-      <div class="kpi-row"><span class="kpi-label">Mulch</span><span class="kpi-value">$22,400</span></div>
-      <div class="kpi-row"><span class="kpi-label">Bark</span><span class="kpi-value">$7,800</span></div>
-      <div class="kpi-row"><span class="kpi-label">Chips / sawdust</span><span class="kpi-value">$3,600</span></div>
+      <div class="kpi-row"><span class="kpi-label">Forest Fuel pellets</span><span class="kpi-value">$57,200</span></div>
+      <div class="kpi-row"><span class="kpi-label">Forest Fuel briquettes</span><span class="kpi-value">$26,400</span></div>
+      <div class="kpi-row"><span class="kpi-label">Alpha Fiber</span><span class="kpi-value">$18,600</span></div>
+      <div class="kpi-row"><span class="kpi-label">Freight (pass-through)</span><span class="kpi-value">$10,200</span></div>
     </div>
     <div class="card">
-      <div class="card-header"><div class="card-title">P&L snapshot</div><span style="font-size:12px;color:var(--brown-light)">April MTD</span></div>
-      <div class="kpi-row"><span class="kpi-label">Gross revenue</span><span class="kpi-value">$94,800</span></div>
-      <div class="kpi-row"><span class="kpi-label">Product costs</span><span class="kpi-value" style="color:var(--red)">−$31,500</span></div>
-      <div class="kpi-row"><span class="kpi-label">Labor</span><span class="kpi-value" style="color:var(--red)">−$22,400</span></div>
-      <div class="kpi-row"><span class="kpi-label">Fuel + fleet</span><span class="kpi-value" style="color:var(--red)">−$8,900</span></div>
-      <div class="kpi-row"><span class="kpi-label">Gross margin</span><span class="kpi-value" style="color:var(--teal)">$32,000 (34%)</span></div>
+      <div class="card-header"><div class="card-title">P&amp;L snapshot</div><span style="font-size:12px;color:var(--brown-light)">April MTD</span></div>
+      <div class="kpi-row"><span class="kpi-label">Gross revenue</span><span class="kpi-value">$112,400</span></div>
+      <div class="kpi-row"><span class="kpi-label">Raw fiber + materials</span><span class="kpi-value" style="color:var(--red)">−$42,300</span></div>
+      <div class="kpi-row"><span class="kpi-label">Labor</span><span class="kpi-value" style="color:var(--red)">−$23,800</span></div>
+      <div class="kpi-row"><span class="kpi-label">Energy + plant</span><span class="kpi-value" style="color:var(--red)">−$11,500</span></div>
+      <div class="kpi-row"><span class="kpi-label">Gross margin</span><span class="kpi-value" style="color:var(--teal)">$34,800 (31%)</span></div>
       <div class="kpi-row"><span class="kpi-label">QuickBooks sync</span><span class="kpi-value" style="color:var(--amber)">Pending setup</span></div>
     </div>
   </div>
@@ -514,24 +518,24 @@
 <!-- ══ STRATEGY ══ -->
 <div class="page" id="page-strategy">
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-label">Annual target</div><div class="stat-value">$1.4M</div><div class="stat-sub">Current pace $1.3M</div></div>
-    <div class="stat-card"><div class="stat-label">Bundle accounts</div><div class="stat-value">18 → 35</div><div class="stat-sub">Stretch goal by Q4</div></div>
+    <div class="stat-card"><div class="stat-label">Annual target</div><div class="stat-value">$1.6M</div><div class="stat-sub">Current pace $1.5M</div></div>
+    <div class="stat-card"><div class="stat-label">Wholesale accounts</div><div class="stat-value">12 → 24</div><div class="stat-sub">Stretch goal by Q4</div></div>
     <div class="stat-card"><div class="stat-label">AI-handled inquiries</div><div class="stat-value">60%</div><div class="stat-sub">Primary KPI</div></div>
-    <div class="stat-card"><div class="stat-label">Avg miles per order</div><div class="stat-value">−8%</div><div class="stat-sub">Routing target</div></div>
+    <div class="stat-card"><div class="stat-label">Avg load freight</div><div class="stat-value">$1,275</div><div class="stat-sub">~432 mi avg lane</div></div>
   </div>
   <div class="two-col">
     <div class="card">
       <div class="card-header"><div class="card-title">Big bets in flight</div></div>
-      <div class="kpi-row"><span class="kpi-label">Pine Ridge Hardware (8 stores)</span><span class="kpi-value">$180k/yr potential</span></div>
-      <div class="kpi-row"><span class="kpi-label">Second kiln (capital project)</span><span class="kpi-value">Q3 decision</span></div>
-      <div class="kpi-row"><span class="kpi-label">Valley View HOA — 3yr contract</span><span class="kpi-value">In negotiation</span></div>
-      <div class="kpi-row"><span class="kpi-label">September firewood pre-buy</span><span class="kpi-value">30% of annual FW</span></div>
+      <div class="kpi-row"><span class="kpi-label">Northeast Stove Supply (NY chain)</span><span class="kpi-value">$220k/yr potential</span></div>
+      <div class="kpi-row"><span class="kpi-label">Second pellet line (capital project)</span><span class="kpi-value">Q3 decision</span></div>
+      <div class="kpi-row"><span class="kpi-label">Alpha Fiber bedding-market push</span><span class="kpi-value">Sample loads out</span></div>
+      <div class="kpi-row"><span class="kpi-label">Pre-heating-season pellet pre-buy</span><span class="kpi-value">35% of annual pellets</span></div>
     </div>
     <div class="card">
       <div class="card-header"><div class="card-title">What the system solves</div></div>
       <div class="kpi-row"><span class="kpi-label">Owner pricing calls/day</span><span class="kpi-value">10–15 → goal 2–3</span></div>
       <div class="kpi-row"><span class="kpi-label">Quote consistency</span><span class="kpi-value">PRICING.md is the law</span></div>
-      <div class="kpi-row"><span class="kpi-label">Morning dispatch</span><span class="kpi-value">Whiteboard → app</span></div>
+      <div class="kpi-row"><span class="kpi-label">Load scheduling</span><span class="kpi-value">Whiteboard → app</span></div>
       <div class="kpi-row"><span class="kpi-label">Invoice lag</span><span class="kpi-value">Auto on delivery</span></div>
     </div>
   </div>
@@ -539,49 +543,25 @@
 
 <!-- ══ MY ROUTE (driver view) ══ -->
 <div class="page" id="page-myroute">
-  <div class="demo-banner"><div class="demo-dot"></div>Driver view — today's stops in order. Mark each complete as you go.</div>
+  <div class="demo-banner"><div class="demo-dot"></div>Driver view — today's loads in order. Mark each complete as you go.</div>
   <div class="card">
-    <div class="card-header"><div class="card-title">Today's route · Truck 2</div><span style="font-size:12px;color:var(--brown-light)">5 stops · ~78 miles total</span></div>
+    <div class="card-header"><div class="card-title">Today's loads · Truck 2</div><span style="font-size:12px;color:var(--brown-light)">2 deliveries · long-haul day</span></div>
     <div class="route-stop">
       <div class="stop-num">1</div>
       <div class="stop-info">
-        <div class="stop-name">Bridgewater Landscaping</div>
-        <div class="stop-addr">4412 Dinkel Ave, Bridgewater VA · 8:30 AM</div>
-        <div class="stop-product">12 yd double-ground mulch · $448.72 on account</div>
-        <div class="stop-note">Gate code: 4712 · dump in back lot</div>
+        <div class="stop-name">Town &amp; Country Store</div>
+        <div class="stop-addr">2433 Route 12B, Hamilton NY 13346 · ETA Tue 2:00 PM</div>
+        <div class="stop-product">1 load Forest Fuel pellets (1,100 bags) · $7,259.90 net-30</div>
+        <div class="stop-note">~522 mi from Pulaski · BOL signed at receiving</div>
       </div>
     </div>
     <div class="route-stop">
       <div class="stop-num">2</div>
       <div class="stop-info">
-        <div class="stop-name">R. Henderson</div>
-        <div class="stop-addr">118 Meadowbrook Ln, Harrisonburg · 10:00 AM</div>
-        <div class="stop-product">2 cords seasoned oak · $631 COD</div>
-        <div class="stop-note">Call 10 min out · dog in yard</div>
-      </div>
-    </div>
-    <div class="route-stop">
-      <div class="stop-num">3</div>
-      <div class="stop-info">
-        <div class="stop-name">Evergreen Landscapes</div>
-        <div class="stop-addr">2891 Rte 11 S, Woodstock · 1:45 PM</div>
-        <div class="stop-product">15 yd dyed brown mulch · net-30</div>
-      </div>
-    </div>
-    <div class="route-stop">
-      <div class="stop-num">4</div>
-      <div class="stop-info">
-        <div class="stop-name">J. Ashworth</div>
-        <div class="stop-addr">57 Old Mill Rd, Mount Jackson · 3:15 PM</div>
-        <div class="stop-product">1 cord kiln-dried bulk · $432.32 COD</div>
-      </div>
-    </div>
-    <div class="route-stop">
-      <div class="stop-num">5</div>
-      <div class="stop-info">
         <div class="stop-name">Yard return</div>
-        <div class="stop-addr">Musser yard · ~4:30 PM</div>
+        <div class="stop-addr">Musser yard, 24368 · Wed AM</div>
         <div class="stop-product">Drop paperwork, park Truck 2, fuel if under ¼</div>
+        <div class="stop-note">Pre-trip Wed afternoon for Spartansburg PA run</div>
       </div>
     </div>
   </div>
@@ -593,7 +573,7 @@
     <div class="settings-title">Integrations</div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">GoHighLevel CRM</div><div class="sr-detail">Contacts, pipeline, Conversation AI (chat/SMS quoting)</div></div><div class="sr-right"><span style="font-size:12px;color:var(--amber)">Pending setup</span><button class="connect-btn">Configure</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">QuickBooks Online</div><div class="sr-detail">Revenue, invoicing, P&L sync</div></div><div class="sr-right"><span style="font-size:12px;color:var(--brown-light)">Credentials needed</span><button class="connect-btn">Connect</button></div></div>
-    <div class="setting-row"><div class="sr-left"><div class="sr-label">Supabase Inventory</div><div class="sr-detail">Cords, yards, bundle stock — live counts</div></div><div class="sr-right"><span style="font-size:12px;color:var(--brown-light)">Not configured</span><button class="connect-btn">Connect</button></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">Supabase Inventory</div><div class="sr-detail">Load, bag, bale stock — live counts</div></div><div class="sr-right"><span style="font-size:12px;color:var(--brown-light)">Not configured</span><button class="connect-btn">Connect</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Resend — Email</div><div class="sr-detail">Sending domain for /api/send-email</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Live · tool active</span><button class="connect-btn">Configure</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Google Maps</div><div class="sr-detail">Route optimization for dispatch</div></div><div class="sr-right"><span style="font-size:12px;color:var(--brown-light)">Not connected</span><button class="connect-btn">Connect</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">GitHub — Project docs</div><div class="sr-detail">Living docs · brain reads automatically (incl. PRICING.md)</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Live</span><button class="connect-btn">Configure</button></div></div>
@@ -690,32 +670,32 @@ const ROLES = {
 
 const PROMPTS = {
   ops: [
-    "What needs attention today?",
-    "Draft Bridgewater delivery confirmation",
-    "Fill Truck 4's open afternoon slot",
-    "Inventory running low on what?",
-    "What's the route for Truck 2?"
+    "What loads are due this week?",
+    "Draft Town & Country shipment confirmation",
+    "Fill Truck 4's open Friday slot",
+    "What's running low in production?",
+    "Schedule next Hamilton run"
   ],
   owner: [
-    "Quote 3 cords oak delivered 22 mi",
+    "Quote 1 load pellets to ZIP 13346",
     "Revenue by product line this month",
     "What's in the approval queue?",
-    "Should we commit to Pine Ridge Hardware?",
+    "Should we commit to Northeast Stove Supply?",
     "Draft a CEO update email"
   ],
   yard: [
     "What's on today's production schedule?",
-    "Kiln load 47 status",
+    "Pellet line status",
     "What's on Truck 2's load-out list?"
   ],
   driver: [
     "First stop today",
-    "Gate code for Bridgewater",
-    "COD total for this route"
+    "BOL for Town & Country",
+    "Total miles on this route"
   ],
   admin: [
     "What's in PRICING.md?",
-    "Quote 2 cords oak + 10 yd mulch, 18 mi",
+    "Quote 1 load pellets + 1 load briquettes to ZIP 16434",
     "What integrations are pending?",
     "Show me today's demo narrative"
   ]
@@ -724,19 +704,19 @@ const PROMPTS = {
 function greetingFor(role) {
   const name = currentFirstName || ROLES[role].displayName;
   if (role === 'admin') {
-    return `Hi ${name}. I'm Lumber Buddy for Musser Biomass. Admin preview — switch roles via the toggle to see what each team member sees. Two tools are live: pricing calculator and send-to-CEO. Everything else is seeded demo data for now.`;
+    return `Hi ${name}. I'm Lumber Buddy for Musser Biomass. Admin preview — switch roles via the toggle to see what each team member sees. Two tools are live: pricing calculator (with ZIP-to-ZIP freight) and send-to-CEO. Everything else is seeded demo data for now.`;
   }
   if (role === 'owner') {
-    return `Morning ${name}. 2 quotes need your approval totaling $16,800. Revenue MTD is $94,800, up 19% vs last April. Pine Ridge Hardware is the big decision this week — 8 stores, $180k/year if it goes. Where do you want to start?`;
+    return `Morning ${name}. 2 quotes need your approval totaling $24,540. Revenue MTD is $112,400, up 22% vs last April. Northeast Stove Supply is the big decision this week — 2-load opener, $220k/year if it goes. Where do you want to start?`;
   }
   if (role === 'yard') {
-    return `Morning. Splitter queue today: 4 cords mixed hardwood (seasoned mixed is running low). Kiln load 47 pulls Thursday morning. Truck 2 loads 12 yd double-ground at 8, then 2 cords seasoned oak for the 10am run.`;
+    return `Morning. Pellet line running, briquette press queued for Wed. 4 loads of Forest Fuel pellets ready to ship, only 2 loads of briquettes finished — Friday's TJ Coal order needs press priority. Alpha Fiber is healthy at 3 loads.`;
   }
   if (role === 'driver') {
-    return `Morning. 5 stops today, ~78 miles total. First up: Bridgewater Landscaping at 8:30, gate code 4712. Two CODs on the route — Henderson ($631) and Ashworth ($432.32). Open the My Route tab to see it all.`;
+    return `Morning. Long-haul day: 1 load Forest Fuel pellets to Town & Country in Hamilton NY (~522 mi). BOL is loaded, signed at receiving. Yard return Wed AM, then pre-trip for the Spartansburg PA briquette run.`;
   }
   // ops
-  return `Morning ${name}. 7 orders due today, 3 of 4 trucks scheduled, and 2 quotes waiting on owner approval ($16,800 total). Seasoned mixed hardwood is running low — splitter queued for Wed. What do you want to tackle first?`;
+  return `Morning ${name}. 9 loads scheduled this week (5 pellets, 3 briquettes, 1 fiber), 2 quotes waiting on owner approval ($24,540 total). Briquette stock is tight — press is queued for Wed. What do you want to tackle first?`;
 }
 
 let currentRole = 'ops';
@@ -1128,28 +1108,55 @@ async function recalcQuote() {
     return { sku: sel.value, quantity: parseFloat(qty.value) || 0 };
   }).filter(l => l.sku && l.quantity > 0);
 
-  const miles = parseFloat(document.getElementById('calc-miles').value) || 0;
+  const originZip = (document.getElementById('calc-from-zip').value || '24368').trim();
+  const destinationZip = (document.getElementById('calc-to-zip').value || '').trim();
   const customerType = document.getElementById('calc-customer-type').value;
+  const distEl = document.getElementById('calc-distance-info');
 
   if (lines.length === 0) {
     renderQuoteSummary({ subtotal: 0, delivery: { total: 0 }, total: 0, lines: [] });
+    if (distEl) distEl.style.display = 'none';
     return;
+  }
+
+  // Only send the ZIPs to /api/quote when destination is a complete 5-digit ZIP.
+  // Until then, the user is mid-typing and we don't want a flurry of bad requests.
+  const body = { items: lines, customerType };
+  if (/^\d{5}$/.test(destinationZip)) {
+    body.originZip = originZip;
+    body.destinationZip = destinationZip;
   }
 
   try {
     const resp = await fetch('/api/quote', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: lines, deliveryMiles: miles, customerType })
+      body: JSON.stringify(body)
     });
     if (!resp.ok) throw new Error('quote endpoint error');
     const data = await resp.json();
     renderQuoteSummary(data);
+    renderDistanceInfo(data.distanceInfo);
   } catch(e) {
     document.getElementById('qs-grand-total').textContent = '—';
     document.getElementById('qs-breakdown').innerHTML =
       '<div class="qs-line" style="color:var(--red)">Quote endpoint not reachable. Deploy /api/quote to activate.</div>';
   }
+}
+
+function renderDistanceInfo(info) {
+  const el = document.getElementById('calc-distance-info');
+  if (!el) return;
+  if (!info) { el.style.display = 'none'; el.innerHTML = ''; return; }
+  if (info.error) {
+    el.style.display = 'block';
+    el.style.color = 'var(--red)';
+    el.innerHTML = `Couldn't look up that ZIP — ${info.error}`;
+    return;
+  }
+  el.style.display = 'block';
+  el.style.color = 'var(--brown-mid)';
+  el.innerHTML = `${info.from.place} → ${info.to.place} · est. <strong>${info.estimatedDrivingMiles} driving miles</strong> <span style="color:var(--brown-light)">(great-circle ${info.greatCircleMiles} mi × 1.20)</span>`;
 }
 
 function renderQuoteSummary(quote) {

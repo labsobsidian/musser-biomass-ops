@@ -74,3 +74,37 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 - Per-load freight assumption: each load = one truck trip, so multi-load orders charge freight × loads. Not explicit in Mick's messages but consistent with "no deadhead" and full-truckload model. Confirm with Mick.
 - DEMO_CONTEXT.md still references firewood/mulch (Shenandoah Valley narrative). Leave as-is for now since it's seeded demo color, not customer-facing — replace when we have real Musser narrative content.
 - Existing customers (Town & Country, TJ Coal) are documented in PROJECT_STATE? No — currently only in PRICING.md examples. Consider adding to a CUSTOMERS.md if list grows.
+
+---
+
+## 2026-04-26 — ZIP-to-ZIP freight calculator + Musser demo narrative
+
+**Decision:** Replace the manual "freight miles" input on the Pricing tab with a ZIP-to-ZIP lookup. Origin ZIP locked to **24368** (Musser's plant in Sugar Grove, VA). Customer enters their destination ZIP; the system computes driving miles and feeds them into the existing freight math. At the same time, rewrite all seeded demo data across the app (Operations, Sales, Finance, Strategy, My Route tabs and chat greetings) to reflect Musser's actual world — pellets/briquettes/fiber, real customers (Town & Country in Hamilton NY, TJ Coal in Spartansburg PA), full-truckload mentality, NY/PA/TN destinations.
+
+**Context:** Mick / Eric field constant "what's your price to my ZIP?" calls. The manual miles input forced anyone using the calculator to know mileage already, which defeats the point of an AI quoting tool. With ZIP-to-ZIP, a dealer can ask a chat or SMS bot "1 load of pellets to 13346" and get a real number including freight, instantly — same math the team uses. The seeded firewood/mulch narrative inherited from the Hardesty fork was confusing in demos because it didn't match anything Musser actually sells.
+
+**Implementation:**
+
+- **New endpoint:** `/api/distance.js` — accepts `?from=24368&to=13346`, looks up centroid lat/lon for both ZIPs via the free public **Zippopotam.us** API (no API key required, CORS-enabled, GeoNames-sourced data). Computes great-circle (haversine) distance in miles and multiplies by **1.20** to estimate driving miles. 24-hour in-memory cache so repeat lookups don't hit the upstream API. Exports `computeDistance`, `lookupZip`, `haversineMiles` for reuse.
+- **`/api/quote.js`:** now imports `computeDistance` and accepts either `deliveryMiles` (legacy/manual) or `originZip` + `destinationZip`. If both, manual miles wins. Default origin ZIP = `24368` if not specified. Response now includes a `distanceInfo` block (`{from, to, estimatedDrivingMiles, greatCircleMiles, method}`) so the UI / chat AI can show "Sugar Grove, VA → Hamilton, NY · 577 driving miles" instead of just a number.
+- **Pricing tab UI:** the single miles field is replaced with two ZIP fields. Origin is locked (read-only, value 24368) with a tooltip explaining why. Destination is a 5-digit numeric input that triggers a recalculation as soon as the user types the fifth digit. A small info row below the inputs shows the resolved place names + estimated driving miles; on lookup error it shows the error message in red so the user can fall back to manual entry.
+- **PRICING.md:** new "How miles are computed" subsection under Freight, documenting the ZIP-based pipeline + the 1.20 multiplier + the manual override. Examples updated to mention origin ZIP 24368 and destination ZIPs 13346 / 16434 explicitly so the GHL Conversation AI quotes consistently.
+- **DEMO_CONTEXT.md:** rewritten end-to-end. No more firewood, mulch, cords, kiln, splitter, Shenandoah Valley narrative, Pine Ridge Hardware, Bridgewater Landscaping, Henderson, Ashworth, Valley View HOA. Replaced with Musser's actual world: three SKUs, two real customer accounts (Town & Country, TJ Coal), Northeast Stove Supply as the speculative big bet, pellet line / briquette press / Alpha Fiber baler as the production narrative.
+- **`index.html` seeded data:** Operations tab now shows "this week's loads" not "today's deliveries" (truckload business is per-week, not per-day). Inventory pulse shows loads ready / bags on hand / bales on hand instead of cords/yards. Sales tab shows Northeast Stove Supply + Appalachian Coal & Stove in the approval queue, Town & Country + TJ Coal + Hudson Valley Hearth + Pocono Pellet Co. in recent quotes. Finance shows pellets / briquettes / fiber / freight revenue split. Strategy shows Northeast Stove Supply (NY chain), second pellet line, Alpha Fiber bedding push, and the pre-heating-season pre-buy as the four big bets. My Route tab shows a single long-haul load to Hamilton NY (522 mi) instead of five short local stops — matches the actual freight model. Chat greetings rewritten per role to reference real Musser numbers and customers. Prompt suggestions updated to use ZIP-based examples ("Quote 1 load pellets to ZIP 13346").
+
+**Alternatives considered:**
+- Bundle a 33k-row US ZIP centroid CSV into the repo (rejected: ~1MB cold-start cost, deployment bloat, awkward to update)
+- Use Google Distance Matrix API (rejected for v1: requires API key + billing setup, ~$0.005/lookup, overkill for 95%-accurate use case; reserved as a future "verify mileage" button)
+- Make origin ZIP editable (rejected: Musser ships from one plant; locking prevents user error and signals correctness)
+- Support Canadian postal codes (rejected: zero current Canadian customers, can revisit if that changes)
+
+**Consequences:**
+- Any wholesale dealer (real human, voice agent, chat agent) can now get an instant quote with freight by knowing only their ZIP — eliminates the "let me look up your mileage" interruption that was the main bottleneck
+- External dependency on Zippopotam.us. If their service goes down, distance lookups fail; the manual `deliveryMiles` override path remains so quotes can still happen. Future hardening: bundle a fallback ZIP centroid lookup.
+- Driving multiplier of 1.20 is a heuristic. Within ~5% of Google driving distance for typical lanes. Mountain / coastal / island lanes will be optimistic. Override path mitigates this for any lane the team flags as unusual.
+- The PRICING.md ↔ /api/quote.js drift-prevention invariant still holds — the new freight pipeline is documented in PRICING.md and implemented in /api/quote.js + /api/distance.js. Three files to keep in sync now instead of two; CLAUDE.md should mention this.
+
+**Open items:**
+- Add a "verify mileage" button that calls Google Distance Matrix on demand (post-v1)
+- Add a small offline ZIP lookup fallback if Zippopotam outages prove disruptive
+- CLAUDE.md should be updated to mention `/api/distance.js` as part of the pricing-system invariant (next commit)

@@ -43,7 +43,7 @@ No build step — static `index.html` + Node serverless functions on Vercel.
 ## Working rules
 
 - **Do not commit secrets.** `ANTHROPIC_API_KEY`, `GITHUB_TOKEN`, `RESEND_API_KEY` all live only in Vercel env vars.
-- **`PRICING.md` and `api/quote.js` must stay in sync.** If you edit one, edit the other in the same commit. They must produce identical numbers.
+- **`PRICING.md`, `api/quote.js`, and `api/distance.js` must stay in sync.** If you edit one, edit the others in the same commit. PRICING.md documents the math; quote.js implements pricing; distance.js implements the ZIP→miles pipeline that feeds freight. All three must produce identical numbers.
 - **DEMO_MODE is implicitly on.** Seeded data in the UI is intentional. Don't "fix" it by pulling live data.
 - **Streaming matters.** `/api/claude` streams SSE; frontend parses chunks progressively. Don't refactor to buffered JSON.
 - **Two tools are real; everything else is demo data.** Don't fake-wire real data into the other tabs. Either wire it for real (and update docs) or leave it seeded.
@@ -55,13 +55,21 @@ No build step — static `index.html` + Node serverless functions on Vercel.
 
 - Single file, no bundler. Keep it that way until we outgrow it.
 - Tabs: Lumber Buddy, Operations, Sales, Pricing, Marketing, Finance, Strategy, My Route, Settings.
-- Seeded data should read as plausible Musser data (Shenandoah Valley-ish geography, realistic yard/delivery numbers, firewood/mulch product mix).
+- Seeded data should read as plausible Musser data: pellets / briquettes / Alpha Fiber, full-truckload mentality, NY/PA/TN destinations, real customers (Town & Country in Hamilton NY, TJ Coal in Spartansburg PA) where appropriate. **No firewood, mulch, cords, or Shenandoah Valley narrative** — that was inherited from the Hardesty fork and has been removed.
 
 ## When editing `api/quote.js`
 
 - Update `PRICING.md` in the same commit. **Non-negotiable.**
 - Keep the `PRICE_BOOK` object keyed by the same SKUs documented in `PRICING.md`.
 - Export `computeQuote` for reuse (future voice-agent endpoint, etc.)
+- Quote requests can supply either `deliveryMiles` (manual) or `originZip`+`destinationZip` (ZIP-to-ZIP). Default origin = `MUSSER_ORIGIN_ZIP` = `24368`. Don't break either path.
+
+## When editing `api/distance.js`
+
+- This is the ZIP→miles pipeline. Calls Zippopotam.us (free, no key), computes haversine × 1.20.
+- 24h in-memory cache is intentional — ZIP centroids never move; cache reduces upstream calls.
+- If you change the driving multiplier (currently 1.20), update PRICING.md's "How miles are computed" subsection in the same commit.
+- US ZIPs only currently. If Canadian / international support is needed later, this is the place to add it (Zippopotam supports multiple countries).
 
 ## When editing `api/send-email.js`
 

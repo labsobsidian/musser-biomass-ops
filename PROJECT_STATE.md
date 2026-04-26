@@ -105,11 +105,11 @@ Build an AI-forward ops stack for Musser Biomass that takes pricing questions, d
 
 ## Blockers
 
-- Real price sheet from Musser — placeholders in `PRICING.md` until received
+- ~~Real price sheet from Musser~~ — received Apr 26, three SKUs deployed
 - CEO email address — placeholder `CEO_EMAIL` env var to be set
 - Resend account + verified sending domain — required before send-to-CEO works live
 - QuickBooks API credentials (Phase 3)
-- Google Maps API key if we want route optimization (Phase 2)
+- Google Maps API key if we want a "verify mileage" upgrade button (Phase 2 — currently using free Zippopotam.us + 1.20 driving multiplier, ~95% accurate)
 
 ---
 
@@ -118,4 +118,6 @@ Build an AI-forward ops stack for Musser Biomass that takes pricing questions, d
 - Skills version: v0.2.0
 - DEMO_MODE: true — seeded data until QuickBooks + live order intake are wired
 - `PRICING.md` is read by the Lumber Buddy brain AND should be pasted into GHL Conversation AI's system prompt so the chat agent quotes from the same source
-- Pricing calculator (`/api/quote.js`) and `PRICING.md` must be updated together — drift between them will cause the chat agent and the UI to disagree
+- Pricing calculator (`/api/quote.js`), distance lookup (`/api/distance.js`), and `PRICING.md` must be updated together — drift between any of them will cause the chat agent and the UI to disagree
+- Plant origin ZIP is `24368` — locked in `MUSSER_ORIGIN_ZIP` constant in `api/quote.js`, documented in PRICING.md
+- All seeded demo data across Operations / Sales / Finance / Strategy / My Route tabs and chat greetings reflects Musser's real product world (pellets / briquettes / Alpha Fiber, NY/PA destinations, full-truckload model). Older Hardesty-era firewood/mulch/cords narrative was scrubbed Apr 26.
