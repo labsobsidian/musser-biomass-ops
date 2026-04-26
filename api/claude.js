@@ -13,7 +13,9 @@
 import { getContext } from './context.js';
 
 const MODEL = 'claude-sonnet-4-6';
-const MAX_TOKENS = 4000;
+// artifacts (single-file HTML pages with inline CSS) easily exceed 4000 tokens;
+// bumping to 16000 leaves headroom for a complete page.
+const MAX_TOKENS = 16000;
 
 // Role-specific framing. Backend owns this. Keep it short — the living docs
 // do the heavy lifting for actual content; this just tells Claude who it's
@@ -47,30 +49,43 @@ Do NOT produce artifacts for:
 
 When you DO produce an artifact, follow this format EXACTLY:
 
-1. First, write 1–2 sentences in chat introducing what you're about to build (e.g. "Here's a one-page landing site for Northeast Stove Supply.").
+1. First, write 1–2 sentences in chat introducing what you're about to build.
 2. Then output a single artifact block on its own. The format is rigid:
 
 <artifact id="UNIQUE_ID" type="html" title="SHORT TITLE">
 <!DOCTYPE html>
 <html>
-... complete, self-contained HTML ...
+<head>
+  <meta charset="UTF-8">
+  <title>...</title>
+  <style>...</style>
+</head>
+<body>
+  ... ALL VISIBLE CONTENT GOES HERE ...
+</body>
 </html>
 </artifact>
 
-3. After the closing </artifact> tag, write 1–2 follow-up sentences in chat (e.g. "Tell me what to change — colors, copy, layout.").
+3. After the closing </artifact> tag, write 1–2 follow-up sentences in chat.
 
-ARTIFACT RULES:
-  - id: a short slug like "northeast-stove-landing" — used internally, not shown.
-  - type: always "html" for now (React not yet supported).
-  - title: 2–6 words shown above the panel (e.g. "Northeast Stove landing page").
-  - The HTML must be COMPLETE and self-contained: <!DOCTYPE html>, <html>, <head> with <style>, <body>. No external scripts. Inline CSS only.
-  - Do NOT use external fonts, CDN scripts, or anything that requires the network. Use system fonts (-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif).
-  - Use real content informed by the project docs above (real product names, real prices from PRICING.md, real customer names where appropriate). Generic Lorem-ipsum is unacceptable.
-  - Keep the HTML under ~3000 lines. Single page only.
-  - Inside the artifact block, output ONLY the HTML — no commentary, no markdown fences (no \`\`\`), no preamble.
-  - Output exactly ONE artifact per response. If the user asks for multiple things, build the most important one and offer to build the others on follow-up.
+CRITICAL STRUCTURAL REQUIREMENTS — non-negotiable:
+  - The HTML MUST contain a <body> opening tag and a </body> closing tag. Without these, the page renders blank.
+  - The HTML MUST end with </body></html> followed immediately by </artifact>.
+  - All visible content (headers, hero, sections, footer) MUST be inside <body>...</body>, NOT inside <head> or <style>.
 
-If the user iterates ("make the hero blue", "shorten the headline"), produce a NEW complete artifact with the updates. Do not output diffs. The panel always shows the most recent artifact.`;
+CSS DISCIPLINE (to prevent token exhaustion mid-render):
+  - Keep your <style> block under ~150 lines. Use compact CSS.
+  - Use system fonts only: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif.
+  - No duplicate or unused styles. Every rule referenced by something in body.
+
+OTHER RULES:
+  - id: a short slug like "northeast-stove-landing".
+  - type: always "html" for now.
+  - title: 2–6 words shown above the panel.
+  - No external scripts, no CDN imports, no network requests.
+  - Use real content from the project docs (real product names, real PRICING.md numbers, real customer names). No Lorem-ipsum.
+  - Inside the artifact block, output ONLY the HTML — no commentary, no markdown fences, no preamble.
+  - Output exactly ONE artifact per response.`;
 
 function buildSystemPrompt({ kb, role }) {
   const clientName = process.env.CLIENT_NAME || 'the client';
