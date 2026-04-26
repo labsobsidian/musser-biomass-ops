@@ -1,0 +1,16 @@
+{
+  "name": "musser-biomass-ops",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Lumber Buddy by Obsidian Labs — AI ops command center for Musser Biomass",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@octokit/rest": "^21.0.0"
+  },
+  "scripts": {
+    "dev": "vercel dev"
+  }
+}
