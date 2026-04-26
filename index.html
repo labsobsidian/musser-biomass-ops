@@ -397,7 +397,7 @@
         </div>
       </div>
       <div class="artifact-body">
-        <iframe class="artifact-iframe" id="artifact-iframe" sandbox="allow-same-origin" title="Artifact preview"></iframe>
+        <iframe class="artifact-iframe" id="artifact-iframe" title="Artifact preview"></iframe>
         <pre class="artifact-code" id="artifact-code"></pre>
       </div>
     </div>
@@ -1058,7 +1058,12 @@ function openArtifact({ id, type, title }) {
   switchArtifactTab('preview');
   // Reset iframe + code view
   const iframe = document.getElementById('artifact-iframe');
-  iframe.srcdoc = '<html><body style="font-family:system-ui;color:#9A826A;padding:32px;font-size:13px;">Building…</body></html>';
+  try {
+    const _doc = iframe.contentDocument || iframe.contentWindow.document;
+    _doc.open();
+    _doc.write('<!DOCTYPE html><html><body style="font-family:system-ui;color:#9A826A;padding:32px;font-size:13px;margin:0;">Building...</body></html>');
+    _doc.close();
+  } catch(e) {}
   document.getElementById('artifact-code').textContent = '';
 }
 
@@ -1080,7 +1085,14 @@ function renderArtifactIframe() {
   // Use srcdoc so we don't need to manage object URLs. The sandbox attribute
   // (set in HTML) keeps the iframe isolated — no allow-same-origin so artifact
   // code can't reach into the parent page.
-  iframe.srcdoc = currentArtifact.code;
+  try {
+    const _doc = iframe.contentDocument || iframe.contentWindow.document;
+    _doc.open();
+    _doc.write(currentArtifact.code);
+    _doc.close();
+  } catch(e) {
+    iframe.srcdoc = currentArtifact.code;
+  }
 }
 
 function finalizeArtifact() {
