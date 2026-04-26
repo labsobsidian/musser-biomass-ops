@@ -1071,12 +1071,9 @@ function appendToArtifact(chunk) {
   if (!currentArtifact) return;
   currentArtifact.code += chunk;
   document.getElementById('artifact-code').textContent = currentArtifact.code;
-  // Debounced iframe rerender (every ~250ms while streaming)
-  if (artifactRenderTimer) return;
-  artifactRenderTimer = setTimeout(() => {
-    artifactRenderTimer = null;
-    renderArtifactIframe();
-  }, 250);
+  // No mid-stream iframe rendering. document.open/write resets the iframe
+  // each time and on long streams the browser can get into a state where
+  // the final write doesn't paint. Render once at the end in finalizeArtifact.
 }
 
 function renderArtifactIframe() {
