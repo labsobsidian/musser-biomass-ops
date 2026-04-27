@@ -136,3 +136,4 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 - Future AR collection email/SMS work should use `api/connectors/ghl.js` instead of adding provider-specific logic to the UI.
 - A later Atlas product version can replace the private integration token with OAuth without changing the app-level messaging workflow.
 - Owner/admin chat can detect direct "email the CEO" requests and call `/api/send-email` instead of only drafting copy.
+- AR CEO summaries now send as Musser-branded HTML operating briefs rather than plain-text notes.

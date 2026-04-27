@@ -960,31 +960,112 @@ async function buildArEmailBody() {
 
   const data = arCache;
   const money = (n) => '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const invoices = (data.invoices || []).slice(0, 7).map(inv =>
-    `- ${inv.customer} - ${money(inv.amount)} - ${inv.daysOverdue > 0 ? inv.daysOverdue + ' days overdue' : 'current'} - ${inv.status}`
-  );
+  const invoices = data.invoices || [];
+  const aging = data.aging || [];
+  const priority = data.collectionPriority || [];
+  const riskCount = invoices.filter(inv => inv.status !== 'Current').length;
+  const invoiceRows = invoices.slice(0, 7).map((inv, idx) => {
+    const isCritical = inv.status === 'Critical';
+    const statusColor = isCritical ? '#E4573D' : inv.status === 'Current' ? '#35C785' : '#F0B63F';
+    return `
+      <tr>
+        <td style="padding:14px 16px;border-top:1px solid #2C2A24;color:#9DAB9C;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;">${String(idx + 1).padStart(2, '0')}</td>
+        <td style="padding:14px 16px;border-top:1px solid #2C2A24;color:#F8F3E7;font-weight:700;">${escapeUi(inv.customer)}<div style="color:#8C877A;font-size:12px;font-weight:400;margin-top:4px;">${escapeUi(inv.notes)}</div></td>
+        <td style="padding:14px 16px;border-top:1px solid #2C2A24;color:#F8F3E7;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">${escapeUi(inv.invoiceNumber)}</td>
+        <td style="padding:14px 16px;border-top:1px solid #2C2A24;color:#F8F3E7;font-weight:700;text-align:right;">${money(inv.amount)}</td>
+        <td style="padding:14px 16px;border-top:1px solid #2C2A24;color:${statusColor};font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;text-align:right;">${inv.daysOverdue > 0 ? inv.daysOverdue + ' days' : 'current'}</td>
+      </tr>`;
+  }).join('');
 
-  return [
-    'Quick Accounts Receivable rundown from Lumber Buddy.',
-    '',
-    'Important note: this is still demo/sample AR data. Sage 50 is not connected yet, so these numbers should not be treated as live accounting data.',
-    '',
-    'Current AR snapshot:',
-    `- Open AR: ${money(data.summary.totalOpen)}`,
-    `- Overdue: ${money(data.summary.overdueTotal)} across ${data.summary.overdueCount} invoices`,
-    `- Critical accounts: ${data.summary.criticalCount}`,
-    `- DSO estimate: ${data.summary.dsoEstimate} days`,
-    '',
-    'Open invoices:',
-    ...invoices,
-    '',
-    'Recommended follow-ups:',
-    ...(data.collectionPriority || []).map(item => `- ${item}`),
-    '',
-    `AI summary: ${data.aiSummary}`,
-    '',
-    '- Lumber Buddy'
-  ].join('\n');
+  const agingCells = aging.map(row => `
+    <td style="padding:18px 20px;border:1px solid #2C2A24;background:#151812;">
+      <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#9DAB9C;">${escapeUi(row.bucket)}</div>
+      <div style="font-size:26px;line-height:1.15;color:#F8F3E7;font-weight:800;margin-top:8px;">${money(row.amount)}</div>
+    </td>`).join('');
+
+  const priorityItems = priority.map(item => `
+    <li style="margin:0 0 10px 0;color:#D8D0BE;line-height:1.55;"><span style="color:#C6963B;font-weight:800;">*</span> ${escapeUi(item)}</li>
+  `).join('');
+
+  return `
+<!doctype html>
+<html>
+  <body style="margin:0;padding:0;background:#0D0F0B;color:#F8F3E7;font-family:Arial,Helvetica,sans-serif;">
+    <div style="background:#0D0F0B;padding:34px 18px;">
+      <div style="max-width:920px;margin:0 auto;border:1px solid #343027;background:#10130E;">
+        <div style="padding:30px 34px 20px 34px;border-bottom:1px solid #343027;">
+          <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:2.4px;text-transform:uppercase;color:#C6963B;">Lumber Buddy Briefing</div>
+          <h1 style="margin:12px 0 10px 0;color:#F8F3E7;font-size:40px;line-height:1.05;font-weight:800;letter-spacing:0;">Accounts Receivable</h1>
+          <div style="color:#AFA58F;font-size:15px;line-height:1.55;max-width:720px;">Placeholder Sage 50-ready data for Musser Biomass. This is demo/sample AR data until the live Sage 50 connector is approved and connected.</div>
+        </div>
+
+        <div style="padding:26px 34px;border-left:4px solid #C6963B;border-bottom:1px solid #343027;background:#151812;">
+          <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#9DAB9C;margin-bottom:12px;">Atlas Read</div>
+          <div style="font-size:21px;line-height:1.55;color:#F8F3E7;">
+            Open AR is <strong style="color:#C6963B;">${money(data.summary.totalOpen)}</strong>. Overdue AR is <strong style="color:#E4573D;">${money(data.summary.overdueTotal)}</strong> across <strong>${data.summary.overdueCount}</strong> invoices. ${escapeUi(data.aiSummary)}
+          </div>
+        </div>
+
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+          <tr>
+            <td style="padding:22px 24px;border:1px solid #343027;background:#10130E;">
+              <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#9DAB9C;">Open AR</div>
+              <div style="font-size:34px;line-height:1.1;color:#F8F3E7;font-weight:800;margin-top:8px;">${money(data.summary.totalOpen)}</div>
+            </td>
+            <td style="padding:22px 24px;border:1px solid #343027;background:#10130E;">
+              <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#9DAB9C;">Overdue</div>
+              <div style="font-size:34px;line-height:1.1;color:#E4573D;font-weight:800;margin-top:8px;">${money(data.summary.overdueTotal)}</div>
+            </td>
+            <td style="padding:22px 24px;border:1px solid #343027;background:#10130E;">
+              <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#9DAB9C;">Risk Accounts</div>
+              <div style="font-size:34px;line-height:1.1;color:#F8F3E7;font-weight:800;margin-top:8px;">${riskCount}</div>
+            </td>
+            <td style="padding:22px 24px;border:1px solid #343027;background:#10130E;">
+              <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#9DAB9C;">DSO Est.</div>
+              <div style="font-size:34px;line-height:1.1;color:#35C785;font-weight:800;margin-top:8px;">${data.summary.dsoEstimate}</div>
+            </td>
+          </tr>
+        </table>
+
+        <div style="padding:34px;">
+          <div style="border-top:1px solid #343027;padding-top:22px;margin-bottom:20px;">
+            <span style="color:#6F746A;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;">01</span>
+            <span style="color:#F8F3E7;font-size:25px;font-weight:800;margin-left:12px;">Aging Summary</span>
+          </div>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;margin-bottom:34px;">
+            <tr>${agingCells}</tr>
+          </table>
+
+          <div style="border-top:1px solid #343027;padding-top:22px;margin-bottom:20px;">
+            <span style="color:#6F746A;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;">02</span>
+            <span style="color:#F8F3E7;font-size:25px;font-weight:800;margin-left:12px;">Open Invoice Board</span>
+          </div>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;background:#151812;border:1px solid #343027;margin-bottom:34px;">
+            <thead>
+              <tr>
+                <th align="left" style="padding:12px 16px;color:#9DAB9C;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">#</th>
+                <th align="left" style="padding:12px 16px;color:#9DAB9C;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">Account</th>
+                <th align="left" style="padding:12px 16px;color:#9DAB9C;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">Invoice</th>
+                <th align="right" style="padding:12px 16px;color:#9DAB9C;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">Amount</th>
+                <th align="right" style="padding:12px 16px;color:#9DAB9C;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">Aging</th>
+              </tr>
+            </thead>
+            <tbody>${invoiceRows}</tbody>
+          </table>
+
+          <div style="border:1px solid #4A3920;background:#16130D;padding:24px;">
+            <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#C6963B;margin-bottom:14px;">03 Action Queue</div>
+            <ul style="padding-left:0;list-style:none;margin:0;">${priorityItems}</ul>
+          </div>
+        </div>
+
+        <div style="padding:18px 34px;border-top:1px solid #343027;color:#8C877A;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;">
+          Generated by Lumber Buddy for Musser Biomass - ${escapeUi(data.asOf || new Date().toISOString().slice(0, 10))}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>`;
 }
 
 const ARTIFACT_OPEN_RE = /<artifact\s+([^>]*?)>/i;
