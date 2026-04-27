@@ -1019,6 +1019,8 @@ async function getArReportAttachment() {
   return {
     filename: 'lumber-buddy-ar-report.pdf',
     title: 'Lumber Buddy Accounts Receivable Report',
+    reportType: 'ar',
+    data,
     contentText: buildArPdfText(data)
   };
 }
