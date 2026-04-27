@@ -964,7 +964,6 @@ async function buildArEmailBody() {
   const invoices = data.invoices || [];
   const priority = data.collectionPriority || [];
   const riskCount = invoices.filter(inv => inv.status !== 'Current').length;
-  const logoUrl = `${window.location.origin}/musser-logo.png`;
   const invoiceRows = invoices.slice(0, 5).map((inv, idx) => {
     const isCritical = inv.status === 'Critical';
     const statusColor = isCritical ? '#A9432C' : inv.status === 'Current' ? '#1F6B4A' : '#B88A35';
@@ -986,20 +985,11 @@ async function buildArEmailBody() {
 <!doctype html>
 <html>
   <body style="margin:0;padding:0;background:#F7F3EA;color:#2B241D;font-family:Arial,Helvetica,sans-serif;">
-    <div style="background:#F7F3EA;padding:24px 18px;">
+    <div style="background:#F7F3EA;padding:20px 18px;">
       <div style="max-width:920px;margin:0 auto;border:1px solid #D8CBB8;background:#FFFDF8;">
-        <div style="padding:26px 34px 22px 34px;border-bottom:1px solid #E2D8C9;background:#FFFDF8;">
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
-            <tr>
-              <td>
-                <img src="${logoUrl}" width="180" alt="Musser Biomass & Wood Products" style="display:block;border:0;outline:none;text-decoration:none;max-width:180px;height:auto;margin:0 0 12px 0;">
-                <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:2.1px;text-transform:uppercase;color:#1F6B4A;">Dry wood fiber operating brief</div>
-                <div style="margin-top:7px;color:#5E5447;font-size:13px;line-height:1.45;">Rural Retreat, Virginia · Appalachian hardwood supply · Direct access to I-81 / I-77 corridors</div>
-              </td>
-              <td align="right" style="color:#7A6C5B;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;">Lumber Buddy<br>AR Brief</td>
-            </tr>
-          </table>
-          <h1 style="margin:24px 0 10px 0;color:#17130F;font-size:38px;line-height:1.05;font-weight:800;letter-spacing:0;">Accounts Receivable</h1>
+        <div style="padding:28px 34px 22px 34px;border-bottom:1px solid #E2D8C9;background:#FFFDF8;">
+          <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1F6B4A;">Musser Biomass &middot; Lumber Buddy AR Brief</div>
+          <h1 style="margin:12px 0 10px 0;color:#17130F;font-size:38px;line-height:1.05;font-weight:800;letter-spacing:0;">Accounts Receivable</h1>
           <div style="color:#5E5447;font-size:15px;line-height:1.55;max-width:760px;">Sage 50-ready operating snapshot for Musser's converted hardwood products business. This is demo/sample AR data until the live Sage 50 connector is approved and connected.</div>
         </div>
 
