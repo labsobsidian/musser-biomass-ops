@@ -1,5 +1,10 @@
 {
   "outputDirectory": ".",
+  "functions": {
+    "api/send-email.js": {
+      "includeFiles": "api/musser-logo-pdf.jpg"
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",

@@ -23,7 +23,7 @@
 import { readFileSync } from 'node:fs';
 import { isGhlConfigured, sendGhlEmail } from './connectors/ghl.js';
 
-const MUSSER_LOGO_JPG = loadOptionalAsset('../musser-logo-pdf.jpg');
+const MUSSER_LOGO_JPG = loadOptionalAsset('./musser-logo-pdf.jpg');
 const MUSSER_LOGO_SIZE = { width: 612, height: 360 };
 
 const PRESETS = {
