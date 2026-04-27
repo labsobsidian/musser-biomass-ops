@@ -9,7 +9,7 @@ Browser (index.html)
     │
     │  POST /api/claude  { role, messages }        ──► streams chat response
     │  POST /api/quote   { items, miles, ... }     ──► returns itemized quote (REAL)
-    │  POST /api/send-email { preset, subject... } ──► sends to CEO via Resend (REAL)
+    │  POST /api/send-email { preset, subject... } ──► sends to CEO via GHL (REAL)
     │  GET  /api/ar                              ──► placeholder AR aging (Sage 50 later)
     │
     ▼
@@ -17,7 +17,7 @@ Vercel serverless functions
     │
     ├─► /api/claude    ─► getContext() ─► GitHub living docs ─► OpenAI/Anthropic (SSE)
     ├─► /api/quote     ─► mirrors PRICING.md math
-    ├─► /api/send-email ─► Resend API
+    ├─► /api/send-email ─► GoHighLevel Conversations API
     └─► /api/ar         ─► Sage 50 connector boundary
 ```
 
@@ -34,8 +34,11 @@ Vercel serverless functions
 | `CLIENT_REPO` | `labsobsidian/musser-biomass-ops` | Repo to read living docs from |
 | `CLIENT_NAME` | `Musser Biomass` | Used in role preamble |
 | `CLIENT_SLUG` | `musser-biomass` | Reserved for future connectors |
-| `RESEND_API_KEY` | `re_...` | Email send — from resend.com dashboard |
-| `FROM_EMAIL` | `lumber-buddy@musserbiomass.com` | Verified sender (Resend requires domain verification) |
+| `GHL_API_KEY` | `pit-...` | HighLevel private integration token/OAuth token |
+| `GHL_LOCATION_ID` | `abc123` | Musser HighLevel location/sub-account ID |
+| `CEO_GHL_CONTACT_ID` | `abc123` | GHL contact record used for CEO email timeline |
+| `GHL_SEND_FROM_EMAIL` | `sales@musserbiomass.com` | Optional GHL sender override |
+| `MESSAGE_PROVIDER` | `ghl` | Optional; auto-selects GHL when `GHL_API_KEY` exists |
 | `CEO_EMAIL` | `ceo@musserbiomass.com` | Destination for "send to CEO" button |
 
 All must be set in **Production** and **Preview** environments.
@@ -50,14 +53,15 @@ All must be set in **Production** and **Preview** environments.
 6. Generate, copy, paste into Vercel env var `GITHUB_TOKEN`
 7. Token expires — calendar a reminder to rotate.
 
-### Setting up Resend
+### Setting up GoHighLevel messaging
 
-1. Sign up at resend.com
-2. Add + verify the sending domain (DNS records — takes ~10 minutes to propagate)
-3. Create an API key in the dashboard → paste into Vercel as `RESEND_API_KEY`
-4. `FROM_EMAIL` must be on the verified domain, e.g. `lumber-buddy@musserbiomass.com`
+1. In the Musser GHL sub-account, create a Private Integration Token with Contacts/Conversations scopes.
+2. Paste it into Vercel as `GHL_API_KEY`.
+3. Add `GHL_LOCATION_ID`.
+4. Create or identify a CEO/internal contact in GHL and set `CEO_GHL_CONTACT_ID`.
+5. Set `CEO_EMAIL`; the UI never exposes this address.
 
-**Until the domain is verified, `/api/send-email` will return 500 from Resend.**
+`/api/send-email` will auto-select GHL when `GHL_API_KEY` exists. Resend is optional fallback only.
 
 ## Local dev
 
@@ -110,7 +114,7 @@ curl -X POST https://<your-deploy>/api/send-email \
   }'
 ```
 
-Returns `{ ok: true, sentTo, resendId }` on success. The UI's "Send to CEO" button composes a draft from the current Lumber Buddy conversation and fires this.
+Returns `{ ok: true, provider, sentTo, messageId }` on success. The UI's "Send to CEO" button composes a draft from the current Lumber Buddy conversation and fires this through GHL Conversations.
 
 ## Living docs the brain reads
 

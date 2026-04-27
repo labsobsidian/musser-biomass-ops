@@ -31,7 +31,8 @@ api/
   ar.js                 # Placeholder Accounts Receivable data until Sage 50 access
   connectors/sage50.js  # Future Sage 50 connector boundary
   quote.js              # REAL TOOL #1: pricing calculator
-  send-email.js         # REAL TOOL #2: send email via Resend
+  send-email.js         # REAL TOOL #2: send email via GHL, Resend optional fallback
+  connectors/ghl.js     # GoHighLevel Conversations boundary
 PROJECT_STATE.md
 ARCHITECTURE.md
 CONSTANTS.md
@@ -46,7 +47,7 @@ No build step — static `index.html` + Node serverless functions on Vercel.
 
 ## Working rules
 
-- **Do not commit secrets.** `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GITHUB_TOKEN`, `RESEND_API_KEY` all live only in Vercel env vars.
+- **Do not commit secrets.** `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GITHUB_TOKEN`, `GHL_API_KEY`, and optional `RESEND_API_KEY` all live only in Vercel env vars.
 - **`PRICING.md`, `api/quote.js`, and `api/distance.js` must stay in sync.** If you edit one, edit the others in the same commit. PRICING.md documents the math; quote.js implements pricing; distance.js implements the ZIP→miles pipeline that feeds freight. All three must produce identical numbers.
 - **DEMO_MODE is implicitly on.** Seeded data in the UI is intentional. Don't "fix" it by pulling live data.
 - **Streaming matters.** `/api/claude` streams SSE; frontend parses chunks progressively. Don't refactor to buffered JSON.
@@ -78,7 +79,8 @@ No build step — static `index.html` + Node serverless functions on Vercel.
 
 ## When editing `api/send-email.js`
 
-- Stays thin: Resend API client.
+- Stays thin: provider router. GHL is primary when `GHL_API_KEY` exists; Resend is fallback only.
+- CEO sends through GHL require `CEO_GHL_CONTACT_ID` so the message lands on a contact timeline.
 - Don't add auth here — the endpoint is currently open. If abuse becomes possible (e.g. public deploy without auth), add a simple shared-secret header before iterating further.
 
 ## When editing `api/claude.js`

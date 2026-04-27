@@ -1,29 +1,31 @@
 // /api/send-email.js
 //
-// Second real functional tool: sends an email to the CEO (or any configured
-// recipient). Uses Resend — cleanest Vercel-friendly HTTP API for email.
+// Compatibility endpoint for Lumber Buddy's existing "Email CEO" actions.
+// GHL is preferred for customer-visible communication because messages land
+// on the HighLevel contact timeline. Resend remains an optional fallback.
 //
-// Env vars required:
-//   RESEND_API_KEY   — from resend.com dashboard
-//   CEO_EMAIL        — destination for the "to_ceo" preset
-//   FROM_EMAIL       — verified sending domain address, e.g. "lumber-buddy@musserbiomass.com"
-//                      (Resend requires domain verification before sending)
+// Preferred env vars:
+//   GHL_API_KEY          HighLevel private integration token or OAuth access token
+//   CEO_GHL_CONTACT_ID   GHL contact ID for the CEO/internal recipient
+//   CEO_EMAIL            Destination email for the "to_ceo" preset
+//   GHL_SEND_FROM_EMAIL  Optional sender override
+//   MESSAGE_PROVIDER     Optional: "ghl" or "resend"; auto-detects if unset
 //
-// Request body:
-// {
-//   "preset": "to_ceo" | "to_custom",
-//   "subject": "...",
-//   "body": "...",         // plain text or HTML
-//   "recipientEmail": "..." // only used when preset = "to_custom"
-// }
+// Optional Resend fallback:
+//   RESEND_API_KEY
+//   FROM_EMAIL
+
+import { isGhlConfigured, sendGhlEmail } from './connectors/ghl.js';
 
 const PRESETS = {
   to_ceo: {
     getTo: () => process.env.CEO_EMAIL,
+    getContactId: () => process.env.CEO_GHL_CONTACT_ID,
     defaultFromName: 'Lumber Buddy'
   },
   to_custom: {
     getTo: (body) => body.recipientEmail,
+    getContactId: (body) => body.recipientContactId,
     defaultFromName: 'Lumber Buddy'
   }
 };
@@ -33,17 +35,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.FROM_EMAIL;
-
-  if (!apiKey || !fromEmail) {
-    return res.status(500).json({
-      error: 'Email not configured',
-      detail: 'RESEND_API_KEY and FROM_EMAIL env vars required'
-    });
-  }
-
-  const { preset = 'to_ceo', subject, body, recipientEmail } = req.body || {};
+  const { preset = 'to_ceo', subject, body } = req.body || {};
 
   if (!subject || !body) {
     return res.status(400).json({ error: 'subject and body are required' });
@@ -55,6 +47,7 @@ export default async function handler(req, res) {
   }
 
   const to = presetConfig.getTo(req.body || {});
+  const contactId = presetConfig.getContactId(req.body || {});
   if (!to) {
     return res.status(500).json({
       error: `destination not configured for preset "${preset}"`,
@@ -64,44 +57,100 @@ export default async function handler(req, res) {
     });
   }
 
-  try {
-    // Detect whether body looks like HTML; if not, wrap plain text with <br>s.
-    const isHtml = /<[a-z][\s\S]*>/i.test(body);
-    const htmlBody = isHtml ? body : `<pre style="font-family:'DM Sans',Arial,sans-serif;white-space:pre-wrap;margin:0;">${escapeHtml(body)}</pre>`;
+  const provider = resolveProvider();
+  const isHtml = /<[a-z][\s\S]*>/i.test(body);
+  const htmlBody = isHtml ? body : plainTextToHtml(body);
+  const textBody = isHtml ? stripHtml(body) : body;
 
-    const resp = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: `${presetConfig.defaultFromName} <${fromEmail}>`,
-        to: [to],
+  try {
+    if (provider === 'ghl') {
+      const data = await sendGhlEmail({
+        contactId,
         subject,
         html: htmlBody,
-        text: isHtml ? stripHtml(body) : body
-      })
-    });
+        text: textBody,
+        emailTo: to,
+        emailFrom: process.env.GHL_SEND_FROM_EMAIL
+      });
 
-    if (!resp.ok) {
-      const errText = await resp.text();
-      return res.status(resp.status).json({
-        error: 'Resend API error',
-        detail: errText
+      return res.status(200).json({
+        ok: true,
+        provider: 'ghl',
+        sentTo: to,
+        contactId,
+        messageId: data.messageId || data.emailMessageId || null,
+        response: data,
+        preset
       });
     }
 
-    const data = await resp.json();
+    const resendResult = await sendViaResend({
+      fromName: presetConfig.defaultFromName,
+      to,
+      subject,
+      html: htmlBody,
+      text: textBody
+    });
+
     return res.status(200).json({
       ok: true,
+      provider: 'resend',
       sentTo: to,
-      resendId: data.id,
+      resendId: resendResult.id,
       preset
     });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(err.status || 500).json({
+      error: err.message,
+      provider,
+      detail: err.detail || null
+    });
   }
+}
+
+function resolveProvider() {
+  const configured = (process.env.MESSAGE_PROVIDER || '').toLowerCase().trim();
+  if (configured === 'ghl' || configured === 'resend') return configured;
+  if (isGhlConfigured()) return 'ghl';
+  return 'resend';
+}
+
+async function sendViaResend({ fromName, to, subject, html, text }) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const fromEmail = process.env.FROM_EMAIL;
+
+  if (!apiKey || !fromEmail) {
+    throw new Error('No email provider configured. Set GHL_API_KEY + CEO_GHL_CONTACT_ID, or restore RESEND_API_KEY + FROM_EMAIL.');
+  }
+
+  const resp = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      from: `${fromName} <${fromEmail}>`,
+      to: [to],
+      subject,
+      html,
+      text
+    })
+  });
+
+  if (!resp.ok) {
+    const errText = await resp.text();
+    const err = new Error('Resend API error');
+    err.status = resp.status;
+    err.detail = errText;
+    throw err;
+  }
+
+  return resp.json();
+}
+
+function plainTextToHtml(str) {
+  return `<pre style="font-family:'DM Sans',Arial,sans-serif;white-space:pre-wrap;margin:0;">${escapeHtml(str)}</pre>`;
 }
 
 function escapeHtml(str) {

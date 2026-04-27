@@ -122,3 +122,16 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 - `/api/ar` is explicitly placeholder data until Sage 50 access is confirmed.
 - The frontend still reads Anthropic-shaped SSE events, while the backend can use OpenAI or Anthropic.
 - Future Sage work should replace the connector implementation rather than rewriting the UI.
+
+---
+
+## 2026-04-27 — GHL primary messaging provider
+
+**Decision:** Route Lumber Buddy's send-to-CEO email path through GoHighLevel Conversations when `GHL_API_KEY` exists. Keep `/api/send-email` as the compatibility endpoint, but make it a provider router with GHL primary and Resend as optional fallback only.
+
+**Context:** Musser already has an active GHL account, and customer/owner communication belongs in the CRM timeline when possible. Resend was only a placeholder email provider and has been removed from Vercel.
+
+**Consequences:**
+- CEO email now needs `CEO_EMAIL` plus `CEO_GHL_CONTACT_ID` so HighLevel has a contact timeline to attach the outbound email to.
+- Future AR collection email/SMS work should use `api/connectors/ghl.js` instead of adding provider-specific logic to the UI.
+- A later Atlas product version can replace the private integration token with OAuth without changing the app-level messaging workflow.

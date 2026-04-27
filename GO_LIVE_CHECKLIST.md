@@ -10,18 +10,18 @@ _Last updated: 2026-04-24_
 - [x] Build `/api/claude` streaming proxy
 - [x] Build `/api/context` living-docs fetcher
 - [x] Build `/api/quote` pricing calculator (real functional tool #1)
-- [x] Build `/api/send-email` via Resend (real functional tool #2)
+- [x] Build `/api/send-email` via GoHighLevel Conversations (real functional tool #2)
 - [x] Build `/api/ar` placeholder Accounts Receivable source for future Sage 50 sync
 - [x] Add `BRAND_STYLE.md` for brand-safe artifacts
 - [x] Write 7 living docs incl. `PRICING.md`
 - [ ] Push to GitHub
-- [ ] Create Vercel project, wire env vars (OpenAI, Anthropic fallback, GitHub, Resend)
+- [ ] Create Vercel project, wire env vars (OpenAI, Anthropic fallback, GitHub, GHL)
 - [ ] Confirm `/api/context` returns the 7 living docs
 - [ ] Confirm streaming chat works end-to-end
 - [ ] Confirm pricing calculator returns correct quotes for 3 test scenarios
 - [ ] Confirm AR tab loads placeholder data and is hidden from yard/driver roles
-- [ ] Verify Resend sending domain (prereq for `/api/send-email`)
-- [ ] Set `CEO_EMAIL` env var to a test address, send a live email, confirm receipt
+- [ ] Verify GHL messaging token and `CEO_GHL_CONTACT_ID` (prereq for `/api/send-email`)
+- [ ] Set `CEO_EMAIL` env var to a test address/contact, send a live email, confirm receipt
 - [ ] Replace `CEO_EMAIL` with actual CEO address before demo
 - [ ] Walk through demo flow dry-run once before live
 

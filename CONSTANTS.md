@@ -16,11 +16,12 @@ _Never store secrets here. API keys and tokens live in Vercel env vars._
 | Public email | marketing@musserbiomass.com |
 | CEO name | TODO (email via `CEO_EMAIL` env var) |
 
-## GHL (planned)
+## GoHighLevel
 
 | Constant | Value |
 |---|---|
-| Location ID | TODO |
+| Location ID | Env var `GHL_LOCATION_ID` |
+| Messaging provider | Primary provider for customer/CEO email + SMS via Conversations |
 | Inbound quote webhook | TODO |
 
 ## Vercel
@@ -56,7 +57,7 @@ _Never store secrets here. API keys and tokens live in Vercel env vars._
 | API | Base URL | Used for |
 |---|---|---|
 | Anthropic | `https://api.anthropic.com` | Lumber Buddy brain |
-| Resend | `https://api.resend.com` | Send email |
+| GoHighLevel | `https://services.leadconnectorhq.com` | Contacts, email, SMS, pipeline |
 | GitHub | `https://api.github.com` | KB fetch |
 | Sage 50 (planned) | TBD | Accounts receivable and invoice sync |
 | Google Maps (planned) | `https://maps.googleapis.com` | Route optimization |

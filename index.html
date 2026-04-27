@@ -370,12 +370,12 @@
       <div class="conn-card">
         <div class="conn-card-header">Live tools</div>
         <div class="conn-row"><div><div class="conn-name">Pricing Calculator</div><div class="conn-detail">Reads PRICING.md · /api/quote</div></div><span class="conn-status cs-tool-live">Live</span></div>
-        <div class="conn-row"><div><div class="conn-name">Send to CEO</div><div class="conn-detail">Via Resend · /api/send-email</div></div><span class="conn-status cs-tool-live">Live</span></div>
+        <div class="conn-row"><div><div class="conn-name">Send to CEO</div><div class="conn-detail">Via GHL · /api/send-email</div></div><span class="conn-status cs-tool-live">Live</span></div>
         <div class="conn-row"><div><div class="conn-name">Artifact builder</div><div class="conn-detail">HTML mockups in side panel</div></div><span class="conn-status cs-tool-live">Live</span></div>
       </div>
       <div class="conn-card">
         <div class="conn-card-header">Data connections</div>
-        <div class="conn-row"><div><div class="conn-name">GoHighLevel CRM</div><div class="conn-detail">Contacts, pipeline, Conversation AI</div></div><span class="conn-status cs-pending">Pending</span></div>
+        <div class="conn-row"><div><div class="conn-name">GoHighLevel CRM</div><div class="conn-detail">Contacts, email, SMS, pipeline</div></div><span class="conn-status cs-live">Live</span></div>
         <div class="conn-row"><div><div class="conn-name">Sage 50 AR</div><div class="conn-detail">Placeholder now · connector boundary ready</div></div><span class="conn-status cs-pending">Demo</span></div>
         <div class="conn-row"><div><div class="conn-name">Inventory DB</div><div class="conn-detail">Loads, bags, bales · Supabase</div></div><span class="conn-status cs-pending">Pending</span></div>
         <div class="conn-row"><div><div class="conn-name">Project docs</div><div class="conn-detail">Living docs · GitHub</div></div><span class="conn-status cs-live">Live</span></div>
@@ -637,10 +637,10 @@
 <div class="page" id="page-settings">
   <div class="settings-section">
     <div class="settings-title">Integrations</div>
-    <div class="setting-row"><div class="sr-left"><div class="sr-label">GoHighLevel CRM</div><div class="sr-detail">Contacts, pipeline, Conversation AI (chat/SMS quoting)</div></div><div class="sr-right"><span style="font-size:12px;color:var(--amber)">Pending setup</span><button class="connect-btn">Configure</button></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">GoHighLevel CRM</div><div class="sr-detail">Contacts, email, SMS, pipeline, Conversation AI</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Live · env configured</span><button class="connect-btn">Configure</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Sage 50 Accounting</div><div class="sr-detail">Accounts receivable, aging, invoice sync (placeholder until access)</div></div><div class="sr-right"><span style="font-size:12px;color:var(--amber)">Demo data</span><button class="connect-btn">Connect</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Supabase Inventory</div><div class="sr-detail">Load, bag, bale stock — live counts</div></div><div class="sr-right"><span style="font-size:12px;color:var(--brown-light)">Not configured</span><button class="connect-btn">Connect</button></div></div>
-    <div class="setting-row"><div class="sr-left"><div class="sr-label">Resend — Email</div><div class="sr-detail">Sending domain for /api/send-email</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Live · tool active</span><button class="connect-btn">Configure</button></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">Outbound messaging</div><div class="sr-detail">GHL Conversations provider for CEO/customer email and SMS</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">GHL primary</span><button class="connect-btn">Configure</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Google Maps</div><div class="sr-detail">Route optimization for dispatch</div></div><div class="sr-right"><span style="font-size:12px;color:var(--brown-light)">Not connected</span><button class="connect-btn">Connect</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">GitHub — Project docs</div><div class="sr-detail">Living docs · brain reads automatically (incl. PRICING.md)</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Live</span><button class="connect-btn">Configure</button></div></div>
   </div>
@@ -679,7 +679,7 @@
         <textarea id="email-body" placeholder="Draft the email body..."></textarea>
       </div>
       <div style="font-size:11px;color:var(--brown-light);line-height:1.5;">
-        Sends via Resend to the address set in the <code style="font-size:11px">CEO_EMAIL</code> env var. Make sure <code style="font-size:11px">RESEND_API_KEY</code>, <code style="font-size:11px">FROM_EMAIL</code>, and <code style="font-size:11px">CEO_EMAIL</code> are all set in Vercel first.
+        Sends through GoHighLevel Conversations when <code style="font-size:11px">GHL_API_KEY</code>, <code style="font-size:11px">CEO_GHL_CONTACT_ID</code>, and <code style="font-size:11px">CEO_EMAIL</code> are set in Vercel.
       </div>
     </div>
     <div class="modal-footer">
@@ -1395,7 +1395,7 @@ async function sendEmailToCeo() {
   }
   btn.disabled = true;
   status.className = 'modal-status sending';
-  status.textContent = 'Sending via Resend...';
+  status.textContent = 'Sending via GoHighLevel...';
   try {
     const resp = await fetch('/api/send-email', {
       method: 'POST',
@@ -1410,7 +1410,7 @@ async function sendEmailToCeo() {
       return;
     }
     status.className = 'modal-status success';
-    status.textContent = `✓ Sent to ${data.sentTo} · Resend ID: ${data.resendId || 'n/a'}`;
+    status.textContent = `✓ Sent to ${data.sentTo} · ${data.provider || 'provider'} ID: ${data.messageId || data.resendId || 'n/a'}`;
     setTimeout(() => { closeEmailModal(); btn.disabled = false; }, 1800);
   } catch(err) {
     status.className = 'modal-status error';

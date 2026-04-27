@@ -40,7 +40,7 @@ Build an AI-forward ops stack for Musser Biomass that takes pricing questions, d
 - `/api/claude` — streaming brain proxy; OpenAI-first with Anthropic fallback (reads live KB from this repo)
 - `/api/context` — living-docs fetcher w/ 60s cache
 - `/api/quote` — **real pricing calculator** (POST items + miles → itemized quote)
-- `/api/send-email` — **real email sender** via Resend ("to_ceo" preset wired)
+- `/api/send-email` — **real email sender** via GoHighLevel Conversations ("to_ceo" preset wired)
 - `/api/ar` — **placeholder Accounts Receivable source** shaped for future Sage 50 integration
 - Vercel deployment — TBD (push to main + wire env vars)
 
@@ -73,7 +73,7 @@ Build an AI-forward ops stack for Musser Biomass that takes pricing questions, d
 ### Pre-Demo
 - [ ] Clone repo to Vercel, set env vars, confirm deploy
 - [ ] Verify pricing calculator works end-to-end
-- [ ] Set `RESEND_API_KEY`, `FROM_EMAIL`, `CEO_EMAIL` in Vercel
+- [ ] Set `GHL_API_KEY`, `GHL_LOCATION_ID`, `CEO_GHL_CONTACT_ID`, `CEO_EMAIL` in Vercel
 - [ ] Verify send-to-CEO works with a real test email
 - [ ] Swap placeholder prices in `PRICING.md` + `api/quote.js` with Musser's real sheet
 - [ ] Custom domain (e.g. `musser.labsobsidian.co`)
@@ -111,7 +111,7 @@ Build an AI-forward ops stack for Musser Biomass that takes pricing questions, d
 
 - ~~Real price sheet from Musser~~ — received Apr 26, three SKUs deployed
 - CEO email address — placeholder `CEO_EMAIL` env var to be set
-- Resend account + verified sending domain — required before send-to-CEO works live
+- GoHighLevel Conversations access — required before send-to-CEO works live
 - Sage 50 access path for AR sync (Phase 3)
 - Google Maps API key if we want a "verify mileage" upgrade button (Phase 2 — currently using free Zippopotam.us + 1.20 driving multiplier, ~95% accurate)
 
