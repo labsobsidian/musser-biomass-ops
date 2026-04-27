@@ -913,6 +913,7 @@ async function sendCeoEmailFromChat(promptText) {
   const subject = isArIntent(promptText)
     ? 'Lumber Buddy AR summary'
     : 'Lumber Buddy update';
+  const messageType = isArIntent(promptText) ? 'report' : 'text';
   const body = isArIntent(promptText)
     ? await buildArEmailBody()
     : (lastBrainMessage || 'Lumber Buddy summary for review.');
@@ -920,7 +921,7 @@ async function sendCeoEmailFromChat(promptText) {
   const resp = await fetch('/api/send-email', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ preset: 'to_ceo', subject, body })
+    body: JSON.stringify({ preset: 'to_ceo', subject, body, messageType })
   });
   const data = await resp.json();
   if (!resp.ok) {
@@ -1551,7 +1552,7 @@ function arSummaryText() {
 
 async function emailARSummary() {
   if (!arCache) await initAR();
-  openEmailModal({ subject: 'Lumber Buddy AR summary', body: arSummaryText() });
+  openEmailModal({ subject: 'Lumber Buddy AR summary', body: await buildArEmailBody() });
 }
 
 function draftCollectionEmail() {
@@ -1616,7 +1617,12 @@ async function sendEmailToCeo() {
     const resp = await fetch('/api/send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ preset: 'to_ceo', subject, body })
+      body: JSON.stringify({
+        preset: 'to_ceo',
+        subject,
+        body,
+        messageType: /<[a-z][\s\S]*>/i.test(body) ? 'report' : 'text'
+      })
     });
     const data = await resp.json();
     if (!resp.ok) {

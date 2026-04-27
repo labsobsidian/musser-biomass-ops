@@ -1,15 +1,16 @@
 // /api/send-email.js
 //
 // Compatibility endpoint for Lumber Buddy's existing "Email CEO" actions.
-// GHL is preferred for customer-visible communication because messages land
-// on the HighLevel contact timeline. Resend remains an optional fallback.
+// GHL is preferred for plain/customer-visible communication because messages
+// land on the HighLevel contact timeline. Resend is preferred for polished
+// HTML reports, summaries, and other branded internal deliverables.
 //
 // Preferred env vars:
 //   GHL_API_KEY          HighLevel private integration token or OAuth access token
 //   CEO_GHL_CONTACT_ID   GHL contact ID for the CEO/internal recipient
 //   CEO_EMAIL            Destination email for the "to_ceo" preset
 //   GHL_SEND_FROM_EMAIL  Optional sender override
-//   MESSAGE_PROVIDER     Optional: "ghl" or "resend"; auto-detects if unset
+//   MESSAGE_PROVIDER     Optional hard override: "ghl", "resend", or "auto"
 //
 // Optional Resend fallback:
 //   RESEND_API_KEY
@@ -35,7 +36,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { preset = 'to_ceo', subject, body } = req.body || {};
+  const { preset = 'to_ceo', subject, body, messageType = 'auto' } = req.body || {};
 
   if (!subject || !body) {
     return res.status(400).json({ error: 'subject and body are required' });
@@ -57,8 +58,8 @@ export default async function handler(req, res) {
     });
   }
 
-  const provider = resolveProvider();
   const isHtml = /<[a-z][\s\S]*>/i.test(body);
+  const provider = resolveProvider({ isHtml, messageType });
   const htmlBody = isHtml ? body : plainTextToHtml(body);
   const textBody = isHtml ? stripHtml(body) : body;
 
@@ -108,11 +109,19 @@ export default async function handler(req, res) {
   }
 }
 
-function resolveProvider() {
+function resolveProvider({ isHtml, messageType }) {
   const configured = (process.env.MESSAGE_PROVIDER || '').toLowerCase().trim();
   if (configured === 'ghl' || configured === 'resend') return configured;
+  const requestedType = String(messageType || '').toLowerCase();
+  if ((requestedType === 'report' || requestedType === 'summary' || requestedType === 'creative' || isHtml) && isResendConfigured()) {
+    return 'resend';
+  }
   if (isGhlConfigured()) return 'ghl';
   return 'resend';
+}
+
+function isResendConfigured() {
+  return Boolean(process.env.RESEND_API_KEY && process.env.FROM_EMAIL);
 }
 
 async function sendViaResend({ fromName, to, subject, html, text }) {

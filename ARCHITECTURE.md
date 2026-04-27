@@ -11,7 +11,7 @@ _Last updated: 2026-04-24_
 | AI brain | OpenAI-first / Anthropic fallback via `/api/claude` (SSE stream) | Answers operational questions and creates branded artifacts |
 | Knowledge base | This repo's living docs via `/api/context` | Grounds the brain |
 | Pricing logic | `/api/quote` (real calculator) | Real functional tool #1 |
-| Messaging | `/api/send-email` → GoHighLevel Conversations | Real functional tool #2 |
+| Messaging | `/api/send-email` → GHL for plain text, Resend for branded reports | Real functional tool #2 |
 | CRM | GoHighLevel sub-account | Contacts, email, SMS, pipeline, Conversation AI |
 | Accounting / AR (planned) | Sage 50 | Accounts receivable, invoice aging, collections reporting |
 | Database (planned) | Supabase | Inventory, orders, delivery records |
@@ -125,7 +125,9 @@ No framework, no bundler, no build step. Push to `main` → Vercel auto-deploys.
 | `GHL_LOCATION_ID` | Musser HighLevel location/sub-account ID |
 | `CEO_GHL_CONTACT_ID` | GHL contact record used for CEO email timeline |
 | `GHL_SEND_FROM_EMAIL` | Optional GHL sender override |
-| `MESSAGE_PROVIDER` | Optional: `ghl` or `resend`; auto-detects if unset |
+| `RESEND_API_KEY` | Branded/internal HTML reports and summaries |
+| `FROM_EMAIL` | Verified sender for Resend report emails |
+| `MESSAGE_PROVIDER` | Optional hard override: `auto`, `ghl`, or `resend` |
 | `CEO_EMAIL` | Destination for the "to_ceo" preset |
 
 All must be set in **Production** and **Preview** environments.

@@ -38,7 +38,9 @@ Vercel serverless functions
 | `GHL_LOCATION_ID` | `abc123` | Musser HighLevel location/sub-account ID |
 | `CEO_GHL_CONTACT_ID` | `abc123` | GHL contact record used for CEO email timeline |
 | `GHL_SEND_FROM_EMAIL` | `sales@musserbiomass.com` | Optional GHL sender override |
-| `MESSAGE_PROVIDER` | `ghl` | Optional; auto-selects GHL when `GHL_API_KEY` exists |
+| `RESEND_API_KEY` | `re_...` | Branded/internal HTML reports and summaries |
+| `FROM_EMAIL` | `lumber-buddy@labsobsidian.co` | Verified sender for Resend report emails |
+| `MESSAGE_PROVIDER` | `auto` | Optional hard override: `auto`, `ghl`, or `resend` |
 | `CEO_EMAIL` | `ceo@musserbiomass.com` | Destination for "send to CEO" button |
 
 All must be set in **Production** and **Preview** environments.
@@ -61,7 +63,7 @@ All must be set in **Production** and **Preview** environments.
 4. Create or identify a CEO/internal contact in GHL and set `CEO_GHL_CONTACT_ID`.
 5. Set `CEO_EMAIL`; the UI never exposes this address.
 
-`/api/send-email` will auto-select GHL when `GHL_API_KEY` exists. Resend is optional fallback only.
+`/api/send-email` auto-routes by message type: plain text uses GHL when configured; branded HTML reports/summaries use Resend when configured. `MESSAGE_PROVIDER` is only for hard overrides.
 
 ## Local dev
 
