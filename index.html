@@ -364,7 +364,7 @@
           <button class="btn btn-gold" onclick="fire('Build a branded website preview for Musser Biomass using BRAND_STYLE.md')">Website preview <span>→</span></button>
           <button class="btn btn-secondary" onclick="fire('Create a branded PDF-style AR brief for the CEO using current placeholder AR data')">PDF brief <span>→</span></button>
           <button class="btn btn-secondary" onclick="fire('Create a branded slide-deck preview for Musser Biomass products and Atlas rollout')">Slides <span>→</span></button>
-          <button class="btn btn-secondary" onclick="openEmailModal({ subject: 'Lumber Buddy update', body: lastBrainMessage || 'Lumber Buddy summary for review.' })">Email CEO <span>→</span></button>
+          <button class="btn btn-secondary" onclick="openCeoEmailComposer()">Email CEO <span>→</span></button>
         </div>
       </div>
       <div class="conn-card">
@@ -900,7 +900,13 @@ function isArIntent(text) {
     /\bar\b/.test(normalized) ||
     normalized.includes('receivable') ||
     normalized.includes('invoice') ||
-    normalized.includes('collections');
+    normalized.includes('collections') ||
+    normalized.includes('demo data') ||
+    normalized.includes('sample data') ||
+    normalized.includes('placeholder data') ||
+    normalized.includes('rundown') ||
+    normalized.includes('aging') ||
+    normalized.includes('outstanding');
 }
 
 async function sendCeoEmailFromChat(promptText) {
@@ -921,6 +927,24 @@ async function sendCeoEmailFromChat(promptText) {
     throw new Error(`${data.error || 'unknown error'}${data.detail ? ' - ' + (typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail)) : ''}`);
   }
   return { subject, body, data };
+}
+
+async function openCeoEmailComposer() {
+  const tab = document.querySelector('.nav-item.active')?.dataset?.tab || '';
+  if (tab === 'ar') {
+    openEmailModal({
+      subject: 'Lumber Buddy AR summary',
+      body: await buildArEmailBody()
+    });
+    return;
+  }
+
+  openEmailModal({
+    subject: 'Lumber Buddy update',
+    body: lastBrainMessage && lastBrainMessage !== '[artifact generated]'
+      ? lastBrainMessage
+      : 'Lumber Buddy summary for review.'
+  });
 }
 
 async function buildArEmailBody() {
