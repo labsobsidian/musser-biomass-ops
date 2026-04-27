@@ -135,3 +135,4 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 - CEO email now needs `CEO_EMAIL` plus `CEO_GHL_CONTACT_ID` so HighLevel has a contact timeline to attach the outbound email to.
 - Future AR collection email/SMS work should use `api/connectors/ghl.js` instead of adding provider-specific logic to the UI.
 - A later Atlas product version can replace the private integration token with OAuth without changing the app-level messaging workflow.
+- Owner/admin chat can detect direct "email the CEO" requests and call `/api/send-email` instead of only drafting copy.

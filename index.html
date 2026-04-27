@@ -887,6 +887,82 @@ async function sendMsg() {
 // Most reliable cross-browser way to load dynamic HTML into an iframe.
 // We recreate the iframe element on each render to avoid any state issues.
 
+function isCeoEmailIntent(text) {
+  const normalized = String(text || '').toLowerCase();
+  return normalized.includes('email') &&
+    normalized.includes('ceo') &&
+    /(send|shoot|forward|share|mail)/.test(normalized);
+}
+
+function isArIntent(text) {
+  const normalized = String(text || '').toLowerCase();
+  return normalized.includes('accounts receivable') ||
+    /\bar\b/.test(normalized) ||
+    normalized.includes('receivable') ||
+    normalized.includes('invoice') ||
+    normalized.includes('collections');
+}
+
+async function sendCeoEmailFromChat(promptText) {
+  const subject = isArIntent(promptText)
+    ? 'Lumber Buddy AR summary'
+    : 'Lumber Buddy update';
+  const body = isArIntent(promptText)
+    ? await buildArEmailBody()
+    : (lastBrainMessage || 'Lumber Buddy summary for review.');
+
+  const resp = await fetch('/api/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ preset: 'to_ceo', subject, body })
+  });
+  const data = await resp.json();
+  if (!resp.ok) {
+    throw new Error(`${data.error || 'unknown error'}${data.detail ? ' - ' + (typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail)) : ''}`);
+  }
+  return { subject, body, data };
+}
+
+async function buildArEmailBody() {
+  if (!arCache) {
+    try {
+      const resp = await fetch('/api/ar');
+      if (!resp.ok) throw new Error('AR endpoint error');
+      arCache = await resp.json();
+    } catch(e) {
+      arCache = fallbackAR();
+    }
+  }
+
+  const data = arCache;
+  const money = (n) => '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const invoices = (data.invoices || []).slice(0, 7).map(inv =>
+    `- ${inv.customer} - ${money(inv.amount)} - ${inv.daysOverdue > 0 ? inv.daysOverdue + ' days overdue' : 'current'} - ${inv.status}`
+  );
+
+  return [
+    'Quick Accounts Receivable rundown from Lumber Buddy.',
+    '',
+    'Important note: this is still demo/sample AR data. Sage 50 is not connected yet, so these numbers should not be treated as live accounting data.',
+    '',
+    'Current AR snapshot:',
+    `- Open AR: ${money(data.summary.totalOpen)}`,
+    `- Overdue: ${money(data.summary.overdueTotal)} across ${data.summary.overdueCount} invoices`,
+    `- Critical accounts: ${data.summary.criticalCount}`,
+    `- DSO estimate: ${data.summary.dsoEstimate} days`,
+    '',
+    'Open invoices:',
+    ...invoices,
+    '',
+    'Recommended follow-ups:',
+    ...(data.collectionPriority || []).map(item => `- ${item}`),
+    '',
+    `AI summary: ${data.aiSummary}`,
+    '',
+    '- Lumber Buddy'
+  ].join('\n');
+}
+
 const ARTIFACT_OPEN_RE = /<artifact\s+([^>]*?)>/i;
 const ARTIFACT_CLOSE_RE = /<\/artifact>/i;
 
@@ -1065,6 +1141,25 @@ async function run(text) {
   document.getElementById('send-btn').disabled = true;
   addMsg('user', text);
   history.push({ role: 'user', content: text });
+  if (isCeoEmailIntent(text)) {
+    const { textSpan } = addStreamingMsg();
+    textSpan.textContent = 'Sending the CEO email through GoHighLevel...';
+    try {
+      const result = await sendCeoEmailFromChat(text);
+      const sentText = `Sent to CEO through ${result.data.provider || 'GHL'}.\n\nSubject: ${result.subject}\nMessage ID: ${result.data.messageId || result.data.resendId || 'n/a'}`;
+      textSpan.textContent = sentText;
+      history.push({ role: 'assistant', content: sentText });
+      lastBrainMessage = sentText;
+    } catch(e) {
+      const failText = `I tried to send that through /api/send-email, but it failed: ${e.message}`;
+      textSpan.textContent = failText;
+      history.push({ role: 'assistant', content: failText });
+      lastBrainMessage = failText;
+    }
+    loading = false;
+    document.getElementById('send-btn').disabled = false;
+    return;
+  }
   const { bubble, textSpan, pillSlot, wrapper } = addStreamingMsg();
   let fullReply = '';
   const streamState = { phase: 'chat', chatOut: '', tail: '', justOpenedArtifact: false, justClosedArtifact: false };
