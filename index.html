@@ -910,18 +910,20 @@ function isArIntent(text) {
 }
 
 async function sendCeoEmailFromChat(promptText) {
-  const subject = isArIntent(promptText)
+  const arIntent = isArIntent(promptText);
+  const subject = arIntent
     ? 'Lumber Buddy AR summary'
     : 'Lumber Buddy update';
-  const messageType = isArIntent(promptText) ? 'report' : 'text';
-  const body = isArIntent(promptText)
+  const messageType = arIntent ? 'report' : 'text';
+  const body = arIntent
     ? await buildArEmailBody()
     : (lastBrainMessage || 'Lumber Buddy summary for review.');
+  const attachments = arIntent ? [await getArReportAttachment()] : [];
 
   const resp = await fetch('/api/send-email', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ preset: 'to_ceo', subject, body, messageType })
+    body: JSON.stringify({ preset: 'to_ceo', subject, body, messageType, attachments })
   });
   const data = await resp.json();
   if (!resp.ok) {
@@ -949,110 +951,50 @@ async function openCeoEmailComposer() {
 }
 
 async function buildArEmailBody() {
-  if (!arCache) {
-    try {
-      const resp = await fetch('/api/ar');
-      if (!resp.ok) throw new Error('AR endpoint error');
-      arCache = await resp.json();
-    } catch(e) {
-      arCache = fallbackAR();
-    }
-  }
-
-  const data = arCache;
+  const data = await ensureArData();
   const money = (n) => '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const invoices = data.invoices || [];
-  const priority = data.collectionPriority || [];
-  const riskCount = invoices.filter(inv => inv.status !== 'Current').length;
-  const invoiceRows = invoices.slice(0, 5).map((inv, idx) => {
-    const isCritical = inv.status === 'Critical';
-    const statusColor = isCritical ? '#A9432C' : inv.status === 'Current' ? '#1F6B4A' : '#B88A35';
-    return `
-      <tr>
-        <td style="padding:14px 16px;border-top:1px solid #E2D8C9;color:#8A7B67;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;">${String(idx + 1).padStart(2, '0')}</td>
-        <td style="padding:14px 16px;border-top:1px solid #E2D8C9;color:#2B241D;font-weight:700;">${escapeUi(inv.customer)}<div style="color:#7A6C5B;font-size:12px;font-weight:400;margin-top:4px;">${escapeUi(inv.notes)}</div></td>
-        <td style="padding:14px 16px;border-top:1px solid #E2D8C9;color:#2B241D;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">${escapeUi(inv.invoiceNumber)}</td>
-        <td style="padding:14px 16px;border-top:1px solid #E2D8C9;color:#2B241D;font-weight:700;text-align:right;">${money(inv.amount)}</td>
-        <td style="padding:14px 16px;border-top:1px solid #E2D8C9;color:${statusColor};font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;text-align:right;font-weight:800;">${inv.daysOverdue > 0 ? inv.daysOverdue + ' days' : 'current'}</td>
-      </tr>`;
-  }).join('');
-
-  const priorityItems = priority.slice(0, 3).map(item => `
-    <li style="margin:0 0 10px 0;color:#2B241D;line-height:1.55;"><span style="color:#B88A35;font-weight:800;">*</span> ${escapeUi(item)}</li>
+  const riskCount = (data.invoices || []).filter(inv => inv.status !== 'Current').length;
+  const topRisk = (data.invoices || []).find(inv => inv.status === 'Critical') || (data.invoices || [])[0] || {};
+  const actions = (data.collectionPriority || []).slice(0, 2).map(item => `
+    <li style="margin:0 0 8px 0;color:#3A3027;line-height:1.5;">${escapeUi(item)}</li>
   `).join('');
 
   return `
 <!doctype html>
 <html>
   <body style="margin:0;padding:0;background:#F7F3EA;color:#2B241D;font-family:Arial,Helvetica,sans-serif;">
-    <div style="background:#F7F3EA;padding:20px 18px;">
-      <div style="max-width:920px;margin:0 auto;border:1px solid #D8CBB8;background:#FFFDF8;">
-        <div style="padding:28px 34px 22px 34px;border-bottom:1px solid #E2D8C9;background:#FFFDF8;">
-          <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1F6B4A;">Musser Biomass &middot; Lumber Buddy AR Brief</div>
-          <h1 style="margin:12px 0 10px 0;color:#17130F;font-size:38px;line-height:1.05;font-weight:800;letter-spacing:0;">Accounts Receivable</h1>
-          <div style="color:#5E5447;font-size:15px;line-height:1.55;max-width:760px;">Sage 50-ready operating snapshot for Musser's converted hardwood products business. This is demo/sample AR data until the live Sage 50 connector is approved and connected.</div>
+    <div style="background:#F7F3EA;padding:22px 18px;">
+      <div style="max-width:720px;margin:0 auto;border:1px solid #D8CBB8;background:#FFFDF8;">
+        <div style="padding:28px 34px 24px 34px;background:#FFFDF8;">
+          <img src="https://musser-biomass-ops.vercel.app/musser-logo.png" width="150" alt="Musser Biomass & Wood Products" style="display:block;width:150px;max-width:150px;height:auto;margin:0 0 18px 0;border:0;outline:none;text-decoration:none;">
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#1F6B4A;font-weight:700;">Lumber Buddy AR Brief</div>
+          <h1 style="margin:12px 0 10px 0;color:#17130F;font-size:34px;line-height:1.08;font-weight:800;letter-spacing:0;">Accounts Receivable</h1>
+          <p style="margin:0;color:#5E5447;font-size:15px;line-height:1.55;">Sage 50-ready operating snapshot for Musser's converted hardwood products business. Full aging detail and invoice notes are attached as a PDF.</p>
         </div>
 
-        <div style="padding:15px 34px;border-bottom:1px solid #1F6B4A;background:#1F6B4A;">
-          <span style="display:inline-block;margin-right:16px;color:#FFFDF8;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">Forest Fuel Pellets</span>
-          <span style="display:inline-block;margin-right:16px;color:#FFFDF8;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">Forest Fuel Briquettes</span>
-          <span style="display:inline-block;color:#FFFDF8;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">Alpha Fiber</span>
+        <div style="height:44px;background:#1F6B4A;color:#FFFDF8;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;line-height:44px;padding:0 34px;">
+          Forest Fuel Pellets &nbsp;&nbsp; Forest Fuel Briquettes &nbsp;&nbsp; Alpha Fiber
         </div>
 
-        <div style="padding:22px 34px;border-left:5px solid #B88A35;border-bottom:1px solid #E2D8C9;background:#F7F3EA;">
-          <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1F6B4A;margin-bottom:12px;">Atlas Read · Owner Attention</div>
+        <div style="padding:26px 34px 24px 34px;border-left:5px solid #B88A35;background:#F7F3EA;border-bottom:1px solid #E2D8C9;">
           <div style="font-size:20px;line-height:1.55;color:#2B241D;">
             Open AR is <strong style="color:#B88A35;">${money(data.summary.totalOpen)}</strong>. Overdue AR is <strong style="color:#A9432C;">${money(data.summary.overdueTotal)}</strong> across <strong>${data.summary.overdueCount}</strong> invoices. ${escapeUi(data.aiSummary)}
           </div>
         </div>
 
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
-          <tr>
-            <td style="padding:22px 24px;border:1px solid #E2D8C9;background:#FFFDF8;">
-              <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#7A6C5B;">Open AR</div>
-              <div style="font-size:34px;line-height:1.1;color:#17130F;font-weight:800;margin-top:8px;">${money(data.summary.totalOpen)}</div>
-            </td>
-            <td style="padding:22px 24px;border:1px solid #E2D8C9;background:#FFFDF8;">
-              <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#7A6C5B;">Overdue</div>
-              <div style="font-size:34px;line-height:1.1;color:#A9432C;font-weight:800;margin-top:8px;">${money(data.summary.overdueTotal)}</div>
-            </td>
-            <td style="padding:22px 24px;border:1px solid #E2D8C9;background:#FFFDF8;">
-              <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#7A6C5B;">Risk Accounts</div>
-              <div style="font-size:34px;line-height:1.1;color:#17130F;font-weight:800;margin-top:8px;">${riskCount}</div>
-            </td>
-            <td style="padding:22px 24px;border:1px solid #E2D8C9;background:#FFFDF8;">
-              <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#7A6C5B;">DSO Est.</div>
-              <div style="font-size:34px;line-height:1.1;color:#1F6B4A;font-weight:800;margin-top:8px;">${data.summary.dsoEstimate}</div>
-            </td>
-          </tr>
-        </table>
-
-        <div style="padding:28px 34px 30px 34px;">
-          <div style="border-top:1px solid #D8CBB8;padding-top:20px;margin-bottom:18px;">
-            <span style="color:#8C7D6B;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;">01</span>
-            <span style="color:#17130F;font-size:25px;font-weight:800;margin-left:12px;">Top Open Invoices</span>
+        <div style="padding:24px 34px 10px 34px;background:#FFFDF8;">
+          <p style="margin:0 0 10px 0;color:#17130F;font-size:15px;line-height:1.6;"><strong>Snapshot:</strong> ${money(data.summary.totalOpen)} open, ${money(data.summary.overdueTotal)} overdue, ${riskCount} risk accounts, estimated DSO ${data.summary.dsoEstimate} days.</p>
+          <p style="margin:0 0 10px 0;color:#17130F;font-size:15px;line-height:1.6;"><strong>Priority:</strong> ${escapeUi(topRisk.customer || 'Review overdue accounts')} ${topRisk.daysOverdue ? 'is ' + topRisk.daysOverdue + ' days overdue' : 'needs review'}.</p>
+          <p style="margin:0 0 16px 0;color:#5E5447;font-size:14px;line-height:1.55;">This is demo/sample AR data until the live Sage 50 connector is approved and connected.</p>
+          <div style="border:1px solid #E2D8C9;background:#F7F3EA;padding:18px 20px;margin-bottom:20px;">
+            <div style="font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:#1F6B4A;font-weight:700;margin-bottom:10px;">Recommended follow-up</div>
+            <ul style="padding-left:18px;margin:0;">${actions}</ul>
           </div>
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;background:#FFFDF8;border:1px solid #E2D8C9;margin-bottom:26px;">
-            <thead>
-              <tr>
-                <th align="left" style="padding:12px 16px;color:#B8AB98;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">#</th>
-                <th align="left" style="padding:12px 16px;color:#B8AB98;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">Account</th>
-                <th align="left" style="padding:12px 16px;color:#B8AB98;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">Invoice</th>
-                <th align="right" style="padding:12px 16px;color:#B8AB98;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">Amount</th>
-                <th align="right" style="padding:12px 16px;color:#B8AB98;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">Aging</th>
-              </tr>
-            </thead>
-            <tbody>${invoiceRows}</tbody>
-          </table>
-
-          <div style="border:1px solid #D8CBB8;background:#F7F3EA;padding:22px;">
-            <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#B88A35;margin-bottom:14px;">02 Action Queue</div>
-            <ul style="padding-left:0;list-style:none;margin:0;">${priorityItems}</ul>
-          </div>
+          <p style="margin:0 0 14px 0;color:#7A6C5B;font-size:13px;line-height:1.5;">Attached: Lumber Buddy AR Report PDF with aging buckets, open invoice list, collection notes, and cash-risk summary.</p>
         </div>
 
-        <div style="padding:18px 34px;border-top:1px solid #E2D8C9;background:#1F6B4A;color:#FFFDF8;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;">
-          Generated by Lumber Buddy for Musser Biomass · 200 Shoal Ridge Drive, Rural Retreat, VA 24368 · ${escapeUi(data.asOf || new Date().toISOString().slice(0, 10))}
+        <div style="padding:16px 34px;background:#1F6B4A;color:#FFFDF8;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;">
+          Musser Biomass & Wood Products - Rural Retreat, VA - ${escapeUi(data.asOf || new Date().toISOString().slice(0, 10))}
         </div>
       </div>
     </div>
@@ -1060,6 +1002,75 @@ async function buildArEmailBody() {
 </html>`;
 }
 
+async function ensureArData() {
+  if (arCache) return arCache;
+  try {
+    const resp = await fetch('/api/ar');
+    if (!resp.ok) throw new Error('AR endpoint error');
+    arCache = await resp.json();
+  } catch(e) {
+    arCache = fallbackAR();
+  }
+  return arCache;
+}
+
+async function getArReportAttachment() {
+  const data = await ensureArData();
+  return {
+    filename: 'lumber-buddy-ar-report.pdf',
+    title: 'Lumber Buddy Accounts Receivable Report',
+    contentText: buildArPdfText(data)
+  };
+}
+
+function buildArPdfText(data) {
+  const money = (n) => '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const aging = data.agingBuckets || data.aging || {};
+  const agingLines = ['current', '1-30', '31-60', '61-90', '90+'].map(key => {
+    const bucket = aging[key] || aging[key.replace('-', 'to')] || {};
+    return `- ${key}: ${money(bucket.amount || 0)}${bucket.count != null ? ` across ${bucket.count} invoice(s)` : ''}`;
+  });
+  const invoiceLines = (data.invoices || []).map(inv => [
+    `- ${inv.customer || 'Unknown customer'} / ${inv.invoiceNumber || 'invoice'}`,
+    `amount ${money(inv.amount)}`,
+    `invoice ${inv.invoiceDate || inv.date || 'n/a'}`,
+    `due ${inv.dueDate || 'n/a'}`,
+    `${inv.daysOverdue > 0 ? `${inv.daysOverdue} days overdue` : 'current'}`,
+    `status ${inv.status || 'n/a'}`,
+    inv.notes ? `notes: ${inv.notes}` : null
+  ].filter(Boolean).join(' | '));
+  const priorityLines = (data.collectionPriority || []).map(item => `- ${item}`);
+
+  return [
+    'Musser Biomass & Wood Products',
+    'Lumber Buddy Accounts Receivable Report',
+    `As of: ${data.asOf || new Date().toISOString().slice(0, 10)}`,
+    '',
+    'Important note: this is demo/sample AR data. Sage 50 is not connected yet, so these numbers should not be treated as live accounting data.',
+    '',
+    'Executive Snapshot',
+    `- Open AR: ${money(data.summary?.totalOpen)}`,
+    `- Overdue AR: ${money(data.summary?.overdueTotal)}`,
+    `- Overdue invoices: ${data.summary?.overdueCount || 0}`,
+    `- Critical accounts: ${data.summary?.criticalCount || 0}`,
+    `- DSO estimate: ${data.summary?.dsoEstimate || 'n/a'} days`,
+    '',
+    'Atlas Read',
+    data.aiSummary || 'No AI summary available.',
+    '',
+    'Aging Summary',
+    ...agingLines,
+    '',
+    'Open Invoices',
+    ...(invoiceLines.length ? invoiceLines : ['- No open invoices in placeholder data.']),
+    '',
+    'Collection Priority',
+    ...(priorityLines.length ? priorityLines : ['- No collection priority notes available.']),
+    '',
+    'Recommended CEO Action',
+    'Review the critical account before approving additional shipments, then clear the normal follow-up reminders for the remaining overdue accounts.'
+  ].join('\n');
+}
 const ARTIFACT_OPEN_RE = /<artifact\s+([^>]*?)>/i;
 const ARTIFACT_CLOSE_RE = /<\/artifact>/i;
 
@@ -1587,8 +1598,10 @@ async function sendEmailToCeo() {
   }
   btn.disabled = true;
   status.className = 'modal-status sending';
-  status.textContent = 'Sending via GoHighLevel...';
+  status.textContent = 'Sending to CEO...';
   try {
+    const isArEmail = /accounts receivable|ar summary|ar brief/i.test(`${subject} ${body}`);
+    const attachments = isArEmail ? [await getArReportAttachment()] : [];
     const resp = await fetch('/api/send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1596,7 +1609,8 @@ async function sendEmailToCeo() {
         preset: 'to_ceo',
         subject,
         body,
-        messageType: /<[a-z][\s\S]*>/i.test(body) ? 'report' : 'text'
+        messageType: /<[a-z][\s\S]*>/i.test(body) ? 'report' : 'text',
+        attachments
       })
     });
     const data = await resp.json();

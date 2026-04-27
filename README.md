@@ -63,7 +63,7 @@ All must be set in **Production** and **Preview** environments.
 4. Create or identify a CEO/internal contact in GHL and set `CEO_GHL_CONTACT_ID`.
 5. Set `CEO_EMAIL`; the UI never exposes this address.
 
-`/api/send-email` auto-routes by message type: plain text uses GHL when configured; branded HTML reports/summaries use Resend when configured. `MESSAGE_PROVIDER` is only for hard overrides.
+`/api/send-email` auto-routes by message type: plain text uses GHL when configured; branded HTML reports/summaries use Resend when configured. AR CEO summaries send a compact logo email plus a generated PDF attachment for the full invoice/aging detail. `MESSAGE_PROVIDER` is only for hard overrides.
 
 ## Local dev
 
@@ -117,6 +117,8 @@ curl -X POST https://<your-deploy>/api/send-email \
 ```
 
 Returns `{ ok: true, provider, sentTo, messageId }` on success. The UI's "Send to CEO" button composes a draft from the current Lumber Buddy conversation and fires this through GHL Conversations.
+
+For AR/report emails, the UI can include `attachments: [{ filename, title, contentText }]`. `/api/send-email` turns `contentText` into a simple PDF attachment and sends it through Resend so Gmail does not have to render the entire report body inline.
 
 ## Living docs the brain reads
 

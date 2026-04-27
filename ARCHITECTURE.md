@@ -11,7 +11,7 @@ _Last updated: 2026-04-24_
 | AI brain | OpenAI-first / Anthropic fallback via `/api/claude` (SSE stream) | Answers operational questions and creates branded artifacts |
 | Knowledge base | This repo's living docs via `/api/context` | Grounds the brain |
 | Pricing logic | `/api/quote` (real calculator) | Real functional tool #1 |
-| Messaging | `/api/send-email` → GHL for plain text, Resend for branded reports | Real functional tool #2 |
+| Messaging | `/api/send-email` -> GHL for plain text, Resend for branded reports/PDF attachments | Real functional tool #2 |
 | CRM | GoHighLevel sub-account | Contacts, email, SMS, pipeline, Conversation AI |
 | Accounting / AR (planned) | Sage 50 | Accounts receivable, invoice aging, collections reporting |
 | Database (planned) | Supabase | Inventory, orders, delivery records |
@@ -19,64 +19,22 @@ _Last updated: 2026-04-24_
 
 ---
 
-## Flow — Customer asks "how much for 1 load of pellets to 13346?"
+## Flow - "Send this update to the CEO" button
 
 ```
-Customer → GHL Conversation AI (chat/SMS/web)
-           │
-           │  System prompt includes PRICING.md
-           │
-           ▼
-         Agent quotes from PRICING.md logic:
-         "1 load Forest Fuel pellets = $5,720,
-          freight to 13346 = $1,539.90,
-          total = $7,259.90"
-           │
-           ▼
-         Creates lead in GHL with the quote attached
-           │
-           ▼
-         Human confirms + schedules delivery
-```
-
-For internal use from the Lumber Buddy app, the same logic is exposed at `/api/quote` — the Pricing tab calls it on every input change.
-
----
-
-## Flow — Lumber Buddy answers a team question
-
-```
-Browser (index.html)
-    │  POST /api/claude  { role, messages }
-    ▼
-/api/claude.js  ────► getContext() ────► /api/context.js
-    │                                          │
-    │                                          ▼
-    │                             GitHub repo: 8 living docs
-    │                             (includes PRICING.md + BRAND_STYLE.md)
-    ▼
-OpenAI Responses API or Anthropic Messages API (normalized SSE back to browser)
-```
-
-`/api/context.js` caches 60s per serverless instance.
-
----
-
-## Flow — "Send this update to the CEO" button
-
-```
-Lumber Buddy UI  →  POST /api/send-email
-                    { preset: "to_ceo", subject, body }
-                           │
-                           ▼
-                    GoHighLevel Conversations API
-                           │
-                           ▼
+Lumber Buddy UI  ->  POST /api/send-email
+                    { preset: "to_ceo", subject, body, attachments? }
+                           |
+                           v
+                    Provider router
+                    - Plain text: GoHighLevel Conversations API
+                    - AR/report: Resend + generated PDF attachment
+                           |
+                           v
                     CEO_EMAIL inbox
 ```
 
-Preset hides the address from the UI — the UI only knows "send to CEO", destination is config.
-
+Preset hides the address from the UI - the UI only knows "send to CEO", destination is config.
 ---
 
 ## Directory layout

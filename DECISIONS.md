@@ -140,3 +140,4 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 - Messaging routing is split by content type: plain text emails stay on GHL so they live in the CRM timeline; branded HTML reports and summaries route to Resend when configured for stronger email rendering.
 - AR report emails should stay compact enough for Gmail: executive summary, four metrics, top five invoices, and three actions. Full aging detail belongs in the app/PDF brief.
 - If Gmail continues collapsing report sections, prioritize deliverability/readability over logo-heavy branding. AR report emails may omit the logo and address header, starting directly with the report title and a compact Musser/Lumber Buddy label.
+- Final AR email pattern: send a short Musser-branded cover email with the logo, then attach the full Accounts Receivable detail as a generated PDF. This keeps the inbox preview premium while avoiding Gmail clipping/collapse on long HTML tables.

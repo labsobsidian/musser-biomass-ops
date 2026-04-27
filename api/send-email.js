@@ -15,6 +15,10 @@
 // Optional Resend fallback:
 //   RESEND_API_KEY
 //   FROM_EMAIL
+//
+// The endpoint also accepts optional attachments. For AR briefs, the frontend
+// sends contentText and this function renders a simple PDF server-side before
+// handing it to Resend.
 
 import { isGhlConfigured, sendGhlEmail } from './connectors/ghl.js';
 
@@ -36,7 +40,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { preset = 'to_ceo', subject, body, messageType = 'auto' } = req.body || {};
+  const { preset = 'to_ceo', subject, body, messageType = 'auto', attachments = [] } = req.body || {};
 
   if (!subject || !body) {
     return res.status(400).json({ error: 'subject and body are required' });
@@ -59,7 +63,8 @@ export default async function handler(req, res) {
   }
 
   const isHtml = /<[a-z][\s\S]*>/i.test(body);
-  const provider = resolveProvider({ isHtml, messageType });
+  const normalizedAttachments = normalizeAttachments(attachments);
+  const provider = resolveProvider({ isHtml, messageType, hasAttachments: normalizedAttachments.length > 0 });
   const htmlBody = isHtml ? body : plainTextToHtml(body);
   const textBody = isHtml ? stripHtml(body) : body;
 
@@ -90,7 +95,8 @@ export default async function handler(req, res) {
       to,
       subject,
       html: htmlBody,
-      text: textBody
+      text: textBody,
+      attachments: normalizedAttachments
     });
 
     return res.status(200).json({
@@ -109,8 +115,9 @@ export default async function handler(req, res) {
   }
 }
 
-function resolveProvider({ isHtml, messageType }) {
+function resolveProvider({ isHtml, messageType, hasAttachments }) {
   const configured = (process.env.MESSAGE_PROVIDER || '').toLowerCase().trim();
+  if (hasAttachments && isResendConfigured()) return 'resend';
   if (configured === 'ghl' || configured === 'resend') return configured;
   const requestedType = String(messageType || '').toLowerCase();
   if ((requestedType === 'report' || requestedType === 'summary' || requestedType === 'creative' || isHtml) && isResendConfigured()) {
@@ -124,7 +131,7 @@ function isResendConfigured() {
   return Boolean(process.env.RESEND_API_KEY && process.env.FROM_EMAIL);
 }
 
-async function sendViaResend({ fromName, to, subject, html, text }) {
+async function sendViaResend({ fromName, to, subject, html, text, attachments = [] }) {
   const apiKey = process.env.RESEND_API_KEY;
   const fromEmail = process.env.FROM_EMAIL;
 
@@ -143,7 +150,8 @@ async function sendViaResend({ fromName, to, subject, html, text }) {
       to: [to],
       subject,
       html,
-      text
+      text,
+      ...(attachments.length ? { attachments } : {})
     })
   });
 
@@ -156,6 +164,136 @@ async function sendViaResend({ fromName, to, subject, html, text }) {
   }
 
   return resp.json();
+}
+
+function normalizeAttachments(attachments) {
+  if (!Array.isArray(attachments)) return [];
+
+  return attachments
+    .filter(item => item && typeof item === 'object')
+    .map((item, index) => {
+      const filename = sanitizeFilename(item.filename || `lumber-buddy-report-${index + 1}.pdf`);
+      if (item.contentBase64) {
+        return { filename, content: String(item.contentBase64) };
+      }
+      if (item.contentText) {
+        return {
+          filename: filename.toLowerCase().endsWith('.pdf') ? filename : `${filename}.pdf`,
+          content: createPdfBuffer({
+            title: item.title || 'Lumber Buddy Report',
+            text: String(item.contentText)
+          }).toString('base64')
+        };
+      }
+      return null;
+    })
+    .filter(Boolean);
+}
+
+function sanitizeFilename(filename) {
+  return String(filename)
+    .replace(/[^a-zA-Z0-9._-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 90) || 'lumber-buddy-report.pdf';
+}
+
+function createPdfBuffer({ title, text }) {
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const marginX = 48;
+  const topY = 742;
+  const lineHeight = 14;
+  const maxLines = 48;
+  const wrappedLines = [
+    String(title || 'Lumber Buddy Report'),
+    '',
+    ...wrapPdfText(String(text || ''), 92)
+  ];
+  const pages = [];
+  for (let i = 0; i < wrappedLines.length; i += maxLines) {
+    pages.push(wrappedLines.slice(i, i + maxLines));
+  }
+
+  const objects = [null];
+  const addObject = (body = '') => {
+    objects.push(body);
+    return objects.length - 1;
+  };
+
+  const catalogId = addObject();
+  const pagesId = addObject();
+  const fontId = addObject('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
+  const pageIds = [];
+
+  pages.forEach((lines) => {
+    const streamLines = [
+      'BT',
+      `/F1 10 Tf`,
+      `${marginX} ${topY} Td`,
+      `${lineHeight} TL`
+    ];
+    lines.forEach((line, idx) => {
+      if (idx === 0) streamLines.push('/F1 16 Tf');
+      if (idx === 1) streamLines.push('/F1 10 Tf');
+      streamLines.push(`(${pdfEscape(line)}) Tj`);
+      streamLines.push('T*');
+    });
+    streamLines.push('ET');
+    const stream = streamLines.join('\n');
+    const contentId = addObject(`<< /Length ${Buffer.byteLength(stream, 'latin1')} >>\nstream\n${stream}\nendstream`);
+    const pageId = addObject(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${fontId} 0 R >> >> /Contents ${contentId} 0 R >>`);
+    pageIds.push(pageId);
+  });
+
+  objects[catalogId] = `<< /Type /Catalog /Pages ${pagesId} 0 R >>`;
+  objects[pagesId] = `<< /Type /Pages /Kids [${pageIds.map(id => `${id} 0 R`).join(' ')}] /Count ${pageIds.length} >>`;
+
+  let pdf = '%PDF-1.4\n';
+  const offsets = [0];
+  for (let i = 1; i < objects.length; i++) {
+    offsets[i] = Buffer.byteLength(pdf, 'latin1');
+    pdf += `${i} 0 obj\n${objects[i]}\nendobj\n`;
+  }
+  const xrefOffset = Buffer.byteLength(pdf, 'latin1');
+  pdf += `xref\n0 ${objects.length}\n`;
+  pdf += '0000000000 65535 f \n';
+  for (let i = 1; i < objects.length; i++) {
+    pdf += `${String(offsets[i]).padStart(10, '0')} 00000 n \n`;
+  }
+  pdf += `trailer\n<< /Size ${objects.length} /Root ${catalogId} 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+  return Buffer.from(pdf, 'latin1');
+}
+
+function wrapPdfText(text, width) {
+  const output = [];
+  String(text).split(/\r?\n/).forEach((rawLine) => {
+    const line = rawLine.trimEnd();
+    if (!line) {
+      output.push('');
+      return;
+    }
+    const words = line.split(/\s+/);
+    let current = '';
+    words.forEach((word) => {
+      const next = current ? `${current} ${word}` : word;
+      if (next.length > width && current) {
+        output.push(current);
+        current = word;
+      } else {
+        current = next;
+      }
+    });
+    if (current) output.push(current);
+  });
+  return output;
+}
+
+function pdfEscape(str) {
+  return String(str)
+    .replace(/[^\x09\x0A\x0D\x20-\x7E]/g, '-')
+    .replace(/\\/g, '\\\\')
+    .replace(/\(/g, '\\(')
+    .replace(/\)/g, '\\)');
 }
 
 function plainTextToHtml(str) {
