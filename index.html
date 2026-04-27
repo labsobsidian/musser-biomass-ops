@@ -313,10 +313,10 @@
     </div>
   </div>
   <div class="user-tabs hidden" id="user-tabs">
-    <button class="user-tab active" data-role="ops" onclick="switchRole('ops',this)">Operations</button>
-    <button class="user-tab" data-role="owner" onclick="switchRole('owner',this)">Owner</button>
-    <button class="user-tab" data-role="yard" onclick="switchRole('yard',this)">Yard</button>
-    <button class="user-tab" data-role="driver" onclick="switchRole('driver',this)">Driver</button>
+    <button class="user-tab active" data-role="ceo" onclick="switchRole('ceo',this)">CEO - Eric Wood</button>
+    <button class="user-tab" data-role="cfo" onclick="switchRole('cfo',this)">CFO - Becky Chance</button>
+    <button class="user-tab" data-role="vp_sales" onclick="switchRole('vp_sales',this)">VP Sales - Mark Carrico</button>
+    <button class="user-tab" data-role="board" onclick="switchRole('board',this)">Board of Directors</button>
   </div>
   <div class="current-user-label" id="current-user-label" style="display:none;"></div>
 </div>
@@ -678,10 +678,10 @@
   </div>
   <div class="settings-section">
     <div class="settings-title">Users</div>
-    <div class="setting-row"><div class="sr-left"><div class="sr-label">CEO / Owner</div><div class="sr-detail">Full access · approves pricing · receives Lumber Buddy emails</div></div><div class="sr-right"><span class="badge b-won">Active</span></div></div>
-    <div class="setting-row"><div class="sr-left"><div class="sr-label">Operations Manager</div><div class="sr-detail">Dispatch, scheduling, customer comms</div></div><div class="sr-right"><span class="badge b-won">Active</span></div></div>
-    <div class="setting-row"><div class="sr-left"><div class="sr-label">Yard Lead</div><div class="sr-detail">Production, splitter, kiln schedule</div></div><div class="sr-right"><span class="badge b-won">Active</span></div></div>
-    <div class="setting-row"><div class="sr-left"><div class="sr-label">Drivers</div><div class="sr-detail">My Route view only · mobile-first</div></div><div class="sr-right"><span class="badge b-won">3 active</span></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">CEO - Eric Wood</div><div class="sr-detail">Full executive access</div></div><div class="sr-right"><span class="badge b-won">Active</span></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">CFO - Becky Chance</div><div class="sr-detail">Full executive access</div></div><div class="sr-right"><span class="badge b-won">Active</span></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">VP Sales - Mark Carrico</div><div class="sr-detail">Full executive access</div></div><div class="sr-right"><span class="badge b-won">Active</span></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">Board of Directors</div><div class="sr-detail">Full executive access</div></div><div class="sr-right"><span class="badge b-won">Active</span></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Add user</div><div class="sr-detail">Invite a team member</div></div><div class="sr-right"><button class="connect-btn">+ Invite</button></div></div>
   </div>
   <div class="settings-section" id="brain-settings-section">
@@ -808,32 +808,30 @@
 </div>
 
 <script>
+const EXEC_VISIBLE_TABS = ['buddy','operations','sales','pricing','marketing','finance','ar','strategy','myroute','learning','settings'];
 const ROLES = {
-  owner: { displayName: 'Owner', visibleTabs: ['buddy','sales','pricing','marketing','finance','ar','strategy','learning','settings'], defaultTab: 'buddy', canApprove: true, seeBrainSettings: true },
-  ops: { displayName: 'Operations', visibleTabs: ['buddy','operations','sales','pricing','marketing','ar','settings'], defaultTab: 'buddy', canApprove: false, seeBrainSettings: false },
-  yard: { displayName: 'Yard', visibleTabs: ['buddy','operations'], defaultTab: 'operations', canApprove: false, seeBrainSettings: false },
-  driver: { displayName: 'Driver', visibleTabs: ['buddy','myroute'], defaultTab: 'myroute', canApprove: false, seeBrainSettings: false },
-  admin: { displayName: 'Admin', visibleTabs: ['buddy','operations','sales','pricing','marketing','finance','ar','strategy','myroute','learning','settings'], defaultTab: 'buddy', canApprove: true, seeBrainSettings: true }
+  ceo: { displayName: 'CEO - Eric Wood', firstName: 'Eric', visibleTabs: EXEC_VISIBLE_TABS, defaultTab: 'buddy', canApprove: true, seeBrainSettings: true },
+  cfo: { displayName: 'CFO - Becky Chance', firstName: 'Becky', visibleTabs: EXEC_VISIBLE_TABS, defaultTab: 'buddy', canApprove: true, seeBrainSettings: true },
+  vp_sales: { displayName: 'VP Sales - Mark Carrico', firstName: 'Mark', visibleTabs: EXEC_VISIBLE_TABS, defaultTab: 'buddy', canApprove: true, seeBrainSettings: true },
+  board: { displayName: 'Board of Directors', firstName: 'Board', visibleTabs: EXEC_VISIBLE_TABS, defaultTab: 'buddy', canApprove: true, seeBrainSettings: true }
 };
 
+const EXEC_PROMPTS = ["Build a branded website preview","Create an AR PDF brief","Revenue by product line this month","Quote 1 load pellets to ZIP 13346","Draft an executive update email"];
 const PROMPTS = {
-  ops: ["What loads are due this week?","Draft Town & Country shipment confirmation","Fill Truck 4's open Friday slot","What's running low in production?","Schedule next Hamilton run"],
-  owner: ["Quote 1 load pellets to ZIP 13346","Build a branded website preview","Create an AR PDF brief","Revenue by product line this month","Draft a CEO update email"],
-  yard: ["What's on today's production schedule?","Pellet line status","What's on Truck 2's load-out list?"],
-  driver: ["First stop today","BOL for Town & Country","Total miles on this route"],
-  admin: ["Build a landing page for selling pellets to NY stove dealers","Create a slide-deck preview for Musser","Quote 1 load pellets + 1 load briquettes to ZIP 16434","Draft a branded AR PDF brief for the CEO"]
+  ceo: EXEC_PROMPTS,
+  cfo: ["Create an AR PDF brief","Show revenue by product line this month","Summarize open invoices by risk","Draft an executive finance update","Quote 1 load pellets to ZIP 13346"],
+  vp_sales: ["Build a branded website preview","Summarize sales pipeline priorities","Quote 1 load pellets to ZIP 13346","Draft a dealer follow-up email","Create a slide-deck preview for Musser"],
+  board: ["Create a board-level AR PDF brief","Summarize revenue and risk","Build a strategic overview deck","Show open decisions for approval","Draft a board update email"]
 };
 
 function greetingFor(role) {
-  const name = currentFirstName || ROLES[role].displayName;
-  if (role === 'admin') return `Hi ${name}. I'm Lumber Buddy for Musser Biomass. Admin preview is active. Live tools: pricing calculator, send-to-CEO, branded artifact builder, and placeholder AR workspace for Sage 50. Try a website preview, AR PDF brief, or slide-deck preview.`;
-  if (role === 'owner') return `Morning ${name}. 2 quotes need approval, open AR is in placeholder mode at $77,638, and Pocono Pellet Co. is the collections risk to review before more loads. Want the AR brief, revenue view, or Northeast Stove website preview first?`;
-  if (role === 'yard') return `Morning. Pellet line running, briquette press queued for Wed. 4 loads of Forest Fuel pellets ready to ship, only 2 loads of briquettes finished — Friday's TJ Coal order needs press priority. Alpha Fiber is healthy at 3 loads.`;
-  if (role === 'driver') return `Morning. Long-haul day: 1 load Forest Fuel pellets to Town & Country in Hamilton NY (~522 mi). BOL is loaded, signed at receiving. Yard return Wed AM, then pre-trip for the Spartansburg PA run.`;
-  return `Morning ${name}. 9 loads scheduled this week (5 pellets, 3 briquettes, 1 fiber), 2 quotes waiting on owner approval ($24,540 total). Briquette stock is tight — press is queued for Wed. What do you want to tackle first?`;
+  const roleDef = ROLES[role] || ROLES.ceo;
+  const name = currentFirstName || roleDef.firstName || roleDef.displayName;
+  if (role === 'board') return `Good morning. Lumber Buddy is ready with the executive view for Musser Biomass: revenue, AR risk, sales, pricing, branded reports, and the Sage 50-ready AR workspace. Want the board brief, revenue view, or AR PDF first?`;
+  return `Morning ${name}. Lumber Buddy is ready with the executive view for Musser Biomass: revenue, AR risk, sales, pricing, branded reports, and the Sage 50-ready AR workspace. Want the AR brief, revenue view, or website preview first?`;
 }
 
-let currentRole = 'ops';
+let currentRole = 'ceo';
 let currentFirstName = null;
 let isAdmin = false;
 let history = [];
@@ -850,21 +848,19 @@ function detectRoleFromUrl() {
   const name = params.get('name') || '';
   const explicitRole = (params.get('role') || '').toLowerCase();
   if (name) currentFirstName = name;
-  if (explicitRole === 'admin') return 'admin';
-  if (explicitRole === 'owner' || explicitRole === 'ceo') return 'owner';
-  if (explicitRole === 'ops' || explicitRole === 'operations') return 'ops';
-  if (explicitRole === 'yard') return 'yard';
-  if (explicitRole === 'driver') return 'driver';
-  if (email.includes('labsobsidian') || email.includes('@obsidianlabs') || email.includes('garrett')) return 'admin';
-  if (email.includes('ceo') || email.includes('owner')) return 'owner';
-  if (email.includes('driver')) return 'driver';
-  if (email.includes('yard')) return 'yard';
-  return 'ops';
+  if (explicitRole === 'cfo' || explicitRole === 'becky') return 'cfo';
+  if (explicitRole === 'vp_sales' || explicitRole === 'vp-sales' || explicitRole === 'sales' || explicitRole === 'mark') return 'vp_sales';
+  if (explicitRole === 'board' || explicitRole === 'directors') return 'board';
+  if (explicitRole === 'ceo' || explicitRole === 'eric' || explicitRole === 'owner' || explicitRole === 'admin') return 'ceo';
+  if (email.includes('becky') || email.includes('chance') || email.includes('cfo')) return 'cfo';
+  if (email.includes('mark') || email.includes('carrico') || email.includes('sales')) return 'vp_sales';
+  if (email.includes('board') || email.includes('director')) return 'board';
+  return 'ceo';
 }
 
 function applyRole(role) {
-  currentRole = role;
-  const roleDef = ROLES[role];
+  currentRole = ROLES[role] ? role : 'ceo';
+  const roleDef = ROLES[currentRole];
   document.querySelectorAll('.nav-item').forEach(item => {
     const tab = item.getAttribute('data-tab');
     if (roleDef.visibleTabs.includes(tab)) item.classList.remove('hidden'); else item.classList.add('hidden');
@@ -884,22 +880,12 @@ function applyRole(role) {
   const adminBanner = document.getElementById('admin-banner');
   const userTabsEl = document.getElementById('user-tabs');
   const userLabel = document.getElementById('current-user-label');
-  if (isAdmin) {
-    adminBanner.classList.add('visible');
-    userTabsEl.classList.remove('hidden');
-    userLabel.style.display = 'none';
-    const previewName = role === 'admin' ? 'Admin (all views)' : roleDef.displayName;
-    document.getElementById('admin-current-role').textContent = previewName;
-    document.querySelectorAll('.user-tab').forEach(t => t.classList.remove('active'));
-    const btnRole = role === 'admin' ? null : role;
-    if (btnRole) { const btn = document.querySelector(`.user-tab[data-role="${btnRole}"]`); if (btn) btn.classList.add('active'); }
-  } else {
-    adminBanner.classList.remove('visible');
-    userTabsEl.classList.add('hidden');
-    userLabel.style.display = 'block';
-    const dn = currentFirstName ? currentFirstName.charAt(0).toUpperCase() + currentFirstName.slice(1).toLowerCase() : roleDef.displayName;
-    userLabel.textContent = dn;
-  }
+  adminBanner.classList.remove('visible');
+  userTabsEl.classList.remove('hidden');
+  userLabel.style.display = 'none';
+  document.querySelectorAll('.user-tab').forEach(t => t.classList.remove('active'));
+  const btn = document.querySelector(`.user-tab[data-role="${currentRole}"]`);
+  if (btn) btn.classList.add('active');
   const defaultTabBtn = document.querySelector(`.nav-item[data-tab="${roleDef.defaultTab}"]`);
   if (defaultTabBtn) showPage(roleDef.defaultTab, defaultTabBtn);
   history = [];
@@ -925,7 +911,7 @@ function showPage(tab, el) {
 function buildQuickStrip(role) {
   const strip = document.getElementById('quick-strip');
   strip.innerHTML = '';
-  const prompts = PROMPTS[role] || PROMPTS.ops;
+  const prompts = PROMPTS[role] || PROMPTS.ceo;
   prompts.forEach(p => {
     const chip = document.createElement('div');
     chip.className = 'qchip';
@@ -1914,7 +1900,6 @@ document.getElementById('email-modal').addEventListener('click', (e) => {
 
 window.addEventListener('load', () => {
   const detectedRole = detectRoleFromUrl();
-  isAdmin = (detectedRole === 'admin');
   applyRole(detectedRole);
 });
 </script>
