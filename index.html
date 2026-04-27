@@ -254,6 +254,35 @@
   .modal-status.success{background:var(--success-bg);color:var(--success);display:block;}
   .modal-status.error{background:var(--red-light);color:var(--red);display:block;}
   .modal-status.sending{background:var(--amber-light);color:#7A4A08;display:block;}
+  .modal-check{display:flex;gap:9px;align-items:flex-start;margin:4px 0 14px;color:var(--brown-mid);font-size:12px;line-height:1.45;}
+  .modal-check input{width:auto;margin-top:2px;flex-shrink:0;}
+  .dns-box{display:none;margin:12px 0;padding:12px;border:1px dashed var(--brown-light);border-radius:8px;background:var(--surface);font-size:12px;color:var(--brown-mid);line-height:1.55;}
+  .dns-box.visible{display:block;}
+  .dns-record{margin-top:8px;padding:8px 10px;background:var(--white);border:1px solid var(--border);border-radius:6px;font-family:Menlo,Consolas,monospace;font-size:11px;color:var(--black);word-break:break-all;}
+  .website-import-summary{display:none;margin-top:10px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--gray-bg);font-size:12px;color:var(--brown-mid);line-height:1.5;}
+  .website-import-summary.visible{display:block;}
+  .website-import-title{font-weight:600;color:var(--black);font-size:13px;margin-bottom:2px;}
+  .website-source-chip{margin:0 14px 12px;padding:10px 12px;border:1px solid var(--teal);background:var(--teal-light);border-radius:8px;font-size:12px;color:#085041;line-height:1.45;display:none;}
+  .website-source-chip.visible{display:block;}
+  .website-source-chip strong{display:block;color:#073D32;margin-bottom:2px;}
+  .learning-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px 0;}
+  .learning-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .learning-panel{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px;}
+  .learning-panel h3{font-size:14px;margin:0 0 10px;color:var(--black);}
+  .learning-empty{font-size:13px;color:var(--brown-light);padding:12px;border:1px dashed var(--border);border-radius:8px;background:var(--surface);}
+  .learning-item{border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px;background:#FFFDF8;}
+  .learning-item-title{font-size:13px;font-weight:600;color:var(--black);margin-bottom:6px;}
+  .learning-item-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+  .learning-pill{font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-radius:999px;padding:3px 7px;background:var(--surface);color:var(--brown-mid);border:1px solid var(--border);}
+  .learning-pill.high{background:var(--red-light);color:var(--red);border-color:#F3B6A4;}
+  .learning-pill.medium{background:var(--amber-light);color:#7A4A08;border-color:#E6CF9A;}
+  .learning-pill.low{background:var(--success-bg);color:var(--success);border-color:#B9D8C4;}
+  .learning-item-body{font-size:12px;color:var(--brown-mid);line-height:1.5;margin-bottom:10px;}
+  .learning-actions{display:flex;gap:6px;flex-wrap:wrap;}
+  .weekly-preview{white-space:pre-wrap;font-size:12px;line-height:1.5;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;max-height:420px;overflow:auto;color:var(--brown-dark);}
+  .modal-field select{width:100%;font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);outline:none;}
+  .modal-field select:focus{border-color:var(--brown-dark);}
+  @media(max-width:900px){.learning-grid{grid-template-columns:1fr;}}
   .hidden{display:none !important;}
   .chat-messages::-webkit-scrollbar,.buddy-sidebar::-webkit-scrollbar,.artifact-code::-webkit-scrollbar{width:6px;}
   .chat-messages::-webkit-scrollbar-thumb,.buddy-sidebar::-webkit-scrollbar-thumb,.artifact-code::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
@@ -302,6 +331,7 @@
   <div class="nav-item" data-tab="ar" onclick="showPage('ar',this)">Accounts Receivable</div>
   <div class="nav-item" data-tab="strategy" onclick="showPage('strategy',this)">Strategy</div>
   <div class="nav-item" data-tab="myroute" onclick="showPage('myroute',this)">My Route</div>
+  <div class="nav-item" data-tab="learning" onclick="showPage('learning',this)">Learning Loop</div>
   <div class="nav-item" data-tab="settings" onclick="showPage('settings',this)">⚙ Settings</div>
 </div>
 
@@ -361,11 +391,13 @@
       <div class="conn-card">
         <div class="conn-card-header">Create now</div>
         <div class="action-grid">
+          <button class="btn btn-secondary" onclick="openWebsiteImportModal()">Import website <span>+</span></button>
           <button class="btn btn-gold" onclick="fire('Build a branded website preview for Musser Biomass using BRAND_STYLE.md')">Website preview <span>→</span></button>
           <button class="btn btn-secondary" onclick="fire('Create a branded PDF-style AR brief for the CEO using current placeholder AR data')">PDF brief <span>→</span></button>
           <button class="btn btn-secondary" onclick="fire('Create a branded slide-deck preview for Musser Biomass products and Atlas rollout')">Slides <span>→</span></button>
           <button class="btn btn-secondary" onclick="openCeoEmailComposer()">Email CEO <span>→</span></button>
         </div>
+        <div class="website-source-chip" id="website-source-chip"></div>
       </div>
       <div class="conn-card">
         <div class="conn-card-header">Live tools</div>
@@ -658,6 +690,32 @@
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Pricing update alerts</div><div class="sr-detail">Notify owner when PRICING.md is edited</div></div><div class="sr-right"><div class="toggle" onclick="this.classList.toggle('off')"></div></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Approval notifications</div><div class="sr-detail">Alert owner when a wholesale/custom quote needs review</div></div><div class="sr-right"><div class="toggle" onclick="this.classList.toggle('off')"></div></div></div>
   </div>
+  <div class="settings-section">
+    <div class="settings-title">Learning loop</div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">Manual correction capture</div><div class="sr-detail">Flag wrong answers and draft a pending KB lesson</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Live</span><button class="connect-btn" onclick="showPage('learning',document.querySelector('[data-tab=learning]'))">Review</button></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">Weekly Start the Week review</div><div class="sr-detail">Owner/admin approval before lessons affect Lumber Buddy</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Human approved</span><button class="connect-btn" onclick="generateWeeklyReview(true)">Generate</button></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">External learning sources</div><div class="sr-detail">GHL, voice, Sage 50, Amazon, spreadsheets, and APIs normalize into the same queue</div></div><div class="sr-right"><span style="font-size:12px;color:var(--amber)">Slots ready</span></div></div>
+  </div>
+</div>
+
+<div class="page" id="page-learning">
+  <div class="demo-banner"><div class="demo-dot"></div>Atlas Learning Loop - corrections become pending lessons first, then owner/admin approval promotes them into the live knowledge base.</div>
+  <div class="learning-toolbar">
+    <button class="btn btn-gold" onclick="openCorrectionModal()">Add manual correction</button>
+    <button class="btn btn-secondary" onclick="loadLearningQueue()">Refresh queue</button>
+    <button class="btn btn-secondary" onclick="generateWeeklyReview(false)">Preview weekly review</button>
+    <button class="btn btn-secondary" onclick="generateWeeklyReview(true)">Write START_THE_WEEK.md</button>
+  </div>
+  <div class="learning-grid">
+    <div class="learning-panel">
+      <h3>Pending approval</h3>
+      <div id="learning-pending-list" class="learning-empty">Load the queue to review pending lessons.</div>
+    </div>
+    <div class="learning-panel">
+      <h3>Start the Week preview</h3>
+      <div id="weekly-review-preview" class="weekly-preview">Generate a weekly review to summarize pending, approved, rejected, and manual-patch lessons.</div>
+    </div>
+  </div>
 </div>
 
 </div>
@@ -689,13 +747,73 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="correction-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Flag a correction</div>
+      <button class="modal-close" onclick="closeCorrectionModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-status" id="correction-status"></div>
+      <div class="modal-field">
+        <label>Category</label>
+        <select id="correction-category" onchange="syncCorrectionRiskAndTarget()">
+          <option value="customer_handling">Customer handling</option>
+          <option value="pricing">Pricing</option>
+          <option value="freight">Freight</option>
+          <option value="brand">Brand</option>
+          <option value="operations">Operations</option>
+          <option value="accounting">Accounting</option>
+          <option value="compliance">Compliance</option>
+          <option value="tool_behavior">Tool behavior</option>
+          <option value="product">Product</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Summary</label>
+        <input type="text" id="correction-summary" placeholder="What should Lumber Buddy learn?">
+      </div>
+      <div class="modal-field">
+        <label>Corrected answer / lesson</label>
+        <textarea id="correction-lesson" placeholder="Write the rule or correction Lumber Buddy should use next time."></textarea>
+      </div>
+      <div class="modal-field">
+        <label>Why this matters</label>
+        <input type="text" id="correction-reason" placeholder="e.g. quoted freight wrong, tone was off, missed handoff">
+      </div>
+      <div class="calc-settings" style="margin-top:0;padding-top:0;border-top:none;">
+        <div class="modal-field" style="margin-bottom:0;">
+          <label>Risk</label>
+          <select id="correction-risk">
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        <div class="modal-field" style="margin-bottom:0;">
+          <label>Target KB doc</label>
+          <input type="text" id="correction-target" value="LEARNING_LOG.md">
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--brown-light);line-height:1.5;margin-top:12px;">
+        This creates a pending learning item only. It will not update the live knowledge base until an owner/admin approves it.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="background:var(--surface);color:var(--brown-mid)" onclick="closeCorrectionModal()">Cancel</button>
+      <button class="btn btn-gold" id="correction-save-btn" onclick="submitCorrection()">Save correction</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const ROLES = {
-  owner: { displayName: 'Owner', visibleTabs: ['buddy','sales','pricing','marketing','finance','ar','strategy','settings'], defaultTab: 'buddy', canApprove: true, seeBrainSettings: true },
+  owner: { displayName: 'Owner', visibleTabs: ['buddy','sales','pricing','marketing','finance','ar','strategy','learning','settings'], defaultTab: 'buddy', canApprove: true, seeBrainSettings: true },
   ops: { displayName: 'Operations', visibleTabs: ['buddy','operations','sales','pricing','marketing','ar','settings'], defaultTab: 'buddy', canApprove: false, seeBrainSettings: false },
   yard: { displayName: 'Yard', visibleTabs: ['buddy','operations'], defaultTab: 'operations', canApprove: false, seeBrainSettings: false },
   driver: { displayName: 'Driver', visibleTabs: ['buddy','myroute'], defaultTab: 'myroute', canApprove: false, seeBrainSettings: false },
-  admin: { displayName: 'Admin', visibleTabs: ['buddy','operations','sales','pricing','marketing','finance','ar','strategy','myroute','settings'], defaultTab: 'buddy', canApprove: true, seeBrainSettings: true }
+  admin: { displayName: 'Admin', visibleTabs: ['buddy','operations','sales','pricing','marketing','finance','ar','strategy','myroute','learning','settings'], defaultTab: 'buddy', canApprove: true, seeBrainSettings: true }
 };
 
 const PROMPTS = {
@@ -721,6 +839,8 @@ let isAdmin = false;
 let history = [];
 let loading = false;
 let lastBrainMessage = '';
+let activeCorrection = { originalPrompt: '', botAnswer: '' };
+let learningItems = [];
 let priceBookCache = null;
 let arCache = null;
 
@@ -799,6 +919,7 @@ function showPage(tab, el) {
   if (el) el.classList.add('active');
   if (tab === 'pricing') initPricingCalc();
   if (tab === 'ar') initAR();
+  if (tab === 'learning') loadLearningQueue();
 }
 
 function buildQuickStrip(role) {
@@ -842,6 +963,14 @@ function addMsg(role, text, opts = {}) {
     btn.innerHTML = '✉ Send to CEO';
     btn.onclick = () => openEmailModal({ subject: 'Lumber Buddy update · ' + new Date().toLocaleDateString(), body: text });
     actions.appendChild(btn);
+    const correctionBtn = document.createElement('button');
+    correctionBtn.className = 'msg-action-btn';
+    correctionBtn.textContent = 'Flag correction';
+    correctionBtn.onclick = () => openCorrectionModal({
+      originalPrompt: getLastUserPrompt(),
+      botAnswer: text
+    });
+    actions.appendChild(correctionBtn);
     c.appendChild(actions);
   }
   c.scrollTop = c.scrollHeight;
@@ -951,44 +1080,8 @@ async function openCeoEmailComposer() {
 }
 
 async function buildArEmailBody() {
-  const data = await ensureArData();
-  const money = (n) => '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const topRisk = (data.invoices || []).find(inv => inv.status === 'Critical') || (data.invoices || [])[0] || {};
-  const followUps = (data.collectionPriority || []).slice(0, 2).map(item => `
-            <li style="margin:0 0 8px 0;color:#3A3027;line-height:1.5;">${escapeUi(item)}</li>
-  `).join('');
-
-  return `
-<!doctype html>
-<html>
-  <body style="margin:0;padding:0;background:#F7F3EA;color:#2B241D;font-family:Arial,Helvetica,sans-serif;">
-    <div style="background:#F7F3EA;padding:18px;">
-      <div style="max-width:640px;margin:0 auto;border:1px solid #D8CBB8;background:#FFFDF8;">
-        <div style="padding:26px 30px 22px 30px;background:#FFFDF8;">
-          <img src="https://musser-biomass-ops.vercel.app/musser-logo.png" width="136" alt="Musser Biomass & Wood Products" style="display:block;width:136px;max-width:136px;height:auto;margin:0 0 16px 0;border:0;outline:none;text-decoration:none;">
-          <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#1F6B4A;font-weight:700;">Lumber Buddy AR Brief</div>
-          <h1 style="margin:10px 0 10px 0;color:#17130F;font-size:32px;line-height:1.08;font-weight:800;letter-spacing:0;">Accounts Receivable</h1>
-          <p style="margin:0 0 14px 0;color:#5E5447;font-size:15px;line-height:1.5;">The full AR report is attached as a PDF.</p>
-          <p style="margin:0;color:#17130F;font-size:15px;line-height:1.6;"><strong>Snapshot:</strong> ${money(data.summary.totalOpen)} open, ${money(data.summary.overdueTotal)} overdue, ${data.summary.overdueCount} overdue invoices.</p>
-          <p style="margin:6px 0 0 0;color:#17130F;font-size:15px;line-height:1.6;"><strong>Priority:</strong> ${escapeUi(topRisk.customer || 'Review overdue accounts')} ${topRisk.daysOverdue ? 'is ' + topRisk.daysOverdue + ' days overdue' : 'needs review'}.</p>
-        </div>
-
-        <div style="padding:0 30px 24px 30px;background:#FFFDF8;">
-          <p style="margin:0 0 14px 0;color:#5E5447;font-size:14px;line-height:1.55;">This is demo/sample AR data until the live Sage 50 connector is approved and connected.</p>
-          <div style="border:1px solid #E2D8C9;background:#F7F3EA;padding:16px 18px;margin:0 0 16px 0;">
-            <div style="font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:#1F6B4A;font-weight:700;margin-bottom:10px;">Recommended follow-up</div>
-            <ul style="padding-left:18px;margin:0;">${followUps}</ul>
-          </div>
-          <p style="margin:0;color:#7A6C5B;font-size:13px;line-height:1.5;">Attached: Lumber Buddy AR Report PDF with aging buckets, open invoice list, collection notes, and cash-risk summary.</p>
-        </div>
-
-        <div style="padding:14px 30px;background:#1F6B4A;color:#FFFDF8;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;">
-          Musser Biomass & Wood Products - Rural Retreat, VA - ${escapeUi(data.asOf || new Date().toISOString().slice(0, 10))}
-        </div>
-      </div>
-    </div>
-  </body>
-</html>`;
+  await ensureArData();
+  return 'Here is the Musser Biomass Accounts Receivable report you requested. The full report is attached as a PDF.';
 }
 
 async function ensureArData() {
@@ -1319,6 +1412,14 @@ async function run(text) {
       btn.innerHTML = '✉ Send to CEO';
       btn.onclick = () => openEmailModal({ subject: 'Lumber Buddy update · ' + new Date().toLocaleDateString(), body: lastBrainMessage });
       actions.appendChild(btn);
+      const correctionBtn = document.createElement('button');
+      correctionBtn.className = 'msg-action-btn';
+      correctionBtn.textContent = 'Flag correction';
+      correctionBtn.onclick = () => openCorrectionModal({
+        originalPrompt: text,
+        botAnswer: lastBrainMessage
+      });
+      actions.appendChild(correctionBtn);
       wrapper.after(actions);
       const c = document.getElementById('chat-messages');
       c.scrollTop = c.scrollHeight;
@@ -1337,6 +1438,192 @@ function handleKey(e) {
   const ta = e.target;
   ta.style.height = 'auto';
   ta.style.height = Math.min(ta.scrollHeight, 100) + 'px';
+}
+
+function getLastUserPrompt() {
+  for (let i = history.length - 1; i >= 0; i--) {
+    if (history[i]?.role === 'user') return history[i].content || '';
+  }
+  return '';
+}
+
+function syncCorrectionRiskAndTarget() {
+  const category = document.getElementById('correction-category')?.value || 'other';
+  const riskByCategory = {
+    pricing: 'high',
+    freight: 'high',
+    accounting: 'high',
+    compliance: 'high',
+    product: 'high',
+    brand: 'medium',
+    operations: 'medium',
+    customer_handling: 'medium',
+    tool_behavior: 'medium',
+    other: 'medium'
+  };
+  const targetByCategory = {
+    pricing: 'PRICING.md',
+    freight: 'PRICING.md',
+    brand: 'BRAND_STYLE.md',
+    operations: 'PROJECT_STATE.md',
+    customer_handling: 'LEARNING_LOG.md',
+    accounting: 'PROJECT_STATE.md',
+    compliance: 'PLAYBOOK.md',
+    tool_behavior: 'ARCHITECTURE.md',
+    product: 'PRICING.md',
+    other: 'LEARNING_LOG.md'
+  };
+  document.getElementById('correction-risk').value = riskByCategory[category] || 'medium';
+  document.getElementById('correction-target').value = targetByCategory[category] || 'LEARNING_LOG.md';
+}
+
+function openCorrectionModal({ originalPrompt = '', botAnswer = '' } = {}) {
+  activeCorrection = { originalPrompt, botAnswer };
+  const status = document.getElementById('correction-status');
+  status.className = 'modal-status';
+  status.textContent = '';
+  document.getElementById('correction-category').value = 'customer_handling';
+  document.getElementById('correction-summary').value = '';
+  document.getElementById('correction-lesson').value = botAnswer && botAnswer !== '[artifact generated]' ? '' : '';
+  document.getElementById('correction-reason').value = '';
+  syncCorrectionRiskAndTarget();
+  document.getElementById('correction-modal').classList.add('visible');
+}
+
+function closeCorrectionModal() {
+  document.getElementById('correction-modal').classList.remove('visible');
+}
+
+async function submitCorrection() {
+  const status = document.getElementById('correction-status');
+  const btn = document.getElementById('correction-save-btn');
+  const category = document.getElementById('correction-category').value;
+  const summary = document.getElementById('correction-summary').value.trim();
+  const proposedLesson = document.getElementById('correction-lesson').value.trim();
+  const reason = document.getElementById('correction-reason').value.trim();
+  const riskLevel = document.getElementById('correction-risk').value;
+  const targetDoc = document.getElementById('correction-target').value.trim() || 'LEARNING_LOG.md';
+  if (!summary || !proposedLesson) {
+    status.className = 'modal-status error';
+    status.textContent = 'Add a summary and corrected lesson before saving.';
+    return;
+  }
+  btn.disabled = true;
+  status.className = 'modal-status sending';
+  status.textContent = 'Saving correction to the review queue...';
+  try {
+    const resp = await fetch('/api/learning/correction', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        category,
+        summary,
+        proposedLesson,
+        correctedAnswer: proposedLesson,
+        reason,
+        riskLevel,
+        targetDoc,
+        originalPrompt: activeCorrection.originalPrompt,
+        botAnswer: activeCorrection.botAnswer,
+        evidence: [
+          activeCorrection.originalPrompt ? `Original prompt: ${activeCorrection.originalPrompt}` : '',
+          activeCorrection.botAnswer ? `Bot answer: ${activeCorrection.botAnswer}` : '',
+          reason ? `Reason: ${reason}` : ''
+        ].filter(Boolean).join(' | ')
+      })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Unable to save correction');
+    status.className = 'modal-status success';
+    status.textContent = 'Saved as a pending learning item.';
+    await loadLearningQueue();
+    setTimeout(() => { closeCorrectionModal(); btn.disabled = false; }, 1200);
+  } catch(e) {
+    status.className = 'modal-status error';
+    status.textContent = e.message;
+    btn.disabled = false;
+  }
+}
+
+async function loadLearningQueue() {
+  const list = document.getElementById('learning-pending-list');
+  if (!list) return;
+  list.className = 'learning-empty';
+  list.textContent = 'Loading learning queue...';
+  try {
+    const resp = await fetch('/api/learning/pending');
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Unable to load learning queue');
+    learningItems = data.items || [];
+    renderLearningQueue(data.pending || []);
+  } catch(e) {
+    list.className = 'learning-empty';
+    list.textContent = e.message;
+  }
+}
+
+function renderLearningQueue(items) {
+  const list = document.getElementById('learning-pending-list');
+  if (!items.length) {
+    list.className = 'learning-empty';
+    list.textContent = 'No pending learning items. Corrections and connector insights will appear here.';
+    return;
+  }
+  list.className = '';
+  list.innerHTML = items.map(item => `
+    <div class="learning-item">
+      <div class="learning-item-title">${escapeUi(item.summary)}</div>
+      <div class="learning-item-meta">
+        <span class="learning-pill ${escapeUi(item.riskLevel)}">${escapeUi(item.riskLevel)}</span>
+        <span class="learning-pill">${escapeUi(item.category)}</span>
+        <span class="learning-pill">${escapeUi(item.targetDoc)}</span>
+      </div>
+      <div class="learning-item-body">
+        <strong>Lesson:</strong> ${escapeUi(item.proposedLesson)}<br>
+        <strong>Evidence:</strong> ${escapeUi(item.evidence)}
+      </div>
+      <div class="learning-actions">
+        <button class="btn btn-approve" onclick="reviewLearningItem('${escapeUi(item.id)}','approve')">Approve</button>
+        <button class="btn btn-adjust" onclick="reviewLearningItem('${escapeUi(item.id)}','needs_manual_patch')">Needs patch</button>
+        <button class="btn btn-secondary" onclick="reviewLearningItem('${escapeUi(item.id)}','reject')">Reject</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function reviewLearningItem(itemId, decision) {
+  const note = decision === 'approve'
+    ? 'Approved from Lumber Buddy learning review.'
+    : decision === 'needs_manual_patch'
+      ? 'Approved as a manual patch item; update the target doc/code before treating as canonical.'
+      : 'Rejected from Lumber Buddy learning review.';
+  const endpoint = decision === 'approve' ? '/api/learning/approve' : '/api/learning/reject';
+  try {
+    const resp = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ itemId, decision, reviewedBy: currentRole, decisionReason: note })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Review failed');
+    await loadLearningQueue();
+    await generateWeeklyReview(false);
+  } catch(e) {
+    alert(e.message);
+  }
+}
+
+async function generateWeeklyReview(write) {
+  const preview = document.getElementById('weekly-review-preview');
+  if (preview) preview.textContent = write ? 'Writing START_THE_WEEK.md...' : 'Generating weekly review...';
+  try {
+    const resp = await fetch('/api/learning/weekly-review' + (write ? '' : '?write=0'), { method: write ? 'POST' : 'GET' });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Unable to generate weekly review');
+    if (preview) preview.textContent = data.markdown || 'No review generated.';
+  } catch(e) {
+    if (preview) preview.textContent = e.message;
+  }
 }
 
 function approveJob(btn, amount) {

@@ -20,7 +20,11 @@
 // sends contentText and this function renders a simple PDF server-side before
 // handing it to Resend.
 
+import { readFileSync } from 'node:fs';
 import { isGhlConfigured, sendGhlEmail } from './connectors/ghl.js';
+
+const MUSSER_LOGO_JPG = loadOptionalAsset('../musser-logo-pdf.jpg');
+const MUSSER_LOGO_SIZE = { width: 612, height: 360 };
 
 const PRESETS = {
   to_ceo: {
@@ -203,6 +207,14 @@ function sanitizeFilename(filename) {
     .slice(0, 90) || 'lumber-buddy-report.pdf';
 }
 
+function loadOptionalAsset(relativePath) {
+  try {
+    return readFileSync(new URL(relativePath, import.meta.url));
+  } catch {
+    return null;
+  }
+}
+
 function createPdfBuffer({ title, text }) {
   const pageWidth = 612;
   const pageHeight = 792;
@@ -283,8 +295,13 @@ function createArPdfBuffer(data) {
   const p1 = [];
   drawPageBackground(p1);
   drawRect(p1, 0, 682, 612, 110, '#173D2B');
-  drawText(p1, 'MUSSER', 48, 740, 28, 'F2', '#FFFDF8');
-  drawText(p1, 'BIOMASS & WOOD PRODUCTS', 50, 720, 8, 'F2', '#D8B35A');
+  if (MUSSER_LOGO_JPG) {
+    drawRect(p1, 40, 704, 150, 88, '#FFFDF8');
+    drawImage(p1, 'Logo', 49, 709, 132, 78);
+  } else {
+    drawText(p1, 'MUSSER', 48, 740, 28, 'F2', '#FFFDF8');
+    drawText(p1, 'BIOMASS & WOOD PRODUCTS', 50, 720, 8, 'F2', '#D8B35A');
+  }
   drawText(p1, 'LUMBER BUDDY AR BRIEF', 422, 742, 9, 'F2', '#FFFDF8');
   drawText(p1, `AS OF ${asOf}`, 468, 724, 8, 'F1', '#D8CBB8');
   drawRect(p1, 48, 640, 516, 3, '#D19A2E');
@@ -408,6 +425,13 @@ function drawStrokeRect(cmds, x, y, w, h, color, lineWidth = 1) {
   cmds.push('Q');
 }
 
+function drawImage(cmds, name, x, y, w, h) {
+  cmds.push('q');
+  cmds.push(`${w} 0 0 ${h} ${x} ${y} cm`);
+  cmds.push(`/${name} Do`);
+  cmds.push('Q');
+}
+
 function createPdfFromStreams(pageStreams) {
   const pageWidth = 612;
   const pageHeight = 792;
@@ -421,11 +445,15 @@ function createPdfFromStreams(pageStreams) {
   const pagesId = addObject();
   const fontId = addObject('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
   const boldFontId = addObject('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>');
+  const logoId = MUSSER_LOGO_JPG
+    ? addObject(`<< /Type /XObject /Subtype /Image /Width ${MUSSER_LOGO_SIZE.width} /Height ${MUSSER_LOGO_SIZE.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${MUSSER_LOGO_JPG.length} >>\nstream\n${MUSSER_LOGO_JPG.toString('binary')}\nendstream`)
+    : null;
+  const xObjectResource = logoId ? `/XObject << /Logo ${logoId} 0 R >> ` : '';
   const pageIds = [];
 
   pageStreams.forEach((stream) => {
     const contentId = addObject(`<< /Length ${Buffer.byteLength(stream, 'latin1')} >>\nstream\n${stream}\nendstream`);
-    const pageId = addObject(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${fontId} 0 R /F2 ${boldFontId} 0 R >> >> /Contents ${contentId} 0 R >>`);
+    const pageId = addObject(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${fontId} 0 R /F2 ${boldFontId} 0 R >> ${xObjectResource}>> /Contents ${contentId} 0 R >>`);
     pageIds.push(pageId);
   });
 
