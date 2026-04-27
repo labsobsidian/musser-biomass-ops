@@ -5,7 +5,7 @@
   "description": "Lumber Buddy by Obsidian Labs — AI ops command center for Musser Biomass",
   "type": "module",
   "engines": {
-    "node": ">=18.0.0"
+    "node": "20.x"
   },
   "dependencies": {
     "@octokit/rest": "^21.0.0"
