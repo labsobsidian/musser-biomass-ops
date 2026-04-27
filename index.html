@@ -954,6 +954,9 @@ async function buildArEmailBody() {
   const data = await ensureArData();
   const money = (n) => '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const topRisk = (data.invoices || []).find(inv => inv.status === 'Critical') || (data.invoices || [])[0] || {};
+  const followUps = (data.collectionPriority || []).slice(0, 2).map(item => `
+            <li style="margin:0 0 8px 0;color:#3A3027;line-height:1.5;">${escapeUi(item)}</li>
+  `).join('');
 
   return `
 <!doctype html>
@@ -968,6 +971,15 @@ async function buildArEmailBody() {
           <p style="margin:0 0 14px 0;color:#5E5447;font-size:15px;line-height:1.5;">The full AR report is attached as a PDF.</p>
           <p style="margin:0;color:#17130F;font-size:15px;line-height:1.6;"><strong>Snapshot:</strong> ${money(data.summary.totalOpen)} open, ${money(data.summary.overdueTotal)} overdue, ${data.summary.overdueCount} overdue invoices.</p>
           <p style="margin:6px 0 0 0;color:#17130F;font-size:15px;line-height:1.6;"><strong>Priority:</strong> ${escapeUi(topRisk.customer || 'Review overdue accounts')} ${topRisk.daysOverdue ? 'is ' + topRisk.daysOverdue + ' days overdue' : 'needs review'}.</p>
+        </div>
+
+        <div style="padding:0 30px 24px 30px;background:#FFFDF8;">
+          <p style="margin:0 0 14px 0;color:#5E5447;font-size:14px;line-height:1.55;">This is demo/sample AR data until the live Sage 50 connector is approved and connected.</p>
+          <div style="border:1px solid #E2D8C9;background:#F7F3EA;padding:16px 18px;margin:0 0 16px 0;">
+            <div style="font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:#1F6B4A;font-weight:700;margin-bottom:10px;">Recommended follow-up</div>
+            <ul style="padding-left:18px;margin:0;">${followUps}</ul>
+          </div>
+          <p style="margin:0;color:#7A6C5B;font-size:13px;line-height:1.5;">Attached: Lumber Buddy AR Report PDF with aging buckets, open invoice list, collection notes, and cash-risk summary.</p>
         </div>
 
         <div style="padding:14px 30px;background:#1F6B4A;color:#FFFDF8;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;">
