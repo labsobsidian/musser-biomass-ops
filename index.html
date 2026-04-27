@@ -964,7 +964,7 @@ async function buildArEmailBody() {
   const aging = data.aging || [];
   const priority = data.collectionPriority || [];
   const riskCount = invoices.filter(inv => inv.status !== 'Current').length;
-  const logoUrl = 'https://img1.wsimg.com/isteam/ip/f49d5450-a6d7-46fd-9b5a-83369a862f1c/MBWP%20Logo.png/%3A/rs%3Dh%3A90%2Ccg%3Atrue%2Cm/qt%3Dq%3A95';
+  const logoUrl = `${window.location.origin}/musser-logo.webp`;
   const invoiceRows = invoices.slice(0, 7).map((inv, idx) => {
     const isCritical = inv.status === 'Critical';
     const statusColor = isCritical ? '#A9432C' : inv.status === 'Current' ? '#1F6B4A' : '#B88A35';
@@ -998,7 +998,7 @@ async function buildArEmailBody() {
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
             <tr>
               <td>
-                <img src="${logoUrl}" width="215" alt="Musser Biomass & Wood Products" style="display:block;border:0;max-width:215px;height:auto;margin:0 0 12px 0;">
+                <img src="${logoUrl}" width="215" alt="Musser Biomass & Wood Products" style="display:block;border:0;outline:none;text-decoration:none;max-width:215px;height:auto;margin:0 0 12px 0;">
                 <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:2.1px;text-transform:uppercase;color:#1F6B4A;">Dry wood fiber operating brief</div>
                 <div style="margin-top:7px;color:#5E5447;font-size:13px;line-height:1.45;">Rural Retreat, Virginia · Appalachian hardwood supply · Direct access to I-81 / I-77 corridors</div>
               </td>
