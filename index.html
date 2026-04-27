@@ -962,11 +962,10 @@ async function buildArEmailBody() {
   const data = arCache;
   const money = (n) => '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const invoices = data.invoices || [];
-  const aging = data.aging || [];
   const priority = data.collectionPriority || [];
   const riskCount = invoices.filter(inv => inv.status !== 'Current').length;
   const logoUrl = `${window.location.origin}/musser-logo.png`;
-  const invoiceRows = invoices.slice(0, 7).map((inv, idx) => {
+  const invoiceRows = invoices.slice(0, 5).map((inv, idx) => {
     const isCritical = inv.status === 'Critical';
     const statusColor = isCritical ? '#A9432C' : inv.status === 'Current' ? '#1F6B4A' : '#B88A35';
     return `
@@ -979,13 +978,7 @@ async function buildArEmailBody() {
       </tr>`;
   }).join('');
 
-  const agingCells = aging.map(row => `
-    <td style="padding:18px 20px;border:1px solid #E2D8C9;background:#FFFDF8;">
-      <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#7A6C5B;">${escapeUi(row.bucket)}</div>
-      <div style="font-size:26px;line-height:1.15;color:#2B241D;font-weight:800;margin-top:8px;">${money(row.amount)}</div>
-    </td>`).join('');
-
-  const priorityItems = priority.map(item => `
+  const priorityItems = priority.slice(0, 3).map(item => `
     <li style="margin:0 0 10px 0;color:#2B241D;line-height:1.55;"><span style="color:#B88A35;font-weight:800;">*</span> ${escapeUi(item)}</li>
   `).join('');
 
@@ -993,9 +986,9 @@ async function buildArEmailBody() {
 <!doctype html>
 <html>
   <body style="margin:0;padding:0;background:#F7F3EA;color:#2B241D;font-family:Arial,Helvetica,sans-serif;">
-    <div style="background:#F7F3EA;padding:34px 18px;">
+    <div style="background:#F7F3EA;padding:24px 18px;">
       <div style="max-width:920px;margin:0 auto;border:1px solid #D8CBB8;background:#FFFDF8;">
-        <div style="padding:30px 34px 24px 34px;border-bottom:1px solid #E2D8C9;background:#FFFDF8;">
+        <div style="padding:26px 34px 22px 34px;border-bottom:1px solid #E2D8C9;background:#FFFDF8;">
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
             <tr>
               <td>
@@ -1006,7 +999,7 @@ async function buildArEmailBody() {
               <td align="right" style="color:#7A6C5B;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;">Lumber Buddy<br>AR Brief</td>
             </tr>
           </table>
-          <h1 style="margin:28px 0 10px 0;color:#17130F;font-size:38px;line-height:1.05;font-weight:800;letter-spacing:0;">Accounts Receivable</h1>
+          <h1 style="margin:24px 0 10px 0;color:#17130F;font-size:38px;line-height:1.05;font-weight:800;letter-spacing:0;">Accounts Receivable</h1>
           <div style="color:#5E5447;font-size:15px;line-height:1.55;max-width:760px;">Sage 50-ready operating snapshot for Musser's converted hardwood products business. This is demo/sample AR data until the live Sage 50 connector is approved and connected.</div>
         </div>
 
@@ -1016,7 +1009,7 @@ async function buildArEmailBody() {
           <span style="display:inline-block;color:#FFFDF8;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">Alpha Fiber</span>
         </div>
 
-        <div style="padding:26px 34px;border-left:5px solid #B88A35;border-bottom:1px solid #E2D8C9;background:#F7F3EA;">
+        <div style="padding:22px 34px;border-left:5px solid #B88A35;border-bottom:1px solid #E2D8C9;background:#F7F3EA;">
           <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1F6B4A;margin-bottom:12px;">Atlas Read · Owner Attention</div>
           <div style="font-size:20px;line-height:1.55;color:#2B241D;">
             Open AR is <strong style="color:#B88A35;">${money(data.summary.totalOpen)}</strong>. Overdue AR is <strong style="color:#A9432C;">${money(data.summary.overdueTotal)}</strong> across <strong>${data.summary.overdueCount}</strong> invoices. ${escapeUi(data.aiSummary)}
@@ -1044,20 +1037,12 @@ async function buildArEmailBody() {
           </tr>
         </table>
 
-        <div style="padding:34px;">
-          <div style="border-top:1px solid #D8CBB8;padding-top:22px;margin-bottom:20px;">
+        <div style="padding:28px 34px 30px 34px;">
+          <div style="border-top:1px solid #D8CBB8;padding-top:20px;margin-bottom:18px;">
             <span style="color:#8C7D6B;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;">01</span>
-            <span style="color:#17130F;font-size:25px;font-weight:800;margin-left:12px;">Aging Summary</span>
+            <span style="color:#17130F;font-size:25px;font-weight:800;margin-left:12px;">Top Open Invoices</span>
           </div>
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;margin-bottom:34px;">
-            <tr>${agingCells}</tr>
-          </table>
-
-          <div style="border-top:1px solid #D8CBB8;padding-top:22px;margin-bottom:20px;">
-            <span style="color:#8C7D6B;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;">02</span>
-            <span style="color:#17130F;font-size:25px;font-weight:800;margin-left:12px;">Open Invoice Board</span>
-          </div>
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;background:#FFFDF8;border:1px solid #E2D8C9;margin-bottom:34px;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;background:#FFFDF8;border:1px solid #E2D8C9;margin-bottom:26px;">
             <thead>
               <tr>
                 <th align="left" style="padding:12px 16px;color:#B8AB98;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;">#</th>
@@ -1070,8 +1055,8 @@ async function buildArEmailBody() {
             <tbody>${invoiceRows}</tbody>
           </table>
 
-          <div style="border:1px solid #D8CBB8;background:#F7F3EA;padding:24px;">
-            <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#B88A35;margin-bottom:14px;">03 Action Queue</div>
+          <div style="border:1px solid #D8CBB8;background:#F7F3EA;padding:22px;">
+            <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#B88A35;margin-bottom:14px;">02 Action Queue</div>
             <ul style="padding-left:0;list-style:none;margin:0;">${priorityItems}</ul>
           </div>
         </div>
