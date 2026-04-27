@@ -953,47 +953,24 @@ async function openCeoEmailComposer() {
 async function buildArEmailBody() {
   const data = await ensureArData();
   const money = (n) => '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const riskCount = (data.invoices || []).filter(inv => inv.status !== 'Current').length;
   const topRisk = (data.invoices || []).find(inv => inv.status === 'Critical') || (data.invoices || [])[0] || {};
-  const actions = (data.collectionPriority || []).slice(0, 2).map(item => `
-    <li style="margin:0 0 8px 0;color:#3A3027;line-height:1.5;">${escapeUi(item)}</li>
-  `).join('');
 
   return `
 <!doctype html>
 <html>
   <body style="margin:0;padding:0;background:#F7F3EA;color:#2B241D;font-family:Arial,Helvetica,sans-serif;">
-    <div style="background:#F7F3EA;padding:22px 18px;">
-      <div style="max-width:720px;margin:0 auto;border:1px solid #D8CBB8;background:#FFFDF8;">
-        <div style="padding:28px 34px 24px 34px;background:#FFFDF8;">
-          <img src="https://musser-biomass-ops.vercel.app/musser-logo.png" width="150" alt="Musser Biomass & Wood Products" style="display:block;width:150px;max-width:150px;height:auto;margin:0 0 18px 0;border:0;outline:none;text-decoration:none;">
+    <div style="background:#F7F3EA;padding:18px;">
+      <div style="max-width:640px;margin:0 auto;border:1px solid #D8CBB8;background:#FFFDF8;">
+        <div style="padding:26px 30px 22px 30px;background:#FFFDF8;">
+          <img src="https://musser-biomass-ops.vercel.app/musser-logo.png" width="136" alt="Musser Biomass & Wood Products" style="display:block;width:136px;max-width:136px;height:auto;margin:0 0 16px 0;border:0;outline:none;text-decoration:none;">
           <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#1F6B4A;font-weight:700;">Lumber Buddy AR Brief</div>
-          <h1 style="margin:12px 0 10px 0;color:#17130F;font-size:34px;line-height:1.08;font-weight:800;letter-spacing:0;">Accounts Receivable</h1>
-          <p style="margin:0;color:#5E5447;font-size:15px;line-height:1.55;">Sage 50-ready operating snapshot for Musser's converted hardwood products business. Full aging detail and invoice notes are attached as a PDF.</p>
+          <h1 style="margin:10px 0 10px 0;color:#17130F;font-size:32px;line-height:1.08;font-weight:800;letter-spacing:0;">Accounts Receivable</h1>
+          <p style="margin:0 0 14px 0;color:#5E5447;font-size:15px;line-height:1.5;">The full AR report is attached as a PDF.</p>
+          <p style="margin:0;color:#17130F;font-size:15px;line-height:1.6;"><strong>Snapshot:</strong> ${money(data.summary.totalOpen)} open, ${money(data.summary.overdueTotal)} overdue, ${data.summary.overdueCount} overdue invoices.</p>
+          <p style="margin:6px 0 0 0;color:#17130F;font-size:15px;line-height:1.6;"><strong>Priority:</strong> ${escapeUi(topRisk.customer || 'Review overdue accounts')} ${topRisk.daysOverdue ? 'is ' + topRisk.daysOverdue + ' days overdue' : 'needs review'}.</p>
         </div>
 
-        <div style="height:44px;background:#1F6B4A;color:#FFFDF8;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;line-height:44px;padding:0 34px;">
-          Forest Fuel Pellets &nbsp;&nbsp; Forest Fuel Briquettes &nbsp;&nbsp; Alpha Fiber
-        </div>
-
-        <div style="padding:26px 34px 24px 34px;border-left:5px solid #B88A35;background:#F7F3EA;border-bottom:1px solid #E2D8C9;">
-          <div style="font-size:20px;line-height:1.55;color:#2B241D;">
-            Open AR is <strong style="color:#B88A35;">${money(data.summary.totalOpen)}</strong>. Overdue AR is <strong style="color:#A9432C;">${money(data.summary.overdueTotal)}</strong> across <strong>${data.summary.overdueCount}</strong> invoices. ${escapeUi(data.aiSummary)}
-          </div>
-        </div>
-
-        <div style="padding:24px 34px 10px 34px;background:#FFFDF8;">
-          <p style="margin:0 0 10px 0;color:#17130F;font-size:15px;line-height:1.6;"><strong>Snapshot:</strong> ${money(data.summary.totalOpen)} open, ${money(data.summary.overdueTotal)} overdue, ${riskCount} risk accounts, estimated DSO ${data.summary.dsoEstimate} days.</p>
-          <p style="margin:0 0 10px 0;color:#17130F;font-size:15px;line-height:1.6;"><strong>Priority:</strong> ${escapeUi(topRisk.customer || 'Review overdue accounts')} ${topRisk.daysOverdue ? 'is ' + topRisk.daysOverdue + ' days overdue' : 'needs review'}.</p>
-          <p style="margin:0 0 16px 0;color:#5E5447;font-size:14px;line-height:1.55;">This is demo/sample AR data until the live Sage 50 connector is approved and connected.</p>
-          <div style="border:1px solid #E2D8C9;background:#F7F3EA;padding:18px 20px;margin-bottom:20px;">
-            <div style="font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:#1F6B4A;font-weight:700;margin-bottom:10px;">Recommended follow-up</div>
-            <ul style="padding-left:18px;margin:0;">${actions}</ul>
-          </div>
-          <p style="margin:0 0 14px 0;color:#7A6C5B;font-size:13px;line-height:1.5;">Attached: Lumber Buddy AR Report PDF with aging buckets, open invoice list, collection notes, and cash-risk summary.</p>
-        </div>
-
-        <div style="padding:16px 34px;background:#1F6B4A;color:#FFFDF8;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;">
+        <div style="padding:14px 30px;background:#1F6B4A;color:#FFFDF8;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;">
           Musser Biomass & Wood Products - Rural Retreat, VA - ${escapeUi(data.asOf || new Date().toISOString().slice(0, 10))}
         </div>
       </div>
