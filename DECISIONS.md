@@ -108,3 +108,17 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 - Add a "verify mileage" button that calls Google Distance Matrix on demand (post-v1)
 - Add a small offline ZIP lookup fallback if Zippopotam outages prove disruptive
 - CLAUDE.md should be updated to mention `/api/distance.js` as part of the pricing-system invariant (next commit)
+
+---
+
+## 2026-04-27 — Brand guide, provider toggle, premium UI, and Sage-ready AR
+
+**Decision:** Upgrade Lumber Buddy from a demo-style Atlas fork into a premium Musser-specific Atlas deployment. Add `BRAND_STYLE.md`, load it into the brain context, make `/api/claude` OpenAI-first with Anthropic fallback, add placeholder Accounts Receivable through `/api/ar`, and create a Sage 50 connector boundary at `api/connectors/sage50.js`.
+
+**Context:** Musser needs Atlas to create branded websites, PDF-style briefs, slide previews, CEO emails, and operational reporting that matches the real business. Sage 50 access is not available yet, so AR must be useful in demo mode without pretending to be live accounting data.
+
+**Consequences:**
+- Customer-facing artifacts must follow `BRAND_STYLE.md`.
+- `/api/ar` is explicitly placeholder data until Sage 50 access is confirmed.
+- The frontend still reads Anthropic-shaped SSE events, while the backend can use OpenAI or Anthropic.
+- Future Sage work should replace the connector implementation rather than rewriting the UI.

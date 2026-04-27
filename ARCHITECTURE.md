@@ -8,18 +8,18 @@ _Last updated: 2026-04-24_
 | Layer | Tool | Purpose |
 |---|---|---|
 | App shell | Static `index.html` on Vercel | Single-file, no build step |
-| AI brain | Anthropic Claude via `/api/claude` (SSE stream) | Answers operational questions |
+| AI brain | OpenAI-first / Anthropic fallback via `/api/claude` (SSE stream) | Answers operational questions and creates branded artifacts |
 | Knowledge base | This repo's living docs via `/api/context` | Grounds the brain |
 | Pricing logic | `/api/quote` (real calculator) | Real functional tool #1 |
 | Email | `/api/send-email` → Resend | Real functional tool #2 |
 | CRM (planned) | GoHighLevel sub-account | Pipeline, SMS, Conversation AI |
-| Accounting (planned) | QuickBooks | P&L, invoicing |
+| Accounting / AR (planned) | Sage 50 | Accounts receivable, invoice aging, collections reporting |
 | Database (planned) | Supabase | Inventory, orders, delivery records |
 | Automation (planned) | n8n self-hosted | Webhook orchestration |
 
 ---
 
-## Flow — Customer asks "how much for 2 cords delivered?"
+## Flow — Customer asks "how much for 1 load of pellets to 13346?"
 
 ```
 Customer → GHL Conversation AI (chat/SMS/web)
@@ -28,8 +28,9 @@ Customer → GHL Conversation AI (chat/SMS/web)
            │
            ▼
          Agent quotes from PRICING.md logic:
-         "2 cords seasoned oak × $285 = $570,
-          delivery 18 miles = $61, total $631"
+         "1 load Forest Fuel pellets = $5,720,
+          freight to 13346 = $1,539.90,
+          total = $7,259.90"
            │
            ▼
          Creates lead in GHL with the quote attached
@@ -51,10 +52,10 @@ Browser (index.html)
 /api/claude.js  ────► getContext() ────► /api/context.js
     │                                          │
     │                                          ▼
-    │                             GitHub repo: 7 living docs
-    │                             (includes PRICING.md)
+    │                             GitHub repo: 8 living docs
+    │                             (includes PRICING.md + BRAND_STYLE.md)
     ▼
-Anthropic /v1/messages  (streaming SSE back to browser)
+OpenAI Responses API or Anthropic Messages API (normalized SSE back to browser)
 ```
 
 `/api/context.js` caches 60s per serverless instance.
@@ -82,11 +83,13 @@ Preset hides the address from the UI — the UI only knows "send to CEO", destin
 
 ```
 musser-biomass-ops/
-├── index.html              # Lumber Buddy app — single file, 9 tabs
+├── index.html              # Lumber Buddy app — single file, 10 tabs
 ├── api/
 │   ├── claude.js           # streaming proxy
 │   ├── context.js          # GitHub living-docs fetcher
 │   ├── quote.js            # pricing calculator (real)
+│   ├── ar.js               # placeholder AR endpoint
+│   ├── connectors/sage50.js # future Sage 50 boundary
 │   └── send-email.js       # email to CEO (real)
 ├── PROJECT_STATE.md
 ├── ARCHITECTURE.md         # this file
@@ -95,6 +98,7 @@ musser-biomass-ops/
 ├── GO_LIVE_CHECKLIST.md
 ├── DEMO_CONTEXT.md
 ├── PRICING.md              # authoritative price list
+├── BRAND_STYLE.md          # brand guide for artifacts
 ├── CLAUDE.md               # Claude Code instructions for this repo
 ├── README.md
 └── package.json
@@ -108,7 +112,11 @@ No framework, no bundler, no build step. Push to `main` → Vercel auto-deploys.
 
 | Name | Purpose |
 |---|---|
-| `ANTHROPIC_API_KEY` | Powers `/api/claude` |
+| `OPENAI_API_KEY` | Powers `/api/claude` when `AI_PROVIDER=openai` |
+| `OPENAI_MODEL` | Defaults to `gpt-5.5` |
+| `ANTHROPIC_API_KEY` | Fallback/provider option for `/api/claude` |
+| `ANTHROPIC_MODEL` | Defaults to `claude-sonnet-4-6` |
+| `AI_PROVIDER` | `openai` or `anthropic`; defaults to `openai` |
 | `GITHUB_TOKEN` | Fine-grained PAT, scoped ONLY to this repo, `contents:read` |
 | `CLIENT_REPO` | `labsobsidian/musser-biomass-ops` |
 | `CLIENT_NAME` | `Musser Biomass` |
@@ -131,13 +139,13 @@ All must be set in **Production** and **Preview** environments.
                       │ feeds from
 ┌─────────────────────▼───────────────────┐
 │    LAYER 2 — LUMBER BUDDY BRAIN         │
-│  Claude-powered · reads this repo's KB  │
+│  Provider-toggle brain · reads this KB  │
 │  Can call pricing calc + send email     │
 └─────────────────────┬───────────────────┘
                       │ grounded by
 ┌─────────────────────▼───────────────────┐
 │    LAYER 1 — KNOWLEDGE BASE             │
-│  Living docs + PRICING.md               │
+│  Living docs + PRICING.md + BRAND_STYLE │
 │  Updated via commits to this repo       │
 └─────────────────────────────────────────┘
 ```

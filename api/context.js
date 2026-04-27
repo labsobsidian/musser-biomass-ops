@@ -2,7 +2,7 @@
 //
 // Builds the live system prompt Lumber Buddy uses to answer questions.
 // One source today (GitHub living docs). Designed so future connectors
-// (GHL pipeline, QuickBooks, route optimizer, etc.) slot in as siblings.
+// (GHL pipeline, Sage 50 AR, route optimizer, etc.) slot in as siblings.
 //
 // Env vars required:
 //   CLIENT_REPO     e.g. "labsobsidian/musser-biomass-ops"
@@ -14,7 +14,8 @@
 import { Octokit } from '@octokit/rest';
 
 // Living docs Lumber Buddy reads every context build.
-// DEMO_CONTEXT.md + PRICING.md are optional-but-expected; missing files are skipped.
+// DEMO_CONTEXT.md, PRICING.md, and BRAND_STYLE.md are optional-but-expected;
+// missing files are skipped.
 const LIVING_DOCS = [
   'PROJECT_STATE.md',
   'ARCHITECTURE.md',
@@ -22,7 +23,8 @@ const LIVING_DOCS = [
   'DECISIONS.md',
   'GO_LIVE_CHECKLIST.md',
   'DEMO_CONTEXT.md',
-  'PRICING.md'
+  'PRICING.md',
+  'BRAND_STYLE.md'
 ];
 
 // In-memory cache. 60s TTL per serverless instance. Keeps us far under
@@ -72,7 +74,7 @@ async function buildKB() {
     fetchGitHubDocs()
     // future:
     // fetchGhlPipeline(),
-    // fetchQuickBooksSnapshot(),
+    // fetchSage50ARSnapshot(),
     // fetchRouteOptimizer(),
   ]);
   return {

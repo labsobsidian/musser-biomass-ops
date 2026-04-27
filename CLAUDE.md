@@ -4,11 +4,11 @@ Instructions for Claude Code when working in this repo.
 
 ## What this is
 
-AI ops command center for **Musser Biomass**, delivered by Obsidian Labs. Branded as **"Lumber Buddy by Obsidian Labs."** Single-page demo app + living docs + two real functional tools (pricing calculator, send-email-to-CEO) + placeholder demo data everywhere else. Pattern forked from `hardesty-ops`.
+AI ops command center for **Musser Biomass**, delivered by Obsidian Labs. Branded as **"Lumber Buddy by Obsidian Labs."** Single-page demo app + living docs + real functional tools (pricing calculator, send-email-to-CEO, artifact previews, placeholder AR endpoint) + placeholder demo data everywhere else. Pattern forked from `hardesty-ops`.
 
 ## Living docs — the source of truth
 
-Seven docs at the repo root drive everything. Keep them current before writing code:
+Eight docs at the repo root drive everything. Keep them current before writing code:
 
 - `PROJECT_STATE.md` — mission, phase, what's built, remaining work, blockers
 - `ARCHITECTURE.md` — stack, data flows, env vars
@@ -17,16 +17,19 @@ Seven docs at the repo root drive everything. Keep them current before writing c
 - `GO_LIVE_CHECKLIST.md` — phased checklist
 - `DEMO_CONTEXT.md` — rich seeded narrative; delete once live data syncs
 - `PRICING.md` — authoritative price list; **mirrored in `api/quote.js`**
+- `BRAND_STYLE.md` — source of truth for customer-facing voice, visuals, artifacts, and quality gates
 
 When the user says "update state" / "log a decision" / "check off X," edit these directly and commit.
 
 ## Repo layout
 
 ```
-index.html              # Lumber Buddy app — 9 tabs, seeded data, streaming chat
+index.html              # Lumber Buddy app — 10 tabs, seeded data, streaming chat
 api/
-  claude.js             # Vercel serverless: Anthropic SSE proxy
+  claude.js             # Vercel serverless: OpenAI-first / Anthropic fallback SSE proxy
   context.js            # Living-docs fetcher w/ 60s cache
+  ar.js                 # Placeholder Accounts Receivable data until Sage 50 access
+  connectors/sage50.js  # Future Sage 50 connector boundary
   quote.js              # REAL TOOL #1: pricing calculator
   send-email.js         # REAL TOOL #2: send email via Resend
 PROJECT_STATE.md
@@ -36,25 +39,27 @@ DECISIONS.md
 GO_LIVE_CHECKLIST.md
 DEMO_CONTEXT.md
 PRICING.md
+BRAND_STYLE.md
 ```
 
 No build step — static `index.html` + Node serverless functions on Vercel.
 
 ## Working rules
 
-- **Do not commit secrets.** `ANTHROPIC_API_KEY`, `GITHUB_TOKEN`, `RESEND_API_KEY` all live only in Vercel env vars.
+- **Do not commit secrets.** `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GITHUB_TOKEN`, `RESEND_API_KEY` all live only in Vercel env vars.
 - **`PRICING.md`, `api/quote.js`, and `api/distance.js` must stay in sync.** If you edit one, edit the others in the same commit. PRICING.md documents the math; quote.js implements pricing; distance.js implements the ZIP→miles pipeline that feeds freight. All three must produce identical numbers.
 - **DEMO_MODE is implicitly on.** Seeded data in the UI is intentional. Don't "fix" it by pulling live data.
 - **Streaming matters.** `/api/claude` streams SSE; frontend parses chunks progressively. Don't refactor to buffered JSON.
-- **Two tools are real; everything else is demo data.** Don't fake-wire real data into the other tabs. Either wire it for real (and update docs) or leave it seeded.
-- **Brand:** "Lumber Buddy by Obsidian Labs." Keep wordmark consistent. Brand colors tuned for wood/biomass feel — don't swap.
+- **Provider toggle:** default `AI_PROVIDER=openai` with `OPENAI_MODEL`; `AI_PROVIDER=anthropic` stays supported. Keep frontend SSE normalized.
+- **Sage 50 is not connected yet.** `/api/ar` returns explicitly labeled placeholder AR data. Do not imply live accounting sync until real Sage access exists.
+- **Brand:** "Lumber Buddy by Obsidian Labs." Customer-facing content must follow `BRAND_STYLE.md`.
 - **Commit style:** short, lowercase-prefixed (`feat:`, `fix:`, `state:`, `price:`, `docs:`).
 - **Push only when asked.** Default is commit locally.
 
 ## When editing `index.html`
 
 - Single file, no bundler. Keep it that way until we outgrow it.
-- Tabs: Lumber Buddy, Operations, Sales, Pricing, Marketing, Finance, Strategy, My Route, Settings.
+- Tabs: Lumber Buddy, Operations, Sales, Pricing, Marketing, Finance, Accounts Receivable, Strategy, My Route, Settings.
 - Seeded data should read as plausible Musser data: pellets / briquettes / Alpha Fiber, full-truckload mentality, NY/PA/TN destinations, real customers (Town & Country in Hamilton NY, TJ Coal in Spartansburg PA) where appropriate. **No firewood, mulch, cords, or Shenandoah Valley narrative** — that was inherited from the Hardesty fork and has been removed.
 
 ## When editing `api/quote.js`

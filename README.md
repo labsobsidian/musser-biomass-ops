@@ -1,6 +1,6 @@
 # Musser Biomass — Lumber Buddy Deployment
 
-**Lumber Buddy by Obsidian Labs** is the AI ops app for Musser Biomass. Pattern forked from Atlas (Hardesty). Single Vercel app that streams chat from Claude, pulling its knowledge base live from this GitHub repo. Adds two real functional tools on top: a pricing calculator and a send-to-CEO email endpoint.
+**Lumber Buddy by Obsidian Labs** is the AI ops app for Musser Biomass. Pattern forked from Atlas (Hardesty). Single Vercel app that streams chat through an OpenAI-first / Anthropic-fallback brain, pulling its knowledge base live from this GitHub repo. Adds real tools on top: pricing, send-to-CEO email, branded artifact previews, and placeholder Accounts Receivable shaped for future Sage 50 sync.
 
 ## Architecture
 
@@ -10,20 +10,26 @@ Browser (index.html)
     │  POST /api/claude  { role, messages }        ──► streams chat response
     │  POST /api/quote   { items, miles, ... }     ──► returns itemized quote (REAL)
     │  POST /api/send-email { preset, subject... } ──► sends to CEO via Resend (REAL)
+    │  GET  /api/ar                              ──► placeholder AR aging (Sage 50 later)
     │
     ▼
 Vercel serverless functions
     │
-    ├─► /api/claude    ─► getContext() ─► GitHub living docs ─► Anthropic (SSE)
+    ├─► /api/claude    ─► getContext() ─► GitHub living docs ─► OpenAI/Anthropic (SSE)
     ├─► /api/quote     ─► mirrors PRICING.md math
-    └─► /api/send-email ─► Resend API
+    ├─► /api/send-email ─► Resend API
+    └─► /api/ar         ─► Sage 50 connector boundary
 ```
 
 ## Env vars (Vercel → Project Settings → Environment Variables)
 
 | Name | Example | Purpose |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | `sk-ant-...` | Powers `/api/claude` |
+| `OPENAI_API_KEY` | `sk-...` | Powers `/api/claude` when OpenAI is selected |
+| `OPENAI_MODEL` | `gpt-5.5` | Premium model default |
+| `ANTHROPIC_API_KEY` | `sk-ant-...` | Fallback/provider option |
+| `ANTHROPIC_MODEL` | `claude-sonnet-4-6` | Anthropic model default |
+| `AI_PROVIDER` | `openai` | `openai` or `anthropic`; defaults to OpenAI |
 | `GITHUB_TOKEN` | `github_pat_...` | Fine-grained PAT scoped to THIS repo only. `contents:read` is enough. |
 | `CLIENT_REPO` | `labsobsidian/musser-biomass-ops` | Repo to read living docs from |
 | `CLIENT_NAME` | `Musser Biomass` | Used in role preamble |
@@ -79,9 +85,9 @@ curl -X POST https://<your-deploy>/api/quote \
   -H 'Content-Type: application/json' \
   -d '{
     "items": [
-      { "sku": "firewood_seasoned_oak", "quantity": 2 }
+      { "sku": "forest_fuel_pellets", "quantity": 1 }
     ],
-    "deliveryMiles": 18,
+    "destinationZip": "13346",
     "customerType": "retail"
   }'
 ```
@@ -115,6 +121,11 @@ Returns `{ ok: true, sentTo, resendId }` on success. The UI's "Send to CEO" butt
 - `GO_LIVE_CHECKLIST.md` — phased checklist
 - `DEMO_CONTEXT.md` — rich demo narrative (delete at live go-live)
 - `PRICING.md` — authoritative price list
+- `BRAND_STYLE.md` — authoritative brand/style guide for generated artifacts
+
+## Accounts Receivable — `/api/ar`
+
+`/api/ar` currently returns placeholder Accounts Receivable data so the UI and brain can demonstrate Sage-ready reporting without pretending Sage 50 is connected. Future live sync should replace `api/connectors/sage50.js` with the confirmed access path: Sage AR Automation, Sage-supported API/connector, ODBC/SDK/export, or middleware.
 
 ## GHL Conversation AI — pricing consistency
 

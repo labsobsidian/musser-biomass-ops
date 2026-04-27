@@ -8,25 +8,25 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --black:#1A1410; --black-soft:#2E241D; --brown-dark:#3D2F25;
-    --brown-mid:#6B5440; --brown-light:#9A826A; --border:#E4DED5;
-    --surface:#F5F0E8; --bg:#FAF7F1; --white:#FFFFFF;
-    --red:#B5392A; --red-light:#FBEDEA;
-    --teal:#1E7F61; --teal-light:#E4F5EE;
-    --amber:#C47A0A; --amber-light:#FCEFDA;
+    --black:#17130F; --black-soft:#241F19; --brown-dark:#2B241D;
+    --brown-mid:#625444; --brown-light:#927F68; --border:#E2D8C9;
+    --surface:#F1E9DC; --bg:#F7F3EA; --white:#FFFDF8;
+    --red:#A9432C; --red-light:#F7E5DE;
+    --teal:#1F6B4A; --teal-light:#E2F1E8;
+    --amber:#B88A35; --amber-light:#F5E8C8;
     --blue-light:#EBF1F8; --blue-text:#1F4E79;
-    --success:#1E7F4A; --success-bg:#E4F4EC;
-    --gold:#B8882B; --gold-light:#FAF0D6;
+    --success:#1F6B4A; --success-bg:#E2F1E8;
+    --gold:#B88A35; --gold-light:#F5E8C8;
     --gray-dark:#3D2F25; --gray-mid:#6B5440; --gray-light:#9A826A;
     --gray-border:#E4DED5; --gray-surface:#F5F0E8; --gray-bg:#FAF7F1;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--black);min-height:100vh;font-size:14px;}
+  body{font-family:'DM Sans',sans-serif;background:linear-gradient(180deg,#FBF8F1 0%,var(--bg) 220px);color:var(--black);min-height:100vh;font-size:14px;}
   .admin-banner{background:#2E241D;color:#F5F0E8;padding:6px 24px;font-size:12px;display:none;align-items:center;justify-content:space-between;border-bottom:1px solid #3D2F25;}
   .admin-banner.visible{display:flex;}
   .admin-banner-left{display:flex;align-items:center;gap:8px;}
   .admin-pill{background:var(--amber);color:white;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;letter-spacing:0.04em;text-transform:uppercase;}
-  .header{background:var(--black);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;}
+  .header{background:linear-gradient(90deg,var(--black),#211A13);padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 0 rgba(255,255,255,0.06) inset;}
   .header-left{display:flex;align-items:center;gap:14px;}
   .header-logo-wrap{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--gold);border-radius:6px;}
   .header-logo-wrap svg{width:18px;height:18px;color:var(--black);}
@@ -39,7 +39,7 @@
   .user-tab{padding:4px 14px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.45);background:transparent;transition:all 0.15s;font-family:'DM Sans',sans-serif;}
   .user-tab.active{background:rgba(255,255,255,0.1);color:white;border-color:rgba(255,255,255,0.35);}
   .current-user-label{color:rgba(255,255,255,0.6);font-size:12px;font-weight:500;}
-  .nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;display:flex;overflow-x:auto;}
+  .nav{background:rgba(255,253,248,0.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;overflow-x:auto;}
   .nav-item{padding:13px 15px;font-size:13px;color:var(--brown-mid);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.15s;}
   .nav-item.hidden{display:none;}
   .nav-item:hover{color:var(--black);}
@@ -51,13 +51,13 @@
   .demo-banner{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--brown-mid);display:flex;align-items:center;gap:8px;}
   .demo-dot{width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;}
   .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
-  .stat-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px 18px;}
+  .stat-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:16px 18px;box-shadow:0 10px 30px rgba(43,36,29,0.04);}
   .stat-label{font-size:11px;color:var(--brown-mid);text-transform:uppercase;letter-spacing:0.06em;font-weight:500;}
   .stat-value{font-size:24px;font-weight:500;margin-top:6px;color:var(--black);}
   .stat-sub{font-size:12px;color:var(--brown-light);margin-top:2px;}
   .stat-up{color:var(--teal);}
   .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-  .card{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+  .card{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 12px 32px rgba(43,36,29,0.045);}
   .card-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
   .card-title{font-size:13px;font-weight:600;color:var(--black);}
   .kpi-row{display:flex;justify-content:space-between;align-items:center;padding:9px 18px;border-bottom:1px solid var(--border);font-size:13px;}
@@ -80,6 +80,8 @@
   .btn-primary:disabled{opacity:0.4;cursor:not-allowed;}
   .btn-gold{background:var(--gold);color:var(--black);padding:8px 16px;font-weight:600;}
   .btn-gold:hover{background:#A27826;}
+  .btn-secondary{background:var(--white);color:var(--black);border:1px solid var(--border);padding:8px 12px;}
+  .btn-secondary:hover{border-color:var(--gold);background:var(--gold-light);}
   .alert-bar{background:var(--red-light);border:1px solid #E8A89F;border-radius:8px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;font-size:13px;color:#8B2A1E;}
   .alert-dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;}
   .owner-lock{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:4px 10px;border-radius:6px;background:var(--surface);color:var(--brown-mid);border:1px solid var(--border);font-weight:500;}
@@ -87,7 +89,7 @@
   .buddy-layout{display:grid;grid-template-columns:1fr 280px;gap:16px;height:calc(100vh - 142px);min-height:540px;transition:grid-template-columns 0.25s ease;}
   .buddy-layout.has-artifact{grid-template-columns:minmax(360px,1fr) minmax(420px,1.1fr) 0px;gap:14px;}
   .buddy-layout.has-artifact .buddy-sidebar{display:none;}
-  .chat-outer{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--white);display:flex;flex-direction:column;min-width:0;}
+  .chat-outer{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--white);display:flex;flex-direction:column;min-width:0;box-shadow:0 16px 44px rgba(43,36,29,0.07);}
   .chat-header{background:var(--black);padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
   .chat-logo-wrap{width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--gold);border-radius:6px;flex-shrink:0;}
   .chat-logo-wrap svg{width:18px;height:18px;color:var(--black);}
@@ -130,6 +132,8 @@
   .send-btn:hover{opacity:0.85;}
   .send-btn:disabled{background:var(--border);cursor:not-allowed;}
   .buddy-sidebar{display:flex;flex-direction:column;gap:12px;overflow-y:auto;}
+  .action-grid{display:grid;grid-template-columns:1fr;gap:8px;padding:12px 14px;}
+  .action-grid .btn{width:100%;text-align:left;display:flex;justify-content:space-between;align-items:center;}
   .conn-card{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
   .conn-card-header{padding:11px 14px;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;color:var(--brown-mid);text-transform:uppercase;letter-spacing:0.07em;}
   .conn-row{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);}
@@ -202,6 +206,22 @@
   .stop-addr{font-size:12px;color:var(--brown-mid);margin-top:2px;}
   .stop-product{font-size:12px;color:var(--brown-mid);margin-top:4px;}
   .stop-note{font-size:11px;color:var(--amber);margin-top:4px;background:var(--amber-light);padding:3px 8px;border-radius:4px;display:inline-block;}
+  .ar-layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;}
+  .ar-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .ar-table th{padding:10px 12px;text-align:left;color:var(--brown-mid);font-size:10px;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid var(--border);background:var(--surface);}
+  .ar-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+  .ar-table tr:last-child td{border-bottom:none;}
+  .ar-money{text-align:right;font-variant-numeric:tabular-nums;}
+  .ar-note{font-size:11px;color:var(--brown-light);line-height:1.45;margin-top:2px;max-width:310px;}
+  .ar-risk{border-left:3px solid var(--red);}
+  .ar-actions{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px;}
+  .ar-summary{font-size:13px;line-height:1.6;color:var(--brown-mid);}
+  .ar-summary strong{color:var(--black);}
+  @media (max-width: 980px) {
+    .stats-row{grid-template-columns:1fr 1fr;}
+    .two-col,.pricing-layout,.ar-layout{grid-template-columns:1fr;}
+    .quote-summary{position:static;}
+  }
   .settings-section{margin-bottom:24px;}
   .settings-section.hidden{display:none;}
   .settings-title{font-size:13px;font-weight:600;color:var(--black);margin-bottom:12px;}
@@ -279,6 +299,7 @@
   <div class="nav-item" data-tab="pricing" onclick="showPage('pricing',this)">Pricing</div>
   <div class="nav-item" data-tab="marketing" onclick="showPage('marketing',this)">Marketing</div>
   <div class="nav-item" data-tab="finance" onclick="showPage('finance',this)">Finance</div>
+  <div class="nav-item" data-tab="ar" onclick="showPage('ar',this)">Accounts Receivable</div>
   <div class="nav-item" data-tab="strategy" onclick="showPage('strategy',this)">Strategy</div>
   <div class="nav-item" data-tab="myroute" onclick="showPage('myroute',this)">My Route</div>
   <div class="nav-item" data-tab="settings" onclick="showPage('settings',this)">⚙ Settings</div>
@@ -338,6 +359,15 @@
 
     <div class="buddy-sidebar">
       <div class="conn-card">
+        <div class="conn-card-header">Create now</div>
+        <div class="action-grid">
+          <button class="btn btn-gold" onclick="fire('Build a branded website preview for Musser Biomass using BRAND_STYLE.md')">Website preview <span>→</span></button>
+          <button class="btn btn-secondary" onclick="fire('Create a branded PDF-style AR brief for the CEO using current placeholder AR data')">PDF brief <span>→</span></button>
+          <button class="btn btn-secondary" onclick="fire('Create a branded slide-deck preview for Musser Biomass products and Atlas rollout')">Slides <span>→</span></button>
+          <button class="btn btn-secondary" onclick="openEmailModal({ subject: 'Lumber Buddy update', body: lastBrainMessage || 'Lumber Buddy summary for review.' })">Email CEO <span>→</span></button>
+        </div>
+      </div>
+      <div class="conn-card">
         <div class="conn-card-header">Live tools</div>
         <div class="conn-row"><div><div class="conn-name">Pricing Calculator</div><div class="conn-detail">Reads PRICING.md · /api/quote</div></div><span class="conn-status cs-tool-live">Live</span></div>
         <div class="conn-row"><div><div class="conn-name">Send to CEO</div><div class="conn-detail">Via Resend · /api/send-email</div></div><span class="conn-status cs-tool-live">Live</span></div>
@@ -346,7 +376,7 @@
       <div class="conn-card">
         <div class="conn-card-header">Data connections</div>
         <div class="conn-row"><div><div class="conn-name">GoHighLevel CRM</div><div class="conn-detail">Contacts, pipeline, Conversation AI</div></div><span class="conn-status cs-pending">Pending</span></div>
-        <div class="conn-row"><div><div class="conn-name">QuickBooks</div><div class="conn-detail">Revenue + invoicing sync</div></div><span class="conn-status cs-pending">Pending</span></div>
+        <div class="conn-row"><div><div class="conn-name">Sage 50 AR</div><div class="conn-detail">Placeholder now · connector boundary ready</div></div><span class="conn-status cs-pending">Demo</span></div>
         <div class="conn-row"><div><div class="conn-name">Inventory DB</div><div class="conn-detail">Loads, bags, bales · Supabase</div></div><span class="conn-status cs-pending">Pending</span></div>
         <div class="conn-row"><div><div class="conn-name">Project docs</div><div class="conn-detail">Living docs · GitHub</div></div><span class="conn-status cs-live">Live</span></div>
       </div>
@@ -355,7 +385,7 @@
 </div>
 
 <div class="page" id="page-operations">
-  <div class="demo-banner"><div class="demo-dot"></div>Demo mode — production + load schedule will sync from QuickBooks/Supabase once connected.</div>
+  <div class="demo-banner"><div class="demo-dot"></div>Demo mode — production + load schedule will sync from Sage/accounting and Supabase once connected.</div>
   <div class="stats-row">
     <div class="stat-card"><div class="stat-label">Loads scheduled this week</div><div class="stat-value">9</div><div class="stat-sub">5 pellets · 3 briquettes · 1 fiber</div></div>
     <div class="stat-card"><div class="stat-label">Trucks committed</div><div class="stat-value">9 of 12</div><div class="stat-sub">3 open slots · room for spot loads</div></div>
@@ -491,7 +521,7 @@
 <div class="page" id="page-finance">
   <div class="stats-row">
     <div class="stat-card"><div class="stat-label">Revenue MTD</div><div class="stat-value">$112,400</div><div class="stat-sub stat-up">↑ 22% vs April '25</div></div>
-    <div class="stat-card"><div class="stat-label">Outstanding</div><div class="stat-value">$36,200</div><div class="stat-sub">6 open invoices</div></div>
+    <div class="stat-card"><div class="stat-label">Open AR</div><div class="stat-value" id="finance-ar-total">$77,638</div><div class="stat-sub">Sage 50 placeholder</div></div>
     <div class="stat-card"><div class="stat-label">Gross margin</div><div class="stat-value">31%</div><div class="stat-sub">Steady vs. last year</div></div>
     <div class="stat-card"><div class="stat-label">Projected month</div><div class="stat-value">$148,000</div><div class="stat-sub">At current run rate</div></div>
   </div>
@@ -510,7 +540,46 @@
       <div class="kpi-row"><span class="kpi-label">Labor</span><span class="kpi-value" style="color:var(--red)">−$23,800</span></div>
       <div class="kpi-row"><span class="kpi-label">Energy + plant</span><span class="kpi-value" style="color:var(--red)">−$11,500</span></div>
       <div class="kpi-row"><span class="kpi-label">Gross margin</span><span class="kpi-value" style="color:var(--teal)">$34,800 (31%)</span></div>
-      <div class="kpi-row"><span class="kpi-label">QuickBooks sync</span><span class="kpi-value" style="color:var(--amber)">Pending setup</span></div>
+      <div class="kpi-row"><span class="kpi-label">Sage 50 sync</span><span class="kpi-value" style="color:var(--amber)">Placeholder data</span></div>
+      <div class="kpi-row"><span class="kpi-label">AR workspace</span><span class="kpi-value"><button class="connect-btn" onclick="showPage('ar',document.querySelector('[data-tab=&quot;ar&quot;]'))">Open AR</button></span></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-ar">
+  <div class="demo-banner"><div class="demo-dot"></div>Demo mode - Sage 50 is not connected yet. This tab uses placeholder AR data from <code style="font-size:11px;background:var(--surface);padding:1px 4px;border-radius:3px">/api/ar</code>.</div>
+  <div class="ar-actions">
+    <button class="btn btn-gold" onclick="emailARSummary()">Send AR summary to CEO</button>
+    <button class="btn btn-secondary" onclick="draftCollectionEmail()">Draft collection email</button>
+    <button class="btn btn-secondary" onclick="createARPDF()">Create AR PDF brief</button>
+  </div>
+  <div class="stats-row" id="ar-stats">
+    <div class="stat-card"><div class="stat-label">Open AR</div><div class="stat-value">Loading</div><div class="stat-sub">Placeholder Sage 50</div></div>
+    <div class="stat-card"><div class="stat-label">Overdue</div><div class="stat-value">Loading</div><div class="stat-sub">Needs follow-up</div></div>
+    <div class="stat-card"><div class="stat-label">Critical</div><div class="stat-value">Loading</div><div class="stat-sub">Owner review</div></div>
+    <div class="stat-card"><div class="stat-label">DSO estimate</div><div class="stat-value">Loading</div><div class="stat-sub">Demo metric</div></div>
+  </div>
+  <div class="ar-layout">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Open invoices</div><span style="font-size:12px;color:var(--brown-light)">Placeholder until Sage 50 access</span></div>
+      <div style="overflow:auto">
+        <table class="ar-table">
+          <thead><tr><th>Customer</th><th>Invoice</th><th>Due</th><th>Status</th><th class="ar-money">Amount</th></tr></thead>
+          <tbody id="ar-invoices"><tr><td colspan="5">Loading AR data...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Collection intelligence</div><span class="badge b-pending">Demo</span></div>
+      <div style="padding:16px 18px">
+        <div class="ar-summary" id="ar-ai-summary">Loading AR summary...</div>
+        <div style="height:14px"></div>
+        <div class="qs-label">Aging buckets</div>
+        <div id="ar-aging"></div>
+        <div style="height:14px"></div>
+        <div class="qs-label">Recommended actions</div>
+        <div id="ar-priority" class="ar-summary"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -569,7 +638,7 @@
   <div class="settings-section">
     <div class="settings-title">Integrations</div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">GoHighLevel CRM</div><div class="sr-detail">Contacts, pipeline, Conversation AI (chat/SMS quoting)</div></div><div class="sr-right"><span style="font-size:12px;color:var(--amber)">Pending setup</span><button class="connect-btn">Configure</button></div></div>
-    <div class="setting-row"><div class="sr-left"><div class="sr-label">QuickBooks Online</div><div class="sr-detail">Revenue, invoicing, P&L sync</div></div><div class="sr-right"><span style="font-size:12px;color:var(--brown-light)">Credentials needed</span><button class="connect-btn">Connect</button></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">Sage 50 Accounting</div><div class="sr-detail">Accounts receivable, aging, invoice sync (placeholder until access)</div></div><div class="sr-right"><span style="font-size:12px;color:var(--amber)">Demo data</span><button class="connect-btn">Connect</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Supabase Inventory</div><div class="sr-detail">Load, bag, bale stock — live counts</div></div><div class="sr-right"><span style="font-size:12px;color:var(--brown-light)">Not configured</span><button class="connect-btn">Connect</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Resend — Email</div><div class="sr-detail">Sending domain for /api/send-email</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Live · tool active</span><button class="connect-btn">Configure</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Google Maps</div><div class="sr-detail">Route optimization for dispatch</div></div><div class="sr-right"><span style="font-size:12px;color:var(--brown-light)">Not connected</span><button class="connect-btn">Connect</button></div></div>
@@ -622,25 +691,25 @@
 
 <script>
 const ROLES = {
-  owner: { displayName: 'Owner', visibleTabs: ['buddy','sales','pricing','marketing','finance','strategy','settings'], defaultTab: 'buddy', canApprove: true, seeBrainSettings: true },
-  ops: { displayName: 'Operations', visibleTabs: ['buddy','operations','sales','pricing','marketing','settings'], defaultTab: 'buddy', canApprove: false, seeBrainSettings: false },
+  owner: { displayName: 'Owner', visibleTabs: ['buddy','sales','pricing','marketing','finance','ar','strategy','settings'], defaultTab: 'buddy', canApprove: true, seeBrainSettings: true },
+  ops: { displayName: 'Operations', visibleTabs: ['buddy','operations','sales','pricing','marketing','ar','settings'], defaultTab: 'buddy', canApprove: false, seeBrainSettings: false },
   yard: { displayName: 'Yard', visibleTabs: ['buddy','operations'], defaultTab: 'operations', canApprove: false, seeBrainSettings: false },
   driver: { displayName: 'Driver', visibleTabs: ['buddy','myroute'], defaultTab: 'myroute', canApprove: false, seeBrainSettings: false },
-  admin: { displayName: 'Admin', visibleTabs: ['buddy','operations','sales','pricing','marketing','finance','strategy','myroute','settings'], defaultTab: 'buddy', canApprove: true, seeBrainSettings: true }
+  admin: { displayName: 'Admin', visibleTabs: ['buddy','operations','sales','pricing','marketing','finance','ar','strategy','myroute','settings'], defaultTab: 'buddy', canApprove: true, seeBrainSettings: true }
 };
 
 const PROMPTS = {
   ops: ["What loads are due this week?","Draft Town & Country shipment confirmation","Fill Truck 4's open Friday slot","What's running low in production?","Schedule next Hamilton run"],
-  owner: ["Quote 1 load pellets to ZIP 13346","Build a one-page mockup for Northeast Stove Supply","Revenue by product line this month","What's in the approval queue?","Draft a CEO update email"],
+  owner: ["Quote 1 load pellets to ZIP 13346","Build a branded website preview","Create an AR PDF brief","Revenue by product line this month","Draft a CEO update email"],
   yard: ["What's on today's production schedule?","Pellet line status","What's on Truck 2's load-out list?"],
   driver: ["First stop today","BOL for Town & Country","Total miles on this route"],
-  admin: ["Build a landing page for selling pellets to NY stove dealers","What's in PRICING.md?","Quote 1 load pellets + 1 load briquettes to ZIP 16434","Draft a branded quote PDF mockup for Town & Country"]
+  admin: ["Build a landing page for selling pellets to NY stove dealers","Create a slide-deck preview for Musser","Quote 1 load pellets + 1 load briquettes to ZIP 16434","Draft a branded AR PDF brief for the CEO"]
 };
 
 function greetingFor(role) {
   const name = currentFirstName || ROLES[role].displayName;
-  if (role === 'admin') return `Hi ${name}. I'm Lumber Buddy for Musser Biomass. Admin preview — switch roles via the toggle to see what each team member sees. Three tools are live: pricing calculator (with ZIP-to-ZIP freight), send-to-CEO, and the artifact builder (try "build me a landing page for Northeast Stove Supply"). Everything else is seeded demo data for now.`;
-  if (role === 'owner') return `Morning ${name}. 2 quotes need your approval totaling $24,540. Revenue MTD is $112,400, up 22% vs last April. Northeast Stove Supply is the big decision this week — 2-load opener, $220k/year if it goes. Where do you want to start?`;
+  if (role === 'admin') return `Hi ${name}. I'm Lumber Buddy for Musser Biomass. Admin preview is active. Live tools: pricing calculator, send-to-CEO, branded artifact builder, and placeholder AR workspace for Sage 50. Try a website preview, AR PDF brief, or slide-deck preview.`;
+  if (role === 'owner') return `Morning ${name}. 2 quotes need approval, open AR is in placeholder mode at $77,638, and Pocono Pellet Co. is the collections risk to review before more loads. Want the AR brief, revenue view, or Northeast Stove website preview first?`;
   if (role === 'yard') return `Morning. Pellet line running, briquette press queued for Wed. 4 loads of Forest Fuel pellets ready to ship, only 2 loads of briquettes finished — Friday's TJ Coal order needs press priority. Alpha Fiber is healthy at 3 loads.`;
   if (role === 'driver') return `Morning. Long-haul day: 1 load Forest Fuel pellets to Town & Country in Hamilton NY (~522 mi). BOL is loaded, signed at receiving. Yard return Wed AM, then pre-trip for the Spartansburg PA run.`;
   return `Morning ${name}. 9 loads scheduled this week (5 pellets, 3 briquettes, 1 fiber), 2 quotes waiting on owner approval ($24,540 total). Briquette stock is tight — press is queued for Wed. What do you want to tackle first?`;
@@ -653,6 +722,7 @@ let history = [];
 let loading = false;
 let lastBrainMessage = '';
 let priceBookCache = null;
+let arCache = null;
 
 function detectRoleFromUrl() {
   const params = new URLSearchParams(window.location.search);
@@ -728,6 +798,7 @@ function showPage(tab, el) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   if (el) el.classList.add('active');
   if (tab === 'pricing') initPricingCalc();
+  if (tab === 'ar') initAR();
 }
 
 function buildQuickStrip(role) {
@@ -1061,7 +1132,7 @@ async function run(text) {
       textSpan.textContent = 'No response. Try again.';
     }
   } catch(e) {
-    textSpan.textContent = 'Deploy to Vercel and set env vars (ANTHROPIC_API_KEY, GITHUB_TOKEN, CLIENT_REPO, CLIENT_NAME, CLIENT_SLUG) to activate the live brain.';
+    textSpan.textContent = 'Deploy to Vercel and set env vars (OPENAI_API_KEY, GITHUB_TOKEN, CLIENT_REPO, CLIENT_NAME, CLIENT_SLUG; optional ANTHROPIC_API_KEY fallback) to activate the live brain.';
   }
   loading = false;
   document.getElementById('send-btn').disabled = false;
@@ -1206,6 +1277,99 @@ function renderQuoteSummary(quote) {
   }
   html += `<div class="qs-line strong"><span>Grand total</span><span>$${(quote.total || 0).toFixed(2)}</span></div>`;
   bd.innerHTML = html;
+}
+
+async function initAR() {
+  try {
+    const resp = await fetch('/api/ar');
+    if (!resp.ok) throw new Error('AR endpoint error');
+    arCache = await resp.json();
+  } catch(e) {
+    arCache = fallbackAR();
+  }
+  renderAR(arCache);
+}
+
+function renderAR(data) {
+  if (!data) return;
+  const money = (n) => '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  document.getElementById('ar-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Open AR</div><div class="stat-value">${money(data.summary.totalOpen)}</div><div class="stat-sub">Placeholder Sage 50</div></div>
+    <div class="stat-card"><div class="stat-label">Overdue</div><div class="stat-value">${money(data.summary.overdueTotal)}</div><div class="stat-sub">${data.summary.overdueCount} invoices need follow-up</div></div>
+    <div class="stat-card"><div class="stat-label">Critical</div><div class="stat-value">${data.summary.criticalCount}</div><div class="stat-sub">Owner review before shipping</div></div>
+    <div class="stat-card"><div class="stat-label">DSO estimate</div><div class="stat-value">${data.summary.dsoEstimate}</div><div class="stat-sub">Demo metric</div></div>
+  `;
+  const financeTotal = document.getElementById('finance-ar-total');
+  if (financeTotal) financeTotal.textContent = money(data.summary.totalOpen);
+  document.getElementById('ar-invoices').innerHTML = data.invoices.map(inv => `
+    <tr class="${inv.status === 'Critical' ? 'ar-risk' : ''}">
+      <td><strong>${escapeUi(inv.customer)}</strong><div class="ar-note">${escapeUi(inv.notes)}</div></td>
+      <td>${escapeUi(inv.invoiceNumber)}<div class="ar-note">${escapeUi(inv.invoiceDate)}</div></td>
+      <td>${escapeUi(inv.dueDate)}<div class="ar-note">${inv.daysOverdue > 0 ? inv.daysOverdue + ' days overdue' : 'current'}</div></td>
+      <td><span class="badge ${inv.status === 'Current' ? 'b-won' : inv.status === 'Critical' ? 'b-lost' : 'b-pending'}">${escapeUi(inv.status)}</span></td>
+      <td class="ar-money">${money(inv.amount)}</td>
+    </tr>
+  `).join('');
+  document.getElementById('ar-aging').innerHTML = data.aging.map(row => `
+    <div class="kpi-row"><span class="kpi-label">${escapeUi(row.bucket)}</span><span class="kpi-value">${money(row.amount)}</span></div>
+  `).join('');
+  document.getElementById('ar-priority').innerHTML = data.collectionPriority.map(item => `<div style="margin-bottom:8px">• ${escapeUi(item)}</div>`).join('');
+  document.getElementById('ar-ai-summary').innerHTML = `<strong>AI summary:</strong> ${escapeUi(data.aiSummary)}`;
+}
+
+function arSummaryText() {
+  const data = arCache || fallbackAR();
+  const money = (n) => '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return [
+    `Lumber Buddy AR summary (${data.asOf})`,
+    `Source: placeholder Sage 50 data - not live accounting sync yet.`,
+    ``,
+    `Open AR: ${money(data.summary.totalOpen)}`,
+    `Overdue: ${money(data.summary.overdueTotal)} across ${data.summary.overdueCount} invoices`,
+    `Critical accounts: ${data.summary.criticalCount}`,
+    ``,
+    `Recommended actions:`,
+    ...data.collectionPriority.map(item => `- ${item}`)
+  ].join('\n');
+}
+
+async function emailARSummary() {
+  if (!arCache) await initAR();
+  openEmailModal({ subject: 'Lumber Buddy AR summary', body: arSummaryText() });
+}
+
+function draftCollectionEmail() {
+  const target = arCache?.invoices?.find(inv => inv.status === 'Critical') || arCache?.invoices?.find(inv => inv.daysOverdue > 0);
+  const customer = target?.customer || 'Pocono Pellet Co.';
+  fire(`Draft a firm but relationship-aware collection email for ${customer}. Use the placeholder AR data, do not imply Sage 50 is live, and keep it ready to send.`);
+}
+
+function createARPDF() {
+  fire('Create a branded PDF-style AR brief for the CEO using the current placeholder AR data. Make it executive, print-friendly, and clearly labeled as demo data until Sage 50 is connected.');
+}
+
+function fallbackAR() {
+  return {
+    asOf: new Date().toISOString().slice(0, 10),
+    summary: { totalOpen: 77638.40, overdueTotal: 58557.40, overdueCount: 5, criticalCount: 1, dsoEstimate: 37 },
+    aging: [
+      { bucket: 'Current', amount: 19081 },
+      { bucket: '1-30', amount: 40097.40 },
+      { bucket: '31-60', amount: 0 },
+      { bucket: '61-90', amount: 18460 },
+      { bucket: '90+', amount: 0 }
+    ],
+    invoices: [
+      { customer: 'Pocono Pellet Co.', invoiceNumber: 'MB-1022', invoiceDate: '2026-01-20', dueDate: '2026-02-19', amount: 18460, status: 'Critical', daysOverdue: 68, notes: 'Hold new loads until owner approves.' },
+      { customer: 'Northeast Stove Supply', invoiceNumber: 'MB-1054', invoiceDate: '2026-03-12', dueDate: '2026-04-11', amount: 14520, status: 'At risk', daysOverdue: 16, notes: 'Owner-aware follow-up recommended.' }
+    ],
+    collectionPriority: ['Call Pocono Pellet Co. before releasing any new load.', 'Send statement and BOL copy to Northeast Stove Supply.'],
+    aiSummary: 'Fallback placeholder data loaded locally because /api/ar was not reachable.'
+  };
+}
+
+function escapeUi(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch]));
 }
 
 function openEmailModal({ subject = '', body = '' } = {}) {

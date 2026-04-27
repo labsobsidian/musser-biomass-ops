@@ -11,12 +11,15 @@ _Last updated: 2026-04-24_
 - [x] Build `/api/context` living-docs fetcher
 - [x] Build `/api/quote` pricing calculator (real functional tool #1)
 - [x] Build `/api/send-email` via Resend (real functional tool #2)
+- [x] Build `/api/ar` placeholder Accounts Receivable source for future Sage 50 sync
+- [x] Add `BRAND_STYLE.md` for brand-safe artifacts
 - [x] Write 7 living docs incl. `PRICING.md`
 - [ ] Push to GitHub
-- [ ] Create Vercel project, wire env vars
+- [ ] Create Vercel project, wire env vars (OpenAI, Anthropic fallback, GitHub, Resend)
 - [ ] Confirm `/api/context` returns the 7 living docs
 - [ ] Confirm streaming chat works end-to-end
 - [ ] Confirm pricing calculator returns correct quotes for 3 test scenarios
+- [ ] Confirm AR tab loads placeholder data and is hidden from yard/driver roles
 - [ ] Verify Resend sending domain (prereq for `/api/send-email`)
 - [ ] Set `CEO_EMAIL` env var to a test address, send a live email, confirm receipt
 - [ ] Replace `CEO_EMAIL` with actual CEO address before demo
@@ -44,7 +47,7 @@ _Last updated: 2026-04-24_
 
 ### Workflows
 - [ ] First-time buyer nurture (3-step welcome sequence)
-- [ ] Repeat-customer seasonal reminder (firewood pre-buy in September)
+- [ ] Repeat-customer seasonal reminder (heating-season pellet pre-buy)
 - [ ] Abandoned-quote follow-up (Day 2 / Day 5)
 
 ### Email
@@ -61,8 +64,9 @@ _Last updated: 2026-04-24_
 
 ## Phase 3 — Live Data (Week 3–4)
 
-- [ ] QuickBooks sync — replace seeded finance data with live
-- [ ] Supabase inventory tables (cords, mulch yards, bundle counts)
+- [ ] Sage 50 AR sync — replace placeholder AR data with live invoice aging
+- [ ] Accounting reporting path — replace seeded finance data with live P&L/revenue source
+- [ ] Supabase inventory tables (loads, bags, bale counts)
 - [ ] Nightly production schedule flow from yard lead → ops dashboard
 - [ ] Flip implicit DEMO_MODE flag off in UI (remove seeded data cards, show live)
 
