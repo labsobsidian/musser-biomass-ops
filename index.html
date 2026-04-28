@@ -22,6 +22,7 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'DM Sans',sans-serif;background:linear-gradient(180deg,#FBF8F1 0%,var(--bg) 220px);color:var(--black);min-height:100vh;font-size:14px;}
+  body.buddy-active{height:100vh;overflow:hidden;}
   .admin-banner{background:#2E241D;color:#F5F0E8;padding:6px 24px;font-size:12px;display:none;align-items:center;justify-content:space-between;border-bottom:1px solid #3D2F25;}
   .admin-banner.visible{display:flex;}
   .admin-banner-left{display:flex;align-items:center;gap:8px;}
@@ -46,8 +47,10 @@
   .nav-item.active{color:var(--black);border-bottom-color:var(--gold);font-weight:500;}
   .nav-badge{background:var(--red);color:white;font-size:10px;font-weight:600;padding:1px 6px;border-radius:10px;margin-left:4px;}
   .main{padding:20px 24px 40px;max-width:1500px;margin:0 auto;}
+  body.buddy-active .main{height:calc(100vh - 101px);padding:14px 24px;overflow:hidden;}
   .page{display:none;}
   .page.active{display:block;}
+  body.buddy-active .page.active{height:100%;}
   .demo-banner{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--brown-mid);display:flex;align-items:center;gap:8px;}
   .demo-dot{width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;}
   .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
@@ -87,6 +90,7 @@
   .owner-lock{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:4px 10px;border-radius:6px;background:var(--surface);color:var(--brown-mid);border:1px solid var(--border);font-weight:500;}
   .owner-lock svg{width:11px;height:11px;flex-shrink:0;}
   .buddy-layout{display:grid;grid-template-columns:1fr 280px;gap:16px;height:calc(100vh - 142px);min-height:540px;transition:grid-template-columns 0.25s ease;}
+  body.buddy-active .buddy-layout{height:100%;min-height:0;}
   .buddy-layout.has-artifact{grid-template-columns:minmax(360px,1fr) minmax(420px,1.1fr) 0px;gap:14px;}
   .buddy-layout.has-artifact .buddy-sidebar{display:none;}
   .chat-outer{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--white);display:flex;flex-direction:column;min-width:0;box-shadow:0 16px 44px rgba(43,36,29,0.07);}
@@ -339,7 +343,7 @@
   .chat-messages::-webkit-scrollbar-thumb,.buddy-sidebar::-webkit-scrollbar-thumb,.artifact-code::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 </style>
 </head>
-<body>
+<body class="buddy-active">
 
 <div class="admin-banner" id="admin-banner">
   <div class="admin-banner-left">
@@ -1140,6 +1144,7 @@ function showPage(tab, el) {
   document.getElementById('page-' + tab).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   if (el) el.classList.add('active');
+  document.body.classList.toggle('buddy-active', tab === 'buddy');
   if (tab === 'pricing') initPricingCalc();
   if (tab === 'ar') initAR();
   if (tab === 'learning') loadLearningQueue();
