@@ -16,7 +16,7 @@ Build an AI-forward ops stack for Musser Biomass that takes pricing questions, d
 
 ## Current Phase
 
-**Phase 0 — Demo Build.** Lumber Buddy app scaffolded on Vercel with seeded placeholder data. Two real functional tools live: pricing calculator and send-to-CEO email. Everything else is realistic demo data until Musser's systems are connected.
+**Phase 0 — Demo Build.** Biomass Buddy app scaffolded on Vercel with seeded placeholder data. Two real functional tools live: pricing calculator and send-to-CEO email. Everything else is realistic demo data until Musser's systems are connected.
 
 ---
 
@@ -36,7 +36,8 @@ Build an AI-forward ops stack for Musser Biomass that takes pricing questions, d
 ## What's Built
 
 ### Infrastructure
-- `musser-biomass-ops` repo — scaffolded with full Lumber Buddy app
+- `/api/learning/*` — **human-approved learning loop** for manual corrections, weekly review, and future source connectors
+- `musser-biomass-ops` repo — scaffolded with full Biomass Buddy app
 - `/api/claude` — streaming brain proxy; OpenAI-first with Anthropic fallback (reads live KB from this repo)
 - `/api/context` — living-docs fetcher w/ 60s cache
 - `/api/quote` — **real pricing calculator** (POST items + miles → itemized quote)
@@ -44,8 +45,8 @@ Build an AI-forward ops stack for Musser Biomass that takes pricing questions, d
 - `/api/ar` — **placeholder Accounts Receivable source** shaped for future Sage 50 integration
 - Vercel deployment — TBD (push to main + wire env vars)
 
-### Lumber Buddy App Tabs
-- Lumber Buddy (AI brain, opens by default)
+### Biomass Buddy App Tabs
+- Biomass Buddy (AI brain, opens by default)
 - Operations (today's orders, yard production, dispatch)
 - Sales (order pipeline, quote queue)
 - Pricing (live calculator — uses `/api/quote`)
@@ -57,6 +58,9 @@ Build an AI-forward ops stack for Musser Biomass that takes pricing questions, d
 - Accounts Receivable (aging, open invoices, collection priority; placeholder until Sage 50 access)
 
 ### Knowledge Base Living Docs
+- `PLAYBOOK.md` — learning-loop KB target map and promotion rules
+- `LEARNING_LOG.md` — human-approved lessons that Biomass Buddy can use after review
+- `START_THE_WEEK.md` — generated weekly learning review
 - `PROJECT_STATE.md` (this file)
 - `ARCHITECTURE.md`
 - `CONSTANTS.md`
@@ -118,10 +122,11 @@ Build an AI-forward ops stack for Musser Biomass that takes pricing questions, d
 ---
 
 ## Notes
+- Atlas Learning Loop is enabled: manual corrections enter `data/learning/LEARNING_QUEUE.json`; approved lessons append to `LEARNING_LOG.md`; future GHL, voice, Sage 50, Amazon SP-API, spreadsheet, and generic API sources should normalize into `/api/learning/source-event` instead of directly editing the KB.
 
 - Skills version: v0.2.0
 - DEMO_MODE: true — seeded data until accounting + live order intake are wired
-- `PRICING.md` is read by the Lumber Buddy brain AND should be pasted into GHL Conversation AI's system prompt so the chat agent quotes from the same source
+- `PRICING.md` is read by the Biomass Buddy brain AND should be pasted into GHL Conversation AI's system prompt so the chat agent quotes from the same source
 - Pricing calculator (`/api/quote.js`), distance lookup (`/api/distance.js`), and `PRICING.md` must be updated together — drift between any of them will cause the chat agent and the UI to disagree
 - Plant origin ZIP is `24368` — locked in `MUSSER_ORIGIN_ZIP` constant in `api/quote.js`, documented in PRICING.md
 - All seeded demo data across Operations / Sales / Finance / Strategy / My Route tabs and chat greetings reflects Musser's real product world (pellets / briquettes / Alpha Fiber, NY/PA destinations, full-truckload model). Older Hardesty-era firewood/mulch/cords narrative was scrubbed Apr 26.

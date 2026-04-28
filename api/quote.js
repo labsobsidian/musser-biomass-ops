@@ -4,7 +4,7 @@
 // Takes line items (products + load count) + delivery, returns an itemized quote.
 //
 // CRITICAL: The pricing logic here is the SAME logic documented in PRICING.md.
-// PRICING.md is what Lumber Buddy and the GHL Conversation AI read to answer
+// PRICING.md is what Biomass Buddy and the GHL Conversation AI read to answer
 // pricing questions in natural language. If you change the math here, update
 // PRICING.md in the same commit. They must stay in sync.
 //

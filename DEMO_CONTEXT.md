@@ -1,7 +1,7 @@
 # DEMO_CONTEXT.md — Musser Biomass
 _Rich operational narrative for demo mode. Delete this file once live data sync is wired._
 
-This doc gives the Lumber Buddy brain plausible, specific detail to respond with during the demo. All names and numbers here are seeded — except where noted as **real** (Town & Country, TJ Coal, Mick's pricing, the plant ZIP). The seed data here matches the seeded data in `index.html` so the brain and the UI tell the same story.
+This doc gives the Biomass Buddy brain plausible, specific detail to respond with during the demo. All names and numbers here are seeded — except where noted as **real** (Town & Country, TJ Coal, Mick's pricing, the plant ZIP). The seed data here matches the seeded data in `index.html` so the brain and the UI tell the same story.
 
 ---
 
@@ -50,7 +50,7 @@ Musser Biomass is a Sugar Grove, VA (ZIP 24368) manufacturer of wood-fiber heati
 
 Eric is fielding 10–15 pricing calls a day personally — wholesale dealers asking "what's your price to my ZIP?" and existing customers checking on next month's prices. Every call is a 2–5 minute interruption (look up the customer, check the freight to their city, do the math, quote it back). During pre-heating-season pre-buy season (Aug–Oct) this hits 25+ calls/day and becomes the single biggest throughput limit on the business.
 
-The goal of Lumber Buddy + GHL Conversation AI is to move 80%+ of those pricing conversations to self-serve chat + SMS, with the AI quoting from `PRICING.md` (with ZIP-based freight built in) and booking callbacks only for custom/edge cases (multi-load pricing, contract terms, unusual lanes).
+The goal of Biomass Buddy + GHL Conversation AI is to move 80%+ of those pricing conversations to self-serve chat + SMS, with the AI quoting from `PRICING.md` (with ZIP-based freight built in) and booking callbacks only for custom/edge cases (multi-load pricing, contract terms, unusual lanes).
 
 ## Production (seed)
 
@@ -105,6 +105,6 @@ The goal of Lumber Buddy + GHL Conversation AI is to move 80%+ of those pricing 
 
 1. Owner fielding 10–15 pricing calls a day → AI handles first-touch, quotes from PRICING.md with ZIP-based freight, books callback only for custom
 2. Quote consistency across phone / SMS / chat / web → one source of truth (PRICING.md), same math everywhere (the calculator and the chat AI both call /api/quote)
-3. Load scheduling done on whiteboard each morning → Lumber Buddy shows this week's loads, production status, and customer commitments side-by-side
+3. Load scheduling done on whiteboard each morning → Biomass Buddy shows this week's loads, production status, and customer commitments side-by-side
 4. Paper invoices chasing deliveries → automatic invoice on BOL signature
 5. Spot-load opportunities missed because the team can't price them fast → ZIP-to-ZIP calculator means any inbound dealer can get a real number in seconds

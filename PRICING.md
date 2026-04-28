@@ -1,12 +1,12 @@
 # PRICING.md — Musser Biomass
 _Last updated: 2026-04-26_
-_Authoritative pricing source. Used by: Lumber Buddy brain, `/api/quote` endpoint, and the GHL Conversation AI prompt._
+_Authoritative pricing source. Used by: Biomass Buddy brain, `/api/quote` endpoint, and the GHL Conversation AI prompt._
 
 ---
 
 ## How to use this document
 
-**For the team:** This is the single source of truth for product pricing. When prices change, change them here. The Lumber Buddy chat reads this doc automatically. The pricing calculator in `/api/quote.js` mirrors this table — **update both in the same commit** or the two will drift.
+**For the team:** This is the single source of truth for product pricing. When prices change, change them here. The Biomass Buddy chat reads this doc automatically. The pricing calculator in `/api/quote.js` mirrors this table — **update both in the same commit** or the two will drift.
 
 **For AI agents:** When a customer asks about pricing, quote from this table. Show your work (loads × unit price + freight = total). If a product or quantity isn't listed here, say "Let me get you a quote from the team" — do not invent numbers.
 

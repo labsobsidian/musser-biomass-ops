@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lumber Buddy — Musser Biomass</title>
+<title>Biomass Buddy â€” Musser Biomass</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -120,7 +120,7 @@
   .artifact-pill-title{font-weight:500;}
   .artifact-pill-status{font-size:10px;color:var(--brown-mid);text-transform:uppercase;letter-spacing:0.05em;}
   .artifact-pill.streaming .artifact-pill-status{color:var(--amber);}
-  .artifact-pill.streaming .artifact-pill-status::after{content:' ●';animation:pulse 1s infinite;}
+  .artifact-pill.streaming .artifact-pill-status::after{content:' â—';animation:pulse 1s infinite;}
   @keyframes pulse{50%{opacity:0.3;}}
   .quick-strip{padding:8px 14px 0;display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;border-top:1px solid var(--border);}
   .qchip{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--brown-mid);cursor:pointer;white-space:nowrap;transition:all 0.15s;font-family:'DM Sans',sans-serif;}
@@ -283,6 +283,42 @@
   .modal-field select{width:100%;font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);outline:none;}
   .modal-field select:focus{border-color:var(--brown-dark);}
   @media(max-width:900px){.learning-grid{grid-template-columns:1fr;}}
+  .marketing-shell{display:flex;flex-direction:column;gap:16px;}
+  .marketing-tabs{display:flex;gap:0;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:4px;overflow-x:auto;}
+  .marketing-tab{border:none;background:transparent;color:var(--brown-mid);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:8px 14px;border-radius:6px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;}
+  .marketing-tab.active{background:var(--black);color:white;}
+  .marketing-panel{display:none;}
+  .marketing-panel.active{display:block;}
+  .aeo-hero{background:linear-gradient(135deg,#17130F 0%,#242019 65%,#173F2D 100%);border:1px solid rgba(184,138,53,0.4);border-right:4px solid var(--red);border-radius:8px;color:white;padding:32px 36px;display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:28px;align-items:center;box-shadow:0 20px 54px rgba(23,19,15,0.14);}
+  .aeo-eyebrow{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#C7B28A;font-weight:600;margin-bottom:10px;}
+  .aeo-title{font-size:24px;line-height:1.2;font-weight:600;max-width:620px;}
+  .aeo-copy{font-size:13px;line-height:1.7;color:rgba(255,255,255,0.72);margin-top:12px;max-width:660px;}
+  .aeo-ring{width:150px;height:150px;border-radius:50%;border:12px solid rgba(255,255,255,0.12);border-top-color:var(--gold);border-right-color:var(--teal);display:flex;flex-direction:column;align-items:center;justify-content:center;margin-left:auto;}
+  .aeo-ring strong{font-size:36px;line-height:1;font-weight:600;}
+  .aeo-ring span{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.58);margin-top:5px;}
+  .mini-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .query-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .query-table th{padding:12px 18px;text-align:left;color:var(--brown-mid);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;background:var(--surface);border-bottom:1px solid var(--border);}
+  .query-table td{padding:12px 18px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  .status-dot{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-size:12px;font-weight:600;}
+  .status-hit{background:var(--teal-light);color:var(--teal);}
+  .status-miss{background:var(--red-light);color:var(--red);}
+  .content-studio{display:grid;grid-template-columns:320px minmax(0,1fr);gap:16px;}
+  .studio-actions{display:flex;flex-direction:column;gap:10px;}
+  .studio-btn{border:1px solid var(--border);background:var(--white);border-radius:8px;padding:14px;text-align:left;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;color:var(--black);}
+  .studio-btn:hover{border-color:var(--gold);background:var(--gold-light);}
+  .studio-btn strong{display:block;font-size:13px;margin-bottom:3px;}
+  .studio-btn span{display:block;font-size:12px;color:var(--brown-mid);line-height:1.45;}
+  .draft-box{min-height:360px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:18px;white-space:pre-wrap;font-size:13px;line-height:1.7;color:var(--black);}
+  .sms-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  .sms-action{border:1px solid var(--border);background:var(--white);border-radius:8px;padding:14px;text-align:left;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.15s;}
+  .sms-action:hover{border-color:var(--gold);background:var(--gold-light);}
+  .sms-action strong{display:block;font-size:13px;}
+  .sms-action span{display:block;font-size:11px;color:var(--brown-mid);line-height:1.45;margin-top:3px;}
+  .sms-preview-list{max-height:170px;overflow:auto;border:1px solid var(--border);border-radius:8px;background:var(--bg);padding:8px;margin-top:8px;}
+  .sms-recipient{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:7px 8px;border-bottom:1px solid var(--border);}
+  .sms-recipient:last-child{border-bottom:none;}
+  @media(max-width:980px){.aeo-hero,.content-studio{grid-template-columns:1fr;}.mini-grid,.sms-actions{grid-template-columns:1fr 1fr;}.aeo-ring{margin-left:0;}}
   .hidden{display:none !important;}
   .chat-messages::-webkit-scrollbar,.buddy-sidebar::-webkit-scrollbar,.artifact-code::-webkit-scrollbar{width:6px;}
   .chat-messages::-webkit-scrollbar-thumb,.buddy-sidebar::-webkit-scrollbar-thumb,.artifact-code::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
@@ -308,7 +344,7 @@
     </div>
     <div class="header-divider"></div>
     <div>
-      <div class="header-brand">Lumber Buddy <span>by Obsidian Labs</span></div>
+      <div class="header-brand">Biomass Buddy <span>by Obsidian Labs</span></div>
       <div class="header-client">Musser Biomass</div>
     </div>
   </div>
@@ -322,7 +358,7 @@
 </div>
 
 <div class="nav" id="main-nav">
-  <div class="nav-item active" data-tab="buddy" onclick="showPage('buddy',this)">Lumber Buddy</div>
+  <div class="nav-item active" data-tab="buddy" onclick="showPage('buddy',this)">Biomass Buddy</div>
   <div class="nav-item" data-tab="operations" onclick="showPage('operations',this)">Operations</div>
   <div class="nav-item" data-tab="sales" onclick="showPage('sales',this)">Sales <span class="nav-badge" id="approval-badge">2</span></div>
   <div class="nav-item" data-tab="pricing" onclick="showPage('pricing',this)">Pricing</div>
@@ -332,7 +368,7 @@
   <div class="nav-item" data-tab="strategy" onclick="showPage('strategy',this)">Strategy</div>
   <div class="nav-item" data-tab="myroute" onclick="showPage('myroute',this)">My Route</div>
   <div class="nav-item" data-tab="learning" onclick="showPage('learning',this)">Learning Loop</div>
-  <div class="nav-item" data-tab="settings" onclick="showPage('settings',this)">⚙ Settings</div>
+  <div class="nav-item" data-tab="settings" onclick="showPage('settings',this)">âš™ Settings</div>
 </div>
 
 <div class="main">
@@ -348,15 +384,15 @@
           </svg>
         </div>
         <div class="chat-header-text">
-          <div class="chat-title">Lumber Buddy</div>
-          <div class="chat-subtitle">Musser Biomass · AI Brain</div>
+          <div class="chat-title">Biomass Buddy</div>
+          <div class="chat-subtitle">Musser Biomass Â· AI Brain</div>
         </div>
         <div class="online-dot"></div>
       </div>
       <div class="chat-messages" id="chat-messages"></div>
       <div class="quick-strip" id="quick-strip"></div>
       <div class="chat-input-area">
-        <textarea id="chat-input" placeholder="Ask Lumber Buddy anything about Musser Biomass..." rows="1" onkeydown="handleKey(event)"></textarea>
+        <textarea id="chat-input" placeholder="Ask Biomass Buddy anything about Musser Biomass..." rows="1" onkeydown="handleKey(event)"></textarea>
         <button class="send-btn" id="send-btn" onclick="sendMsg()">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="7" x2="13" y2="7"/><polyline points="8,2 13,7 8,12"/></svg>
         </button>
@@ -392,51 +428,54 @@
         <div class="conn-card-header">Create now</div>
         <div class="action-grid">
           <button class="btn btn-secondary" onclick="openWebsiteImportModal()">Import website <span>+</span></button>
-          <button class="btn btn-gold" onclick="fire('Build a branded website preview for Musser Biomass using BRAND_STYLE.md')">Website preview <span>→</span></button>
-          <button class="btn btn-secondary" onclick="fire('Create a branded PDF-style AR brief for the CEO using current placeholder AR data')">PDF brief <span>→</span></button>
-          <button class="btn btn-secondary" onclick="fire('Create a branded slide-deck preview for Musser Biomass products and Atlas rollout')">Slides <span>→</span></button>
-          <button class="btn btn-secondary" onclick="openCeoEmailComposer()">Email CEO <span>→</span></button>
+          <button class="btn btn-gold" onclick="fire('Build a branded website preview for Musser Biomass using BRAND_STYLE.md')">Website preview <span>â†’</span></button>
+          <button class="btn btn-secondary" onclick="fire('Create a branded PDF-style AR brief for the CEO using current placeholder AR data')">PDF brief <span>â†’</span></button>
+          <button class="btn btn-secondary" onclick="fire('Create a branded slide-deck preview for Musser Biomass products and Atlas rollout')">Slides <span>â†’</span></button>
+          <button class="btn btn-secondary" onclick="openCeoEmailComposer()">Email CEO <span>â†’</span></button>
+          <button class="btn btn-secondary" onclick="openSmsCampaign('demo_link')">Text demo link <span>â†’</span></button>
         </div>
         <div class="website-source-chip" id="website-source-chip"></div>
       </div>
       <div class="conn-card">
         <div class="conn-card-header">Live tools</div>
-        <div class="conn-row"><div><div class="conn-name">Pricing Calculator</div><div class="conn-detail">Reads PRICING.md · /api/quote</div></div><span class="conn-status cs-tool-live">Live</span></div>
-        <div class="conn-row"><div><div class="conn-name">Send to CEO</div><div class="conn-detail">Via GHL · /api/send-email</div></div><span class="conn-status cs-tool-live">Live</span></div>
+        <div class="conn-row"><div><div class="conn-name">Pricing Calculator</div><div class="conn-detail">Reads PRICING.md Â· /api/quote</div></div><span class="conn-status cs-tool-live">Live</span></div>
+        <div class="conn-row"><div><div class="conn-name">Send to CEO</div><div class="conn-detail">Via GHL Â· /api/send-email</div></div><span class="conn-status cs-tool-live">Live</span></div>
         <div class="conn-row"><div><div class="conn-name">Artifact builder</div><div class="conn-detail">HTML mockups in side panel</div></div><span class="conn-status cs-tool-live">Live</span></div>
+        <div class="conn-row"><div><div class="conn-name">Website importer</div><div class="conn-detail">DNS-verified public page context</div></div><span class="conn-status cs-tool-live">Live</span></div>
+        <div class="conn-row"><div><div class="conn-name">GHL SMS sender</div><div class="conn-detail">Tag preview + confirmed send</div></div><span class="conn-status cs-tool-live">Live</span></div>
       </div>
       <div class="conn-card">
         <div class="conn-card-header">Data connections</div>
         <div class="conn-row"><div><div class="conn-name">GoHighLevel CRM</div><div class="conn-detail">Contacts, email, SMS, pipeline</div></div><span class="conn-status cs-live">Live</span></div>
-        <div class="conn-row"><div><div class="conn-name">Sage 50 AR</div><div class="conn-detail">Placeholder now · connector boundary ready</div></div><span class="conn-status cs-pending">Demo</span></div>
-        <div class="conn-row"><div><div class="conn-name">Inventory DB</div><div class="conn-detail">Loads, bags, bales · Supabase</div></div><span class="conn-status cs-pending">Pending</span></div>
-        <div class="conn-row"><div><div class="conn-name">Project docs</div><div class="conn-detail">Living docs · GitHub</div></div><span class="conn-status cs-live">Live</span></div>
+        <div class="conn-row"><div><div class="conn-name">Sage 50 AR</div><div class="conn-detail">Placeholder now Â· connector boundary ready</div></div><span class="conn-status cs-pending">Demo</span></div>
+        <div class="conn-row"><div><div class="conn-name">Inventory DB</div><div class="conn-detail">Loads, bags, bales Â· Supabase</div></div><span class="conn-status cs-pending">Pending</span></div>
+        <div class="conn-row"><div><div class="conn-name">Project docs</div><div class="conn-detail">Living docs Â· GitHub</div></div><span class="conn-status cs-live">Live</span></div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="page" id="page-operations">
-  <div class="demo-banner"><div class="demo-dot"></div>Demo mode — production + load schedule will sync from Sage/accounting and Supabase once connected.</div>
+  <div class="demo-banner"><div class="demo-dot"></div>Demo mode â€” production + load schedule will sync from Sage/accounting and Supabase once connected.</div>
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-label">Loads scheduled this week</div><div class="stat-value">9</div><div class="stat-sub">5 pellets · 3 briquettes · 1 fiber</div></div>
-    <div class="stat-card"><div class="stat-label">Trucks committed</div><div class="stat-value">9 of 12</div><div class="stat-sub">3 open slots · room for spot loads</div></div>
-    <div class="stat-card"><div class="stat-label">Production rate</div><div class="stat-value">2.1 loads/day</div><div class="stat-sub">Pellet line running · briquette press up</div></div>
-    <div class="stat-card"><div class="stat-label">On-time delivery (30d)</div><div class="stat-value">96%</div><div class="stat-sub">2 late loads — driver-side delays</div></div>
+    <div class="stat-card"><div class="stat-label">Loads scheduled this week</div><div class="stat-value">9</div><div class="stat-sub">5 pellets Â· 3 briquettes Â· 1 fiber</div></div>
+    <div class="stat-card"><div class="stat-label">Trucks committed</div><div class="stat-value">9 of 12</div><div class="stat-sub">3 open slots Â· room for spot loads</div></div>
+    <div class="stat-card"><div class="stat-label">Production rate</div><div class="stat-value">2.1 loads/day</div><div class="stat-sub">Pellet line running Â· briquette press up</div></div>
+    <div class="stat-card"><div class="stat-label">On-time delivery (30d)</div><div class="stat-value">96%</div><div class="stat-sub">2 late loads â€” driver-side delays</div></div>
   </div>
   <div class="two-col">
     <div class="card">
       <div class="card-header"><div class="card-title">This week's loads</div><span style="font-size:12px;color:var(--brown-light)">Sorted by ship date</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">1</div><div><div class="op-name">Town &amp; Country Store</div><div class="op-detail">1 load Forest Fuel pellets · Hamilton NY · Tue</div></div></div><span class="badge b-won">Loaded</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">2</div><div><div class="op-name">TJ Coal &amp; Stove</div><div class="op-detail">1 load Forest Fuel briquettes · Spartansburg PA · Wed</div></div></div><span class="badge b-won">Scheduled</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">3</div><div><div class="op-name">Town &amp; Country Store</div><div class="op-detail">1 load Alpha Fiber · Hamilton NY · Thu</div></div></div><span class="badge b-won">Scheduled</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">4</div><div><div class="op-name">TJ Coal &amp; Stove</div><div class="op-detail">2 loads Forest Fuel briquettes · Spartansburg PA · Fri</div></div></div><span class="badge b-pending">Pressing</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">5</div><div><div class="op-name">Town &amp; Country Store</div><div class="op-detail">1 load Forest Fuel pellets · Hamilton NY · Fri</div></div></div><span class="badge b-new">Queued</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">1</div><div><div class="op-name">Town &amp; Country Store</div><div class="op-detail">1 load Forest Fuel pellets Â· Hamilton NY Â· Tue</div></div></div><span class="badge b-won">Loaded</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">2</div><div><div class="op-name">TJ Coal &amp; Stove</div><div class="op-detail">1 load Forest Fuel briquettes Â· Spartansburg PA Â· Wed</div></div></div><span class="badge b-won">Scheduled</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">3</div><div><div class="op-name">Town &amp; Country Store</div><div class="op-detail">1 load Alpha Fiber Â· Hamilton NY Â· Thu</div></div></div><span class="badge b-won">Scheduled</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">4</div><div><div class="op-name">TJ Coal &amp; Stove</div><div class="op-detail">2 loads Forest Fuel briquettes Â· Spartansburg PA Â· Fri</div></div></div><span class="badge b-pending">Pressing</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">5</div><div><div class="op-name">Town &amp; Country Store</div><div class="op-detail">1 load Forest Fuel pellets Â· Hamilton NY Â· Fri</div></div></div><span class="badge b-new">Queued</span></div>
     </div>
     <div class="card">
       <div class="card-header"><div class="card-title">Production pulse</div><span style="font-size:12px;color:var(--brown-light)">Finished goods on hand</span></div>
       <div class="kpi-row"><span class="kpi-label">Forest Fuel pellets (loads ready)</span><span class="kpi-value">4 <span style="color:var(--teal);font-size:11px">healthy</span></span></div>
-      <div class="kpi-row"><span class="kpi-label">Forest Fuel briquettes (loads ready)</span><span class="kpi-value">2 <span style="color:var(--amber);font-size:11px">low · press queue Wed</span></span></div>
+      <div class="kpi-row"><span class="kpi-label">Forest Fuel briquettes (loads ready)</span><span class="kpi-value">2 <span style="color:var(--amber);font-size:11px">low Â· press queue Wed</span></span></div>
       <div class="kpi-row"><span class="kpi-label">Alpha Fiber (loads ready)</span><span class="kpi-value">3 <span style="color:var(--teal);font-size:11px">healthy</span></span></div>
       <div class="kpi-row"><span class="kpi-label">Pellet bags on hand (40 lb)</span><span class="kpi-value">~4,400</span></div>
       <div class="kpi-row"><span class="kpi-label">Briquette 6-packs on hand</span><span class="kpi-value">~4,200</span></div>
@@ -447,10 +486,10 @@
 </div>
 
 <div class="page" id="page-sales">
-  <div class="alert-bar"><div class="alert-dot"></div><span id="sales-alert-text">2 quotes awaiting approval — <strong style="margin-left:4px">$24,540 total.</strong></span></div>
+  <div class="alert-bar"><div class="alert-dot"></div><span id="sales-alert-text">2 quotes awaiting approval â€” <strong style="margin-left:4px">$24,540 total.</strong></span></div>
   <div class="stats-row">
     <div class="stat-card"><div class="stat-label">Open quotes</div><div class="stat-value">7</div><div class="stat-sub">$84,200 total value</div></div>
-    <div class="stat-card"><div class="stat-label">Close rate (30d)</div><div class="stat-value">71%</div><div class="stat-sub stat-up">↑ 6% vs prior month</div></div>
+    <div class="stat-card"><div class="stat-label">Close rate (30d)</div><div class="stat-value">71%</div><div class="stat-sub stat-up">â†‘ 6% vs prior month</div></div>
     <div class="stat-card"><div class="stat-label">Avg load price</div><div class="stat-value">$5,734</div><div class="stat-sub">Product avg, freight separate</div></div>
     <div class="stat-card"><div class="stat-label">Pipeline value</div><div class="stat-value">$84,200</div><div class="stat-sub">7 open quotes</div></div>
   </div>
@@ -458,31 +497,31 @@
     <div class="card">
       <div class="card-header"><div class="card-title">Needs approval</div></div>
       <div class="op-row">
-        <div class="op-row-left"><div class="op-avatar">NE</div><div><div class="op-name">Northeast Stove Supply (new wholesale)</div><div class="op-detail">2 loads Forest Fuel pellets · Binghamton NY · first-time</div><div style="font-size:13px;margin-top:4px;font-weight:500">$13,178 quote (incl. freight)</div></div></div>
+        <div class="op-row-left"><div class="op-avatar">NE</div><div><div class="op-name">Northeast Stove Supply (new wholesale)</div><div class="op-detail">2 loads Forest Fuel pellets Â· Binghamton NY Â· first-time</div><div style="font-size:13px;margin-top:4px;font-weight:500">$13,178 quote (incl. freight)</div></div></div>
         <div class="approval-actions"><button class="btn btn-approve" onclick="approveJob(this,13178)">Approve</button><button class="btn btn-adjust">Adjust</button></div>
       </div>
       <div class="op-row">
-        <div class="op-row-left"><div class="op-avatar">AC</div><div><div class="op-name">Appalachian Coal &amp; Stove</div><div class="op-detail">1 load briquettes · Bristol TN · returning customer</div><div style="font-size:13px;margin-top:4px;font-weight:500">$5,861 quote (incl. freight)</div></div></div>
+        <div class="op-row-left"><div class="op-avatar">AC</div><div><div class="op-name">Appalachian Coal &amp; Stove</div><div class="op-detail">1 load briquettes Â· Bristol TN Â· returning customer</div><div style="font-size:13px;margin-top:4px;font-weight:500">$5,861 quote (incl. freight)</div></div></div>
         <div class="approval-actions"><button class="btn btn-approve" onclick="approveJob(this,5861)">Approve</button><button class="btn btn-adjust">Adjust</button></div>
       </div>
     </div>
     <div class="card">
       <div class="card-header"><div class="card-title">Recent quotes sent</div></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">TC</div><div><div class="op-name">Town &amp; Country Store</div><div class="op-detail">3 loads pellets, restock · sent yesterday</div></div></div><span class="badge b-pending">Awaiting</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">TJ</div><div><div class="op-name">TJ Coal &amp; Stove</div><div class="op-detail">2 loads briquettes · sent 2 days ago</div></div></div><span class="badge b-won">Accepted</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">HV</div><div><div class="op-name">Hudson Valley Hearth</div><div class="op-detail">1 load pellets, sample order · sent 3 days ago</div></div></div><span class="badge b-pending">Awaiting</span></div>
-      <div class="op-row"><div class="op-row-left"><div class="op-avatar">PA</div><div><div class="op-name">Pocono Pellet Co.</div><div class="op-detail">2 loads briquettes · sent 5 days ago</div></div></div><span class="badge b-won">Accepted</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">TC</div><div><div class="op-name">Town &amp; Country Store</div><div class="op-detail">3 loads pellets, restock Â· sent yesterday</div></div></div><span class="badge b-pending">Awaiting</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">TJ</div><div><div class="op-name">TJ Coal &amp; Stove</div><div class="op-detail">2 loads briquettes Â· sent 2 days ago</div></div></div><span class="badge b-won">Accepted</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">HV</div><div><div class="op-name">Hudson Valley Hearth</div><div class="op-detail">1 load pellets, sample order Â· sent 3 days ago</div></div></div><span class="badge b-pending">Awaiting</span></div>
+      <div class="op-row"><div class="op-row-left"><div class="op-avatar">PA</div><div><div class="op-name">Pocono Pellet Co.</div><div class="op-detail">2 loads briquettes Â· sent 5 days ago</div></div></div><span class="badge b-won">Accepted</span></div>
     </div>
   </div>
 </div>
 
 <div class="page" id="page-pricing">
-  <div class="demo-banner"><div class="demo-dot" style="background:var(--teal)"></div>Live tool — calls <code style="font-size:11px;background:var(--surface);padding:1px 4px;border-radius:3px">/api/quote</code>. Mirrors PRICING.md. Same math as GHL Conversation AI.</div>
+  <div class="demo-banner"><div class="demo-dot" style="background:var(--teal)"></div>Live tool â€” calls <code style="font-size:11px;background:var(--surface);padding:1px 4px;border-radius:3px">/api/quote</code>. Mirrors PRICING.md. Same math as GHL Conversation AI.</div>
   <div class="pricing-layout">
     <div class="calc-card">
       <div class="calc-card-header">
         <div class="card-title">Quote builder</div>
-        <span class="live-pill">Live · /api/quote</span>
+        <span class="live-pill">Live Â· /api/quote</span>
       </div>
       <div class="calc-body">
         <div id="calc-lines"></div>
@@ -490,7 +529,7 @@
         <div class="calc-settings">
           <div class="calc-field">
             <label>Origin ZIP</label>
-            <input type="text" id="calc-from-zip" value="24368" maxlength="5" readonly style="background:var(--surface);color:var(--brown-mid);cursor:not-allowed" title="Locked — Musser ships from 24368">
+            <input type="text" id="calc-from-zip" value="24368" maxlength="5" readonly style="background:var(--surface);color:var(--brown-mid);cursor:not-allowed" title="Locked â€” Musser ships from 24368">
           </div>
           <div class="calc-field">
             <label>Destination ZIP</label>
@@ -524,35 +563,126 @@
 </div>
 
 <div class="page" id="page-marketing">
-  <div class="stats-row">
-    <div class="stat-card"><div class="stat-label">Leads this month</div><div class="stat-value">44</div><div class="stat-sub stat-up">↑ 12% vs April '25</div></div>
-    <div class="stat-card"><div class="stat-label">Cost per lead</div><div class="stat-value">$28</div><div class="stat-sub stat-up">↓ $6 vs last month</div></div>
-    <div class="stat-card"><div class="stat-label">Best source</div><div class="stat-value">Google</div><div class="stat-sub">38% of leads · strong reviews</div></div>
-    <div class="stat-card"><div class="stat-label">Repeat rate</div><div class="stat-value">31%</div><div class="stat-sub">Up from 24% a year ago</div></div>
-  </div>
-  <div class="two-col">
-    <div class="card">
-      <div class="card-header"><div class="card-title">Lead sources</div><span style="font-size:12px;color:var(--brown-light)">Last 30 days</span></div>
-      <div class="row"><div class="row-name">Google Business</div><div style="flex:1;padding:0 12px"><div style="height:5px;background:var(--surface);border-radius:3px"><div style="width:80%;height:100%;background:var(--black);border-radius:3px"></div></div></div><span style="font-size:12px;color:var(--brown-mid);min-width:60px;text-align:right">17 leads</span><span style="font-size:12px;font-weight:500;min-width:40px;text-align:right">38%</span></div>
-      <div class="row"><div class="row-name">Repeat / referral</div><div style="flex:1;padding:0 12px"><div style="height:5px;background:var(--surface);border-radius:3px"><div style="width:65%;height:100%;background:var(--brown-dark);border-radius:3px"></div></div></div><span style="font-size:12px;color:var(--brown-mid);min-width:60px;text-align:right">14 leads</span><span style="font-size:12px;font-weight:500;min-width:40px;text-align:right">31%</span></div>
-      <div class="row"><div class="row-name">Facebook</div><div style="flex:1;padding:0 12px"><div style="height:5px;background:var(--surface);border-radius:3px"><div style="width:48%;height:100%;background:var(--brown-mid);border-radius:3px"></div></div></div><span style="font-size:12px;color:var(--brown-mid);min-width:60px;text-align:right">10 leads</span><span style="font-size:12px;font-weight:500;min-width:40px;text-align:right">22%</span></div>
-      <div class="row"><div class="row-name">Walk-up</div><div style="flex:1;padding:0 12px"><div style="height:5px;background:var(--surface);border-radius:3px"><div style="width:12%;height:100%;background:var(--brown-light);border-radius:3px"></div></div></div><span style="font-size:12px;color:var(--brown-mid);min-width:60px;text-align:right">3 leads</span><span style="font-size:12px;font-weight:500;min-width:40px;text-align:right">7%</span></div>
+  <div class="marketing-shell">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Dealer leads</div><div class="stat-value">44</div><div class="stat-sub stat-up">+12% vs April '25</div></div>
+      <div class="stat-card"><div class="stat-label">Cost per lead</div><div class="stat-value">$28</div><div class="stat-sub stat-up">$6 lower vs last month</div></div>
+      <div class="stat-card"><div class="stat-label">AI visibility</div><div class="stat-value">27%</div><div class="stat-sub">Tracked across 15 priority queries</div></div>
+      <div class="stat-card"><div class="stat-label">Repeat rate</div><div class="stat-value">31%</div><div class="stat-sub">Pre-season reorder path ready</div></div>
     </div>
-    <div class="card">
-      <div class="card-header"><div class="card-title">Source performance</div></div>
-      <div class="kpi-row"><span class="kpi-label">Repeat close rate</span><span class="kpi-value" style="color:var(--teal)">67%</span></div>
-      <div class="kpi-row"><span class="kpi-label">Google close rate</span><span class="kpi-value">42%</span></div>
-      <div class="kpi-row"><span class="kpi-label">Facebook close rate</span><span class="kpi-value">28%</span></div>
-      <div class="kpi-row"><span class="kpi-label">Avg order — repeat</span><span class="kpi-value">$780</span></div>
-      <div class="kpi-row"><span class="kpi-label">Avg order — Google</span><span class="kpi-value">$540</span></div>
-      <div class="kpi-row"><span class="kpi-label">Seasonal campaign lift</span><span class="kpi-value stat-up">+34% (Sept pre-buy)</span></div>
+    <div class="marketing-tabs">
+      <button class="marketing-tab active" data-marketing-tab="aeo" onclick="showMarketingPanel('aeo',this)">AEO Monitor <span class="nav-badge">New</span></button>
+      <button class="marketing-tab" data-marketing-tab="competitors" onclick="showMarketingPanel('competitors',this)">Competitors</button>
+      <button class="marketing-tab" data-marketing-tab="ads" onclick="showMarketingPanel('ads',this)">Ad Performance</button>
+      <button class="marketing-tab" data-marketing-tab="studio" onclick="showMarketingPanel('studio',this)">Content Studio</button>
+      <button class="marketing-tab" data-marketing-tab="brief" onclick="showMarketingPanel('brief',this)">Monday Brief</button>
+      <button class="marketing-tab" data-marketing-tab="sms" onclick="showMarketingPanel('sms',this)">GHL Texts</button>
+    </div>
+
+    <div class="marketing-panel active" id="marketing-aeo">
+      <div class="aeo-hero">
+        <div>
+          <div class="aeo-eyebrow">AI search visibility</div>
+          <div class="aeo-title">Musser shows up in 27% of AI answers for hardwood fuel and bedding-fiber queries.</div>
+          <div class="aeo-copy">Biomass Buddy tracks whether ChatGPT, Google AI, Gemini, and Perplexity cite Musser for bulk pellets, briquettes, Alpha Fiber, and Appalachian hardwood supply questions. Imported website content becomes the source material for better AEO articles.</div>
+        </div>
+        <div class="aeo-ring"><strong>27%</strong><span>Visibility</span></div>
+      </div>
+      <div style="height:16px"></div>
+      <div class="mini-grid">
+        <div class="stat-card"><div class="stat-label">ChatGPT</div><div class="stat-value">5/15</div><div class="stat-sub stat-up">+2 vs last check</div></div>
+        <div class="stat-card"><div class="stat-label">Google AI</div><div class="stat-value">4/15</div><div class="stat-sub">Flat</div></div>
+        <div class="stat-card"><div class="stat-label">Gemini</div><div class="stat-value">3/15</div><div class="stat-sub">Needs product pages</div></div>
+        <div class="stat-card"><div class="stat-label">Perplexity</div><div class="stat-value">4/15</div><div class="stat-sub stat-up">+1 vs last check</div></div>
+      </div>
+      <div style="height:16px"></div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Priority queries - citation status</div><button class="btn btn-secondary" onclick="fire('Refresh the Biomass Buddy AEO monitor using imported website context and draft the next priority article')">Refresh check</button></div>
+        <div style="overflow:auto">
+          <table class="query-table">
+            <thead><tr><th>Query</th><th>ChatGPT</th><th>Google AI</th><th>Gemini</th><th>Perplexity</th><th>Next action</th></tr></thead>
+            <tbody>
+              <tr><td><strong>bulk hardwood pellets Virginia</strong><div class="ar-note">High-intent dealer search</div></td><td><span class="status-dot status-hit">✓</span></td><td><span class="status-dot status-miss">×</span></td><td><span class="status-dot status-miss">×</span></td><td><span class="status-dot status-hit">✓</span></td><td>Publish AEO article</td></tr>
+              <tr><td><strong>Forest Fuel pellets supplier</strong><div class="ar-note">Brand/product search</div></td><td><span class="status-dot status-hit">✓</span></td><td><span class="status-dot status-hit">✓</span></td><td><span class="status-dot status-hit">✓</span></td><td><span class="status-dot status-hit">✓</span></td><td>Strengthen source links</td></tr>
+              <tr><td><strong>horse bedding fiber Virginia</strong><div class="ar-note">Alpha Fiber growth lane</div></td><td><span class="status-dot status-miss">×</span></td><td><span class="status-dot status-miss">×</span></td><td><span class="status-dot status-miss">×</span></td><td><span class="status-dot status-miss">×</span></td><td>Create Alpha Fiber page</td></tr>
+              <tr><td><strong>wood briquettes bulk supplier</strong><div class="ar-note">Fuel briquette prospecting</div></td><td><span class="status-dot status-hit">✓</span></td><td><span class="status-dot status-miss">×</span></td><td><span class="status-dot status-miss">×</span></td><td><span class="status-dot status-hit">✓</span></td><td>Add comparison FAQ</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="marketing-panel" id="marketing-competitors">
+      <div class="two-col">
+        <div class="card"><div class="card-header"><div class="card-title">Competitive position</div></div>
+          <div class="kpi-row"><span class="kpi-label">Local pellet suppliers</span><span class="kpi-value">Strong on proximity, weak on AEO</span></div>
+          <div class="kpi-row"><span class="kpi-label">Regional biomass brokers</span><span class="kpi-value">Strong on search, less product-specific</span></div>
+          <div class="kpi-row"><span class="kpi-label">Feed/bedding distributors</span><span class="kpi-value">Alpha Fiber opportunity</span></div>
+          <div class="kpi-row"><span class="kpi-label">Musser advantage</span><span class="kpi-value" style="color:var(--teal)">Hardwood source + freight clarity</span></div>
+        </div>
+        <div class="card"><div class="card-header"><div class="card-title">Win themes</div></div>
+          <div class="row"><div><strong>Direct supply language</strong><div class="ar-note">Use website importer to ground every claim in the real Musser site.</div></div></div>
+          <div class="row"><div><strong>Dealer reorder workflows</strong><div class="ar-note">Use GHL tags to trigger product-specific follow-up texts.</div></div></div>
+          <div class="row"><div><strong>AEO FAQ depth</strong><div class="ar-note">Answer practical questions about pellets, briquettes, Alpha Fiber, and delivered quotes.</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="marketing-panel" id="marketing-ads">
+      <div class="two-col">
+        <div class="card"><div class="card-header"><div class="card-title">Campaign performance</div><span style="font-size:12px;color:var(--brown-light)">Demo seed</span></div>
+          <div class="kpi-row"><span class="kpi-label">Pre-season dealer reorder</span><span class="kpi-value" style="color:var(--teal)">6.4x ROAS</span></div>
+          <div class="kpi-row"><span class="kpi-label">Bulk pellets search</span><span class="kpi-value">42 leads</span></div>
+          <div class="kpi-row"><span class="kpi-label">Alpha Fiber awareness</span><span class="kpi-value">$31 CPL</span></div>
+          <div class="kpi-row"><span class="kpi-label">Retargeting pool</span><span class="kpi-value">Ready after site migration</span></div>
+        </div>
+        <div class="card"><div class="card-header"><div class="card-title">Next ad drafts</div></div>
+          <div class="row"><div><strong>Forest Fuel dealer reorder</strong><div class="ar-note">Text and Facebook copy for customers a few months after last order.</div></div><button class="btn btn-secondary" onclick="generateMarketingDraft('facebook_post','Forest Fuel reorder post')">Draft</button></div>
+          <div class="row"><div><strong>Alpha Fiber use-case ad</strong><div class="ar-note">Audience: farms, bedding buyers, rural retailers.</div></div><button class="btn btn-secondary" onclick="fire('Draft an Alpha Fiber Facebook ad using Musser brand voice')">Draft</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="marketing-panel" id="marketing-studio">
+      <div class="content-studio">
+        <div class="studio-actions">
+          <button class="studio-btn" onclick="generateMarketingDraft('aeo_article','bulk hardwood pellets Virginia')"><strong>AEO article</strong><span>Publish-ready draft for Vercel blog once the site is migrated.</span></button>
+          <button class="studio-btn" onclick="generateMarketingDraft('facebook_post','pre-season dealer reorder')"><strong>Facebook post</strong><span>GHL Social Planner-ready copy for Musser product campaigns.</span></button>
+          <button class="studio-btn" onclick="fire('Create a branded slide-deck preview introducing Biomass Buddy to Musser leadership')"><strong>Slide outline</strong><span>Executive presentation structure for the demo.</span></button>
+          <button class="studio-btn" onclick="openWebsiteImportModal()"><strong>Import website source</strong><span>Pull verified Musser web copy into Atlas context.</span></button>
+        </div>
+        <div class="draft-box" id="marketing-draft-box">Choose a content tool to generate a Musser-branded draft. Live publishing to the Vercel blog and GHL Social Planner is prepared as a future adapter after the site/social API path is confirmed.</div>
+      </div>
+    </div>
+
+    <div class="marketing-panel" id="marketing-brief">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Monday marketing brief</div><button class="btn btn-secondary" onclick="generateMarketingDraft('monday_brief','weekly marketing brief')">Generate brief</button></div>
+        <div style="padding:18px">
+          <div class="ar-summary"><strong>Atlas read:</strong> Use the website importer to ground Musser's public-facing copy, then publish one AEO article and one reorder-focused Facebook post. The fastest demo win is GHL tag-based SMS to the executive group, followed by a review workflow link and voice-agent number.</div>
+          <div style="height:14px"></div>
+          <div class="kpi-row"><span class="kpi-label">Content priority</span><span class="kpi-value">Bulk hardwood pellets Virginia</span></div>
+          <div class="kpi-row"><span class="kpi-label">SMS priority</span><span class="kpi-value">Exec demo tag + reorder follow-up tag</span></div>
+          <div class="kpi-row"><span class="kpi-label">Publishing path</span><span class="kpi-value">Vercel site/blog behind GoDaddy DNS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="marketing-panel" id="marketing-sms">
+      <div class="demo-banner"><div class="demo-dot"></div>GHL texts use tags for long-term maintainability. Biomass Buddy previews recipients and message copy before sending.</div>
+      <div class="sms-actions">
+        <button class="sms-action" onclick="openSmsCampaign('demo_link')"><strong>Biomass Buddy link</strong><span>Tag: biomass-demo-board</span></button>
+        <button class="sms-action" onclick="openSmsCampaign('review_request')"><strong>Review workflow</strong><span>Tag: biomass-demo-board or biomass-review-test</span></button>
+        <button class="sms-action" onclick="openSmsCampaign('reorder_followup')"><strong>Reorder follow-up</strong><span>Tag: biomass-reorder-followup</span></button>
+        <button class="sms-action" onclick="openSmsCampaign('voice_agent')"><strong>Voice agent number</strong><span>Tag: biomass-demo-board</span></button>
+      </div>
     </div>
   </div>
 </div>
 
 <div class="page" id="page-finance">
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-label">Revenue MTD</div><div class="stat-value">$112,400</div><div class="stat-sub stat-up">↑ 22% vs April '25</div></div>
+    <div class="stat-card"><div class="stat-label">Revenue MTD</div><div class="stat-value">$112,400</div><div class="stat-sub stat-up">â†‘ 22% vs April '25</div></div>
     <div class="stat-card"><div class="stat-label">Open AR</div><div class="stat-value" id="finance-ar-total">$77,638</div><div class="stat-sub">Sage 50 placeholder</div></div>
     <div class="stat-card"><div class="stat-label">Gross margin</div><div class="stat-value">31%</div><div class="stat-sub">Steady vs. last year</div></div>
     <div class="stat-card"><div class="stat-label">Projected month</div><div class="stat-value">$148,000</div><div class="stat-sub">At current run rate</div></div>
@@ -568,9 +698,9 @@
     <div class="card">
       <div class="card-header"><div class="card-title">P&amp;L snapshot</div><span style="font-size:12px;color:var(--brown-light)">April MTD</span></div>
       <div class="kpi-row"><span class="kpi-label">Gross revenue</span><span class="kpi-value">$112,400</span></div>
-      <div class="kpi-row"><span class="kpi-label">Raw fiber + materials</span><span class="kpi-value" style="color:var(--red)">−$42,300</span></div>
-      <div class="kpi-row"><span class="kpi-label">Labor</span><span class="kpi-value" style="color:var(--red)">−$23,800</span></div>
-      <div class="kpi-row"><span class="kpi-label">Energy + plant</span><span class="kpi-value" style="color:var(--red)">−$11,500</span></div>
+      <div class="kpi-row"><span class="kpi-label">Raw fiber + materials</span><span class="kpi-value" style="color:var(--red)">âˆ’$42,300</span></div>
+      <div class="kpi-row"><span class="kpi-label">Labor</span><span class="kpi-value" style="color:var(--red)">âˆ’$23,800</span></div>
+      <div class="kpi-row"><span class="kpi-label">Energy + plant</span><span class="kpi-value" style="color:var(--red)">âˆ’$11,500</span></div>
       <div class="kpi-row"><span class="kpi-label">Gross margin</span><span class="kpi-value" style="color:var(--teal)">$34,800 (31%)</span></div>
       <div class="kpi-row"><span class="kpi-label">Sage 50 sync</span><span class="kpi-value" style="color:var(--amber)">Placeholder data</span></div>
       <div class="kpi-row"><span class="kpi-label">AR workspace</span><span class="kpi-value"><button class="connect-btn" onclick="showPage('ar',document.querySelector('[data-tab=&quot;ar&quot;]'))">Open AR</button></span></div>
@@ -619,7 +749,7 @@
 <div class="page" id="page-strategy">
   <div class="stats-row">
     <div class="stat-card"><div class="stat-label">Annual target</div><div class="stat-value">$1.6M</div><div class="stat-sub">Current pace $1.5M</div></div>
-    <div class="stat-card"><div class="stat-label">Wholesale accounts</div><div class="stat-value">12 → 24</div><div class="stat-sub">Stretch goal by Q4</div></div>
+    <div class="stat-card"><div class="stat-label">Wholesale accounts</div><div class="stat-value">12 â†’ 24</div><div class="stat-sub">Stretch goal by Q4</div></div>
     <div class="stat-card"><div class="stat-label">AI-handled inquiries</div><div class="stat-value">60%</div><div class="stat-sub">Primary KPI</div></div>
     <div class="stat-card"><div class="stat-label">Avg load freight</div><div class="stat-value">$1,275</div><div class="stat-sub">~432 mi avg lane</div></div>
   </div>
@@ -633,33 +763,33 @@
     </div>
     <div class="card">
       <div class="card-header"><div class="card-title">What the system solves</div></div>
-      <div class="kpi-row"><span class="kpi-label">Owner pricing calls/day</span><span class="kpi-value">10–15 → goal 2–3</span></div>
+      <div class="kpi-row"><span class="kpi-label">Owner pricing calls/day</span><span class="kpi-value">10â€“15 â†’ goal 2â€“3</span></div>
       <div class="kpi-row"><span class="kpi-label">Quote consistency</span><span class="kpi-value">PRICING.md is the law</span></div>
-      <div class="kpi-row"><span class="kpi-label">Load scheduling</span><span class="kpi-value">Whiteboard → app</span></div>
+      <div class="kpi-row"><span class="kpi-label">Load scheduling</span><span class="kpi-value">Whiteboard â†’ app</span></div>
       <div class="kpi-row"><span class="kpi-label">Invoice lag</span><span class="kpi-value">Auto on delivery</span></div>
     </div>
   </div>
 </div>
 
 <div class="page" id="page-myroute">
-  <div class="demo-banner"><div class="demo-dot"></div>Driver view — today's loads in order. Mark each complete as you go.</div>
+  <div class="demo-banner"><div class="demo-dot"></div>Driver view â€” today's loads in order. Mark each complete as you go.</div>
   <div class="card">
-    <div class="card-header"><div class="card-title">Today's loads · Truck 2</div><span style="font-size:12px;color:var(--brown-light)">2 deliveries · long-haul day</span></div>
+    <div class="card-header"><div class="card-title">Today's loads Â· Truck 2</div><span style="font-size:12px;color:var(--brown-light)">2 deliveries Â· long-haul day</span></div>
     <div class="route-stop">
       <div class="stop-num">1</div>
       <div class="stop-info">
         <div class="stop-name">Town &amp; Country Store</div>
-        <div class="stop-addr">2433 Route 12B, Hamilton NY 13346 · ETA Tue 2:00 PM</div>
-        <div class="stop-product">1 load Forest Fuel pellets (1,100 bags) · $7,259.90 net-30</div>
-        <div class="stop-note">~522 mi from Pulaski · BOL signed at receiving</div>
+        <div class="stop-addr">2433 Route 12B, Hamilton NY 13346 Â· ETA Tue 2:00 PM</div>
+        <div class="stop-product">1 load Forest Fuel pellets (1,100 bags) Â· $7,259.90 net-30</div>
+        <div class="stop-note">~522 mi from Pulaski Â· BOL signed at receiving</div>
       </div>
     </div>
     <div class="route-stop">
       <div class="stop-num">2</div>
       <div class="stop-info">
         <div class="stop-name">Yard return</div>
-        <div class="stop-addr">Musser yard, 24368 · Wed AM</div>
-        <div class="stop-product">Drop paperwork, park Truck 2, fuel if under ¼</div>
+        <div class="stop-addr">Musser yard, 24368 Â· Wed AM</div>
+        <div class="stop-product">Drop paperwork, park Truck 2, fuel if under Â¼</div>
         <div class="stop-note">Pre-trip Wed afternoon for Spartansburg PA run</div>
       </div>
     </div>
@@ -669,12 +799,12 @@
 <div class="page" id="page-settings">
   <div class="settings-section">
     <div class="settings-title">Integrations</div>
-    <div class="setting-row"><div class="sr-left"><div class="sr-label">GoHighLevel CRM</div><div class="sr-detail">Contacts, email, SMS, pipeline, Conversation AI</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Live · env configured</span><button class="connect-btn">Configure</button></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">GoHighLevel CRM</div><div class="sr-detail">Contacts, email, SMS, pipeline, Conversation AI</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Live Â· env configured</span><button class="connect-btn">Configure</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Sage 50 Accounting</div><div class="sr-detail">Accounts receivable, aging, invoice sync (placeholder until access)</div></div><div class="sr-right"><span style="font-size:12px;color:var(--amber)">Demo data</span><button class="connect-btn">Connect</button></div></div>
-    <div class="setting-row"><div class="sr-left"><div class="sr-label">Supabase Inventory</div><div class="sr-detail">Load, bag, bale stock — live counts</div></div><div class="sr-right"><span style="font-size:12px;color:var(--brown-light)">Not configured</span><button class="connect-btn">Connect</button></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">Supabase Inventory</div><div class="sr-detail">Load, bag, bale stock â€” live counts</div></div><div class="sr-right"><span style="font-size:12px;color:var(--brown-light)">Not configured</span><button class="connect-btn">Connect</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Outbound messaging</div><div class="sr-detail">GHL Conversations provider for CEO/customer email and SMS</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">GHL primary</span><button class="connect-btn">Configure</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Google Maps</div><div class="sr-detail">Route optimization for dispatch</div></div><div class="sr-right"><span style="font-size:12px;color:var(--brown-light)">Not connected</span><button class="connect-btn">Connect</button></div></div>
-    <div class="setting-row"><div class="sr-left"><div class="sr-label">GitHub — Project docs</div><div class="sr-detail">Living docs · brain reads automatically (incl. PRICING.md)</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Live</span><button class="connect-btn">Configure</button></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">GitHub â€” Project docs</div><div class="sr-detail">Living docs Â· brain reads automatically (incl. PRICING.md)</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Live</span><button class="connect-btn">Configure</button></div></div>
   </div>
   <div class="settings-section">
     <div class="settings-title">Users</div>
@@ -686,14 +816,14 @@
   </div>
   <div class="settings-section" id="brain-settings-section">
     <div class="settings-title">Brain settings</div>
-    <div class="setting-row"><div class="sr-left"><div class="sr-label">Weekly CEO summary</div><div class="sr-detail">Lumber Buddy drafts and emails a Monday report</div></div><div class="sr-right"><div class="toggle off" onclick="this.classList.toggle('off')"></div></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">Weekly CEO summary</div><div class="sr-detail">Biomass Buddy drafts and emails a Monday report</div></div><div class="sr-right"><div class="toggle off" onclick="this.classList.toggle('off')"></div></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Pricing update alerts</div><div class="sr-detail">Notify owner when PRICING.md is edited</div></div><div class="sr-right"><div class="toggle" onclick="this.classList.toggle('off')"></div></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Approval notifications</div><div class="sr-detail">Alert owner when a wholesale/custom quote needs review</div></div><div class="sr-right"><div class="toggle" onclick="this.classList.toggle('off')"></div></div></div>
   </div>
   <div class="settings-section">
     <div class="settings-title">Learning loop</div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">Manual correction capture</div><div class="sr-detail">Flag wrong answers and draft a pending KB lesson</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Live</span><button class="connect-btn" onclick="showPage('learning',document.querySelector('[data-tab=learning]'))">Review</button></div></div>
-    <div class="setting-row"><div class="sr-left"><div class="sr-label">Weekly Start the Week review</div><div class="sr-detail">Owner/admin approval before lessons affect Lumber Buddy</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Human approved</span><button class="connect-btn" onclick="generateWeeklyReview(true)">Generate</button></div></div>
+    <div class="setting-row"><div class="sr-left"><div class="sr-label">Weekly Start the Week review</div><div class="sr-detail">Owner/admin approval before lessons affect Biomass Buddy</div></div><div class="sr-right"><span style="font-size:12px;color:var(--teal)">Human approved</span><button class="connect-btn" onclick="generateWeeklyReview(true)">Generate</button></div></div>
     <div class="setting-row"><div class="sr-left"><div class="sr-label">External learning sources</div><div class="sr-detail">GHL, voice, Sage 50, Amazon, spreadsheets, and APIs normalize into the same queue</div></div><div class="sr-right"><span style="font-size:12px;color:var(--amber)">Slots ready</span></div></div>
   </div>
 </div>
@@ -724,7 +854,7 @@
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title">Send to CEO</div>
-      <button class="modal-close" onclick="closeEmailModal()">×</button>
+      <button class="modal-close" onclick="closeEmailModal()">Ã—</button>
     </div>
     <div class="modal-body">
       <div class="modal-status" id="email-status"></div>
@@ -747,11 +877,40 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="sms-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="sms-modal-title">Send GHL text</div>
+      <button class="modal-close" onclick="closeSmsModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-status" id="sms-status"></div>
+      <div class="modal-field">
+        <label>GHL tag</label>
+        <input type="text" id="sms-tag" placeholder="biomass-demo-board">
+      </div>
+      <div class="modal-field">
+        <label>Message</label>
+        <textarea id="sms-message" placeholder="Text message..."></textarea>
+      </div>
+      <div style="font-size:11px;color:var(--brown-light);line-height:1.5;">
+        This sends through GHL Conversations after preview. Use <code style="font-size:11px">{{firstName}}</code> for personalization and <code style="font-size:11px">{{link}}</code> for the configured demo/review/voice link.
+      </div>
+      <div class="sms-preview-list" id="sms-preview-list">Preview recipients before sending.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="background:var(--surface);color:var(--brown-mid)" onclick="closeSmsModal()">Cancel</button>
+      <button class="btn btn-secondary" id="sms-preview-btn" onclick="previewSmsCampaign()">Preview recipients</button>
+      <button class="btn btn-gold" id="sms-send-btn" onclick="sendSmsCampaign()" disabled>Confirm & send</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="correction-modal">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title">Flag a correction</div>
-      <button class="modal-close" onclick="closeCorrectionModal()">×</button>
+      <button class="modal-close" onclick="closeCorrectionModal()">Ã—</button>
     </div>
     <div class="modal-body">
       <div class="modal-status" id="correction-status"></div>
@@ -772,11 +931,11 @@
       </div>
       <div class="modal-field">
         <label>Summary</label>
-        <input type="text" id="correction-summary" placeholder="What should Lumber Buddy learn?">
+        <input type="text" id="correction-summary" placeholder="What should Biomass Buddy learn?">
       </div>
       <div class="modal-field">
         <label>Corrected answer / lesson</label>
-        <textarea id="correction-lesson" placeholder="Write the rule or correction Lumber Buddy should use next time."></textarea>
+        <textarea id="correction-lesson" placeholder="Write the rule or correction Biomass Buddy should use next time."></textarea>
       </div>
       <div class="modal-field">
         <label>Why this matters</label>
@@ -807,6 +966,40 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="website-import-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Import website content</div>
+      <button class="modal-close" onclick="closeWebsiteImportModal()">x</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-status" id="website-import-status"></div>
+      <div class="modal-field">
+        <label>Website URL</label>
+        <input type="url" id="website-import-url" placeholder="https://example.com">
+      </div>
+      <label class="modal-check">
+        <input type="checkbox" id="website-import-attest">
+        <span>I own, manage, or am authorized to import this public website content for Musser Biomass design work.</span>
+      </label>
+      <div class="dns-box" id="website-import-dns">
+        <div>Add this TXT record at the domain DNS host, then check again.</div>
+        <div class="dns-record"><strong>Name:</strong> <span id="website-import-record-name"></span></div>
+        <div class="dns-record"><strong>Value:</strong> <span id="website-import-record-value"></span></div>
+      </div>
+      <div class="website-import-summary" id="website-import-summary"></div>
+      <div style="font-size:11px;color:var(--brown-light);line-height:1.5;">
+        Imports one public page only. Biomass Buddy will not use credentials, cookies, private network targets, or login-gated content.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="background:var(--surface);color:var(--brown-mid)" onclick="closeWebsiteImportModal()">Cancel</button>
+      <button class="btn btn-secondary" id="website-import-clear-btn" onclick="clearWebsiteSource()">Clear source</button>
+      <button class="btn btn-gold" id="website-import-btn" onclick="importWebsiteSource()">Import / check DNS</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const EXEC_VISIBLE_TABS = ['buddy','operations','sales','pricing','marketing','finance','ar','strategy','myroute','learning','settings'];
 const ROLES = {
@@ -827,10 +1020,9 @@ const PROMPTS = {
 function greetingFor(role) {
   const roleDef = ROLES[role] || ROLES.ceo;
   const name = currentFirstName || roleDef.firstName || roleDef.displayName;
-  if (role === 'board') return `Good morning. Lumber Buddy is ready with the executive view for Musser Biomass: revenue, AR risk, sales, pricing, branded reports, and the Sage 50-ready AR workspace. Want the board brief, revenue view, or AR PDF first?`;
-  return `Morning ${name}. Lumber Buddy is ready with the executive view for Musser Biomass: revenue, AR risk, sales, pricing, branded reports, and the Sage 50-ready AR workspace. Want the AR brief, revenue view, or website preview first?`;
+  if (role === 'board') return `Good morning. Biomass Buddy is ready with the executive view for Musser Biomass: revenue, AR risk, sales, pricing, branded reports, and the Sage 50-ready AR workspace. Want the board brief, revenue view, or AR PDF first?`;
+  return `Morning ${name}. Biomass Buddy is ready with the executive view for Musser Biomass: revenue, AR risk, sales, pricing, branded reports, and the Sage 50-ready AR workspace. Want the AR brief, revenue view, or website preview first?`;
 }
-
 let currentRole = 'ceo';
 let currentFirstName = null;
 let isAdmin = false;
@@ -841,6 +1033,9 @@ let activeCorrection = { originalPrompt: '', botAnswer: '' };
 let learningItems = [];
 let priceBookCache = null;
 let arCache = null;
+let websiteSources = [];
+let currentSmsCampaign = null;
+let currentSmsPreview = null;
 
 function detectRoleFromUrl() {
   const params = new URLSearchParams(window.location.search);
@@ -872,8 +1067,8 @@ function applyRole(role) {
   });
   const alertText = document.getElementById('sales-alert-text');
   if (alertText) {
-    if (roleDef.canApprove) alertText.innerHTML = '2 quotes awaiting approval — <strong style="margin-left:4px">$16,800 total.</strong>';
-    else alertText.innerHTML = '2 quotes awaiting owner approval — <strong style="margin-left:4px">$16,800 total.</strong>';
+    if (roleDef.canApprove) alertText.innerHTML = '2 quotes awaiting approval â€” <strong style="margin-left:4px">$16,800 total.</strong>';
+    else alertText.innerHTML = '2 quotes awaiting owner approval â€” <strong style="margin-left:4px">$16,800 total.</strong>';
   }
   const brainSettings = document.getElementById('brain-settings-section');
   if (brainSettings) { if (roleDef.seeBrainSettings) brainSettings.classList.remove('hidden'); else brainSettings.classList.add('hidden'); }
@@ -921,6 +1116,172 @@ function buildQuickStrip(role) {
   });
 }
 
+function showMarketingPanel(panel, btn) {
+  document.querySelectorAll('.marketing-panel').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById('marketing-' + panel);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.marketing-tab').forEach(el => el.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+async function generateMarketingDraft(type, topic) {
+  const box = document.getElementById('marketing-draft-box');
+  if (!box) return;
+  box.textContent = 'Generating branded Musser draft...';
+  try {
+    const resp = await fetch('/api/marketing-draft', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, topic })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Draft failed');
+    box.textContent = formatMarketingDraft(data.draft, data.note);
+  } catch (e) {
+    box.textContent = 'Draft endpoint is not reachable yet: ' + e.message;
+  }
+}
+
+function formatMarketingDraft(draft, note) {
+  if (!draft) return 'No draft returned.';
+  const lines = [
+    `${draft.title || 'Marketing Draft'}`,
+    `Brand: ${draft.brand || 'Musser Biomass & Wood Products'}`,
+    draft.requestedTopic ? `Topic: ${draft.requestedTopic}` : '',
+    ''
+  ].filter(Boolean);
+  if (draft.headline) lines.push(draft.headline, '');
+  if (Array.isArray(draft.body)) lines.push(...draft.body, '');
+  else if (draft.body) lines.push(draft.body, '');
+  if (Array.isArray(draft.sections)) lines.push(...draft.sections.map((s, i) => `${i + 1}. ${s}`), '');
+  if (Array.isArray(draft.hashtags)) lines.push(draft.hashtags.join(' '), '');
+  if (draft.cta) lines.push(`CTA: ${draft.cta}`, '');
+  if (note) lines.push(`Note: ${note}`);
+  return lines.join('\n');
+}
+
+const SMS_CAMPAIGN_CONFIG = {
+  demo_link: {
+    title: 'Send Biomass Buddy link',
+    tag: 'biomass-demo-board',
+    message: "Hi {{firstName}}, here's your link to check out Biomass Buddy: {{link}}"
+  },
+  review_request: {
+    title: 'Send review workflow link',
+    tag: 'biomass-demo-board',
+    message: "Hi {{firstName}}, here's the review request workflow link for Biomass Buddy: {{link}}"
+  },
+  reorder_followup: {
+    title: 'Send reorder follow-up',
+    tag: 'biomass-reorder-followup',
+    message: "Hi {{firstName}}, this is Musser Biomass checking in. It has been a little while since your last order, so I wanted to see how the product is treating you and whether you are ready for another load."
+  },
+  voice_agent: {
+    title: 'Send voice agent number',
+    tag: 'biomass-demo-board',
+    message: "Hi {{firstName}}, here's the Biomass Buddy voice agent number if you want to try it: {{link}}"
+  }
+};
+
+function openSmsCampaign(campaign) {
+  currentSmsCampaign = campaign || 'demo_link';
+  currentSmsPreview = null;
+  const config = SMS_CAMPAIGN_CONFIG[currentSmsCampaign] || SMS_CAMPAIGN_CONFIG.demo_link;
+  document.getElementById('sms-modal-title').textContent = config.title;
+  document.getElementById('sms-tag').value = config.tag;
+  document.getElementById('sms-message').value = config.message;
+  document.getElementById('sms-preview-list').textContent = 'Preview recipients before sending.';
+  const status = document.getElementById('sms-status');
+  status.className = 'modal-status';
+  status.textContent = '';
+  document.getElementById('sms-send-btn').disabled = true;
+  document.getElementById('sms-modal').classList.add('visible');
+}
+
+function closeSmsModal() {
+  document.getElementById('sms-modal').classList.remove('visible');
+}
+
+async function previewSmsCampaign() {
+  const tag = document.getElementById('sms-tag').value.trim();
+  const message = document.getElementById('sms-message').value.trim();
+  const status = document.getElementById('sms-status');
+  const btn = document.getElementById('sms-preview-btn');
+  if (!tag || !message) {
+    status.className = 'modal-status error';
+    status.textContent = 'Tag and message are required.';
+    return;
+  }
+  btn.disabled = true;
+  status.className = 'modal-status sending';
+  status.textContent = 'Looking up tagged GHL contacts...';
+  try {
+    const resp = await fetch('/api/send-sms', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ campaign: currentSmsCampaign, tag, message, dryRun: true })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Preview failed');
+    currentSmsPreview = data;
+    renderSmsPreview(data.contacts || [], data.message, data.source);
+    status.className = 'modal-status success';
+    status.textContent = `${(data.contacts || []).length} recipient${(data.contacts || []).length === 1 ? '' : 's'} found from ${data.source}.`;
+    document.getElementById('sms-send-btn').disabled = !(data.contacts || []).length;
+  } catch (e) {
+    status.className = 'modal-status error';
+    status.textContent = 'Preview failed: ' + e.message;
+    document.getElementById('sms-send-btn').disabled = true;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderSmsPreview(contacts, message, source) {
+  const list = document.getElementById('sms-preview-list');
+  if (!contacts.length) {
+    list.textContent = 'No contacts found for this tag.';
+    return;
+  }
+  list.innerHTML = `
+    <div style="font-size:11px;color:var(--brown-mid);margin:2px 6px 8px">Source: ${escapeUi(source)}. Message preview uses first-name personalization when sent.</div>
+    ${contacts.map(contact => `
+      <div class="sms-recipient">
+        <span><strong>${escapeUi(contact.name || contact.firstName || 'Contact')}</strong><br><span style="color:var(--brown-light)">${escapeUi(contact.phone || contact.email || contact.id)}</span></span>
+        <span style="color:var(--brown-mid)">${escapeUi((contact.tags || []).slice(0, 2).join(', '))}</span>
+      </div>
+    `).join('')}
+    <div style="font-size:12px;color:var(--brown-mid);margin:10px 6px 2px;white-space:pre-wrap">${escapeUi(message)}</div>
+  `;
+}
+
+async function sendSmsCampaign() {
+  const tag = document.getElementById('sms-tag').value.trim();
+  const message = document.getElementById('sms-message').value.trim();
+  const status = document.getElementById('sms-status');
+  const btn = document.getElementById('sms-send-btn');
+  btn.disabled = true;
+  status.className = 'modal-status sending';
+  status.textContent = 'Sending through GHL Conversations...';
+  try {
+    const resp = await fetch('/api/send-sms', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ campaign: currentSmsCampaign, tag, message, dryRun: false })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Send failed');
+    status.className = data.failed ? 'modal-status error' : 'modal-status success';
+    status.textContent = `Sent ${data.sent}/${data.attempted} text${data.attempted === 1 ? '' : 's'} through GHL.`;
+    history.push({ role: 'assistant', content: `GHL SMS campaign sent: ${data.label}. Sent ${data.sent}/${data.attempted}.` });
+    setTimeout(() => { closeSmsModal(); btn.disabled = false; }, data.failed ? 3000 : 1600);
+  } catch (e) {
+    status.className = 'modal-status error';
+    status.textContent = 'Send failed: ' + e.message;
+    btn.disabled = false;
+  }
+}
+
 function addMsg(role, text, opts = {}) {
   const c = document.getElementById('chat-messages');
   const d = document.createElement('div');
@@ -946,8 +1307,8 @@ function addMsg(role, text, opts = {}) {
     actions.className = 'msg-actions';
     const btn = document.createElement('button');
     btn.className = 'msg-action-btn';
-    btn.innerHTML = '✉ Send to CEO';
-    btn.onclick = () => openEmailModal({ subject: 'Lumber Buddy update · ' + new Date().toLocaleDateString(), body: text });
+    btn.innerHTML = 'âœ‰ Send to CEO';
+    btn.onclick = () => openEmailModal({ subject: 'Biomass Buddy update Â· ' + new Date().toLocaleDateString(), body: text });
     actions.appendChild(btn);
     const correctionBtn = document.createElement('button');
     correctionBtn.className = 'msg-action-btn';
@@ -987,6 +1348,106 @@ function addStreamingMsg() {
 
 async function fire(text) { if (!loading) await run(text); }
 
+function openWebsiteImportModal() {
+  document.getElementById('website-import-modal').classList.add('visible');
+  setWebsiteImportStatus('', '');
+  const summary = document.getElementById('website-import-summary');
+  const dnsBox = document.getElementById('website-import-dns');
+  if (summary) summary.classList.remove('visible');
+  if (dnsBox) dnsBox.classList.remove('visible');
+  if (websiteSources[0]) renderWebsiteImportSummary(websiteSources[0]);
+}
+
+function closeWebsiteImportModal() {
+  document.getElementById('website-import-modal').classList.remove('visible');
+}
+
+function setWebsiteImportStatus(kind, text) {
+  const el = document.getElementById('website-import-status');
+  el.className = 'modal-status' + (kind ? ' ' + kind : '');
+  el.textContent = text || '';
+}
+
+async function importWebsiteSource() {
+  const btn = document.getElementById('website-import-btn');
+  const url = document.getElementById('website-import-url').value.trim();
+  const attestOwnership = document.getElementById('website-import-attest').checked;
+  const dnsBox = document.getElementById('website-import-dns');
+  dnsBox.classList.remove('visible');
+  if (!url) {
+    setWebsiteImportStatus('error', 'Enter a public website URL first.');
+    return;
+  }
+  if (!attestOwnership) {
+    setWebsiteImportStatus('error', 'Confirm you own, manage, or are authorized to import this site.');
+    return;
+  }
+
+  btn.disabled = true;
+  setWebsiteImportStatus('sending', 'Checking DNS authorization and importing the public page...');
+  try {
+    const resp = await fetch('/api/website-import', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, attestOwnership })
+    });
+    const data = await resp.json();
+    if (resp.status === 428 && data.code === 'dns_verification_required') {
+      document.getElementById('website-import-record-name').textContent = data.recordName || '';
+      document.getElementById('website-import-record-value').textContent = data.recordValue || '';
+      dnsBox.classList.add('visible');
+      setWebsiteImportStatus('sending', data.message || 'DNS verification is required before import.');
+      return;
+    }
+    if (!resp.ok) throw new Error(data.error || 'Website import failed');
+
+    websiteSources = [data];
+    renderWebsiteImportSummary(data);
+    renderWebsiteSourceChip();
+    setWebsiteImportStatus('success', 'Website source imported. Future website previews can use this first-party context.');
+  } catch(e) {
+    setWebsiteImportStatus('error', e.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderWebsiteImportSummary(source) {
+  const summary = document.getElementById('website-import-summary');
+  const title = source.metadata?.title || source.metadata?.ogTitle || 'Imported website source';
+  const textLength = (source.contentSummaryText || '').length;
+  const imageCount = Array.isArray(source.images) ? source.images.length : 0;
+  const embedCount = Array.isArray(source.embeds) ? source.embeds.length : 0;
+  summary.innerHTML = `
+    <div class="website-import-title">${escapeUi(title)}</div>
+    <div>${escapeUi(source.finalUrl || source.sourceUrl || '')}</div>
+    <div>${textLength.toLocaleString()} text chars Â· ${imageCount} image${imageCount === 1 ? '' : 's'} Â· ${embedCount} embed${embedCount === 1 ? '' : 's'}</div>
+  `;
+  summary.classList.add('visible');
+}
+
+function renderWebsiteSourceChip() {
+  const chip = document.getElementById('website-source-chip');
+  if (!chip) return;
+  if (!websiteSources[0]) {
+    chip.classList.remove('visible');
+    chip.innerHTML = '';
+    return;
+  }
+  const source = websiteSources[0];
+  const title = source.metadata?.title || source.metadata?.ogTitle || 'Imported website source';
+  chip.innerHTML = `<strong>${escapeUi(title)}</strong>${escapeUi(source.finalUrl || source.sourceUrl || '')}`;
+  chip.classList.add('visible');
+}
+
+function clearWebsiteSource() {
+  websiteSources = [];
+  renderWebsiteSourceChip();
+  const summary = document.getElementById('website-import-summary');
+  if (summary) summary.classList.remove('visible');
+  setWebsiteImportStatus('success', 'Imported website source cleared for this session.');
+}
+
 async function sendMsg() {
   if (loading) return;
   const inp = document.getElementById('chat-input');
@@ -997,7 +1458,7 @@ async function sendMsg() {
   await run(text);
 }
 
-// ARTIFACT SYSTEM — Blob URL approach
+// ARTIFACT SYSTEM â€” Blob URL approach
 // Build a Blob from artifact HTML, set iframe.src to its object URL.
 // Most reliable cross-browser way to load dynamic HTML into an iframe.
 // We recreate the iframe element on each render to avoid any state issues.
@@ -1007,6 +1468,27 @@ function isCeoEmailIntent(text) {
   return normalized.includes('email') &&
     normalized.includes('ceo') &&
     /(send|shoot|forward|share|mail)/.test(normalized);
+}
+
+function detectSmsIntent(text) {
+  const normalized = String(text || '').toLowerCase();
+  if (!/(text|sms|message)/.test(normalized) || !/(send|blast|share|forward)/.test(normalized)) return null;
+  if (normalized.includes('voice') || normalized.includes('phone number') || normalized.includes('call')) return 'voice_agent';
+  if (normalized.includes('review')) return 'review_request';
+  if (normalized.includes('last order') || normalized.includes('reorder') || normalized.includes('couple months') || normalized.includes('follow up') || normalized.includes('follow-up')) return 'reorder_followup';
+  if (normalized.includes('link') || normalized.includes('biomass buddy') || normalized.includes('demo')) return 'demo_link';
+  return null;
+}
+
+function openSmsIntentFromChat(promptText) {
+  const campaign = detectSmsIntent(promptText);
+  if (!campaign) return false;
+  openSmsCampaign(campaign);
+  const status = document.getElementById('sms-status');
+  status.className = 'modal-status sending';
+  status.textContent = 'Draft loaded from your chat command. Preview recipients, then confirm send.';
+  setTimeout(() => { status.className = 'modal-status'; status.textContent = ''; }, 2200);
+  return true;
 }
 
 function isArIntent(text) {
@@ -1027,12 +1509,12 @@ function isArIntent(text) {
 async function sendCeoEmailFromChat(promptText) {
   const arIntent = isArIntent(promptText);
   const subject = arIntent
-    ? 'Lumber Buddy AR summary'
-    : 'Lumber Buddy update';
+    ? 'Biomass Buddy AR summary'
+    : 'Biomass Buddy update';
   const messageType = arIntent ? 'report' : 'text';
   const body = arIntent
     ? await buildArEmailBody()
-    : (lastBrainMessage || 'Lumber Buddy summary for review.');
+    : (lastBrainMessage || 'Biomass Buddy summary for review.');
   const attachments = arIntent ? [await getArReportAttachment()] : [];
 
   const resp = await fetch('/api/send-email', {
@@ -1051,17 +1533,17 @@ async function openCeoEmailComposer() {
   const tab = document.querySelector('.nav-item.active')?.dataset?.tab || '';
   if (tab === 'ar') {
     openEmailModal({
-      subject: 'Lumber Buddy AR summary',
+      subject: 'Biomass Buddy AR summary',
       body: await buildArEmailBody()
     });
     return;
   }
 
   openEmailModal({
-    subject: 'Lumber Buddy update',
+    subject: 'Biomass Buddy update',
     body: lastBrainMessage && lastBrainMessage !== '[artifact generated]'
       ? lastBrainMessage
-      : 'Lumber Buddy summary for review.'
+      : 'Biomass Buddy summary for review.'
   });
 }
 
@@ -1085,8 +1567,8 @@ async function ensureArData() {
 async function getArReportAttachment() {
   const data = await ensureArData();
   return {
-    filename: 'lumber-buddy-ar-report.pdf',
-    title: 'Lumber Buddy Accounts Receivable Report',
+    filename: 'biomass-buddy-ar-report.pdf',
+    title: 'Biomass Buddy Accounts Receivable Report',
     reportType: 'ar',
     data,
     contentText: buildArPdfText(data)
@@ -1113,7 +1595,7 @@ function buildArPdfText(data) {
 
   return [
     'Musser Biomass & Wood Products',
-    'Lumber Buddy Accounts Receivable Report',
+    'Biomass Buddy Accounts Receivable Report',
     `As of: ${data.asOf || new Date().toISOString().slice(0, 10)}`,
     '',
     'Important note: this is demo/sample AR data. Sage 50 is not connected yet, so these numbers should not be treated as live accounting data.',
@@ -1192,7 +1674,7 @@ function appendToArtifact(chunk) {
   if (!currentArtifact) return;
   currentArtifact.code += chunk;
   document.getElementById('artifact-code').textContent = currentArtifact.code;
-  // No mid-stream rendering — render once at end via finalizeArtifact.
+  // No mid-stream rendering â€” render once at end via finalizeArtifact.
 }
 
 function renderArtifactIframe() {
@@ -1319,6 +1801,14 @@ async function run(text) {
   document.getElementById('send-btn').disabled = true;
   addMsg('user', text);
   history.push({ role: 'user', content: text });
+  if (openSmsIntentFromChat(text)) {
+    const msg = 'I opened the confirmed GHL text workflow. Preview the tagged recipients, then hit Confirm & send when the message looks right.';
+    addMsg('brain', msg, { withActions: false });
+    history.push({ role: 'assistant', content: msg });
+    loading = false;
+    document.getElementById('send-btn').disabled = false;
+    return;
+  }
   if (isCeoEmailIntent(text)) {
     const { textSpan } = addStreamingMsg();
     textSpan.textContent = 'Sending the CEO email through GoHighLevel...';
@@ -1346,7 +1836,7 @@ async function run(text) {
     const resp = await fetch('/api/claude', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ role: currentRole, messages: history })
+      body: JSON.stringify({ role: currentRole, messages: history, websiteSources })
     });
     if (!resp.ok) throw new Error('API error');
     const reader = resp.body.getReader();
@@ -1395,8 +1885,8 @@ async function run(text) {
       actions.className = 'msg-actions';
       const btn = document.createElement('button');
       btn.className = 'msg-action-btn';
-      btn.innerHTML = '✉ Send to CEO';
-      btn.onclick = () => openEmailModal({ subject: 'Lumber Buddy update · ' + new Date().toLocaleDateString(), body: lastBrainMessage });
+      btn.innerHTML = 'âœ‰ Send to CEO';
+      btn.onclick = () => openEmailModal({ subject: 'Biomass Buddy update Â· ' + new Date().toLocaleDateString(), body: lastBrainMessage });
       actions.appendChild(btn);
       const correctionBtn = document.createElement('button');
       correctionBtn.className = 'msg-action-btn';
@@ -1579,13 +2069,12 @@ function renderLearningQueue(items) {
 
 async function reviewLearningItem(itemId, decision) {
   const note = decision === 'approve'
-    ? 'Approved from Lumber Buddy learning review.'
+    ? 'Approved from Biomass Buddy learning review.'
     : decision === 'needs_manual_patch'
       ? 'Approved as a manual patch item; update the target doc/code before treating as canonical.'
-      : 'Rejected from Lumber Buddy learning review.';
-  const endpoint = decision === 'approve' ? '/api/learning/approve' : '/api/learning/reject';
+      : 'Rejected from Biomass Buddy learning review.';
   try {
-    const resp = await fetch(endpoint, {
+    const resp = await fetch('/api/learning/review', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ itemId, decision, reviewedBy: currentRole, decisionReason: note })
@@ -1613,7 +2102,7 @@ async function generateWeeklyReview(write) {
 }
 
 function approveJob(btn, amount) {
-  btn.textContent = '✓ Approved';
+  btn.textContent = 'âœ“ Approved';
   btn.style.background = 'var(--success-bg)';
   btn.style.color = 'var(--success)';
   btn.disabled = true;
@@ -1659,7 +2148,7 @@ function addCalcLine(presetSku, presetQty) {
       opt.value = sku;
       const price = entry.pricePerLoad != null ? entry.pricePerLoad : entry.price;
       const detail = entry.unitDetail ? ` (${entry.unitDetail})` : '';
-      opt.textContent = `${entry.label}${detail} — $${Number(price).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}/${entry.unit}`;
+      opt.textContent = `${entry.label}${detail} â€” $${Number(price).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}/${entry.unit}`;
       sel.appendChild(opt);
     }
   }
@@ -1677,7 +2166,7 @@ function addCalcLine(presetSku, presetQty) {
   sel.addEventListener('change', () => { unit.value = priceBookCache?.priceBook?.[sel.value]?.unit || ''; });
   const remove = document.createElement('button');
   remove.className = 'remove-btn';
-  remove.textContent = '×';
+  remove.textContent = 'Ã—';
   remove.onclick = () => { row.remove(); recalcQuote(); };
   row.appendChild(sel); row.appendChild(qty); row.appendChild(unit); row.appendChild(remove);
   container.appendChild(row);
@@ -1712,7 +2201,7 @@ async function recalcQuote() {
     renderQuoteSummary(data);
     renderDistanceInfo(data.distanceInfo);
   } catch(e) {
-    document.getElementById('qs-grand-total').textContent = '—';
+    document.getElementById('qs-grand-total').textContent = 'â€”';
     document.getElementById('qs-breakdown').innerHTML = '<div class="qs-line" style="color:var(--red)">Quote endpoint not reachable. Deploy /api/quote to activate.</div>';
   }
 }
@@ -1721,10 +2210,10 @@ function renderDistanceInfo(info) {
   const el = document.getElementById('calc-distance-info');
   if (!el) return;
   if (!info) { el.style.display = 'none'; el.innerHTML = ''; return; }
-  if (info.error) { el.style.display = 'block'; el.style.color = 'var(--red)'; el.innerHTML = `Couldn't look up that ZIP — ${info.error}`; return; }
+  if (info.error) { el.style.display = 'block'; el.style.color = 'var(--red)'; el.innerHTML = `Couldn't look up that ZIP â€” ${info.error}`; return; }
   el.style.display = 'block';
   el.style.color = 'var(--brown-mid)';
-  el.innerHTML = `${info.from.place} → ${info.to.place} · est. <strong>${info.estimatedDrivingMiles} driving miles</strong> <span style="color:var(--brown-light)">(great-circle ${info.greatCircleMiles} mi × 1.20)</span>`;
+  el.innerHTML = `${info.from.place} â†’ ${info.to.place} Â· est. <strong>${info.estimatedDrivingMiles} driving miles</strong> <span style="color:var(--brown-light)">(great-circle ${info.greatCircleMiles} mi Ã— 1.20)</span>`;
 }
 
 function renderQuoteSummary(quote) {
@@ -1732,15 +2221,15 @@ function renderQuoteSummary(quote) {
   const bd = document.getElementById('qs-breakdown');
   let html = '';
   (quote.lines || []).forEach(l => {
-    if (l.error) { html += `<div class="qs-line" style="color:var(--red)"><span>${l.label}</span><span>—</span></div>`; return; }
+    if (l.error) { html += `<div class="qs-line" style="color:var(--red)"><span>${l.label}</span><span>â€”</span></div>`; return; }
     const qtyStr = `${l.quantity} ${l.unit}`;
     const effStr = l.effectiveUnitPrice != null && l.effectiveUnitPrice !== l.unitPrice ? ` @ $${l.effectiveUnitPrice.toFixed(2)}` : '';
-    html += `<div class="qs-line"><span>${l.label} · ${qtyStr}${effStr}</span><span>$${(l.extendedPrice || 0).toFixed(2)}</span></div>`;
+    html += `<div class="qs-line"><span>${l.label} Â· ${qtyStr}${effStr}</span><span>$${(l.extendedPrice || 0).toFixed(2)}</span></div>`;
   });
   html += `<div class="qs-line"><span>Subtotal</span><span>$${(quote.subtotal || 0).toFixed(2)}</span></div>`;
   if (quote.delivery) {
     const dnote = quote.delivery.note || '';
-    html += `<div class="qs-line"><span>Freight${dnote ? ' · ' + dnote : ''}</span><span>$${(quote.delivery.total || 0).toFixed(2)}</span></div>`;
+    html += `<div class="qs-line"><span>Freight${dnote ? ' Â· ' + dnote : ''}</span><span>$${(quote.delivery.total || 0).toFixed(2)}</span></div>`;
   }
   html += `<div class="qs-line strong"><span>Grand total</span><span>$${(quote.total || 0).toFixed(2)}</span></div>`;
   bd.innerHTML = html;
@@ -1780,7 +2269,7 @@ function renderAR(data) {
   document.getElementById('ar-aging').innerHTML = data.aging.map(row => `
     <div class="kpi-row"><span class="kpi-label">${escapeUi(row.bucket)}</span><span class="kpi-value">${money(row.amount)}</span></div>
   `).join('');
-  document.getElementById('ar-priority').innerHTML = data.collectionPriority.map(item => `<div style="margin-bottom:8px">• ${escapeUi(item)}</div>`).join('');
+  document.getElementById('ar-priority').innerHTML = data.collectionPriority.map(item => `<div style="margin-bottom:8px">â€¢ ${escapeUi(item)}</div>`).join('');
   document.getElementById('ar-ai-summary').innerHTML = `<strong>AI summary:</strong> ${escapeUi(data.aiSummary)}`;
 }
 
@@ -1788,7 +2277,7 @@ function arSummaryText() {
   const data = arCache || fallbackAR();
   const money = (n) => '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   return [
-    `Lumber Buddy AR summary (${data.asOf})`,
+    `Biomass Buddy AR summary (${data.asOf})`,
     `Source: placeholder Sage 50 data - not live accounting sync yet.`,
     ``,
     `Open AR: ${money(data.summary.totalOpen)}`,
@@ -1802,7 +2291,7 @@ function arSummaryText() {
 
 async function emailARSummary() {
   if (!arCache) await initAR();
-  openEmailModal({ subject: 'Lumber Buddy AR summary', body: await buildArEmailBody() });
+  openEmailModal({ subject: 'Biomass Buddy AR summary', body: await buildArEmailBody() });
 }
 
 function draftCollectionEmail() {
@@ -1880,12 +2369,12 @@ async function sendEmailToCeo() {
     const data = await resp.json();
     if (!resp.ok) {
       status.className = 'modal-status error';
-      status.textContent = `Send failed: ${data.error || 'unknown error'}${data.detail ? ' · ' + (typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail)) : ''}`;
+      status.textContent = `Send failed: ${data.error || 'unknown error'}${data.detail ? ' Â· ' + (typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail)) : ''}`;
       btn.disabled = false;
       return;
     }
     status.className = 'modal-status success';
-    status.textContent = `✓ Sent to ${data.sentTo} · ${data.provider || 'provider'} ID: ${data.messageId || data.resendId || 'n/a'}`;
+    status.textContent = `âœ“ Sent to ${data.sentTo} Â· ${data.provider || 'provider'} ID: ${data.messageId || data.resendId || 'n/a'}`;
     setTimeout(() => { closeEmailModal(); btn.disabled = false; }, 1800);
   } catch(err) {
     status.className = 'modal-status error';
@@ -1898,7 +2387,23 @@ document.getElementById('email-modal').addEventListener('click', (e) => {
   if (e.target.id === 'email-modal') closeEmailModal();
 });
 
+document.getElementById('sms-modal').addEventListener('click', (e) => {
+  if (e.target.id === 'sms-modal') closeSmsModal();
+});
+
+document.getElementById('website-import-modal').addEventListener('click', (e) => {
+  if (e.target.id === 'website-import-modal') closeWebsiteImportModal();
+});
+
+function bindWebsitePreviewButton() {
+  const buttons = Array.from(document.querySelectorAll('.action-grid .btn-gold'));
+  const websiteButton = buttons.find(btn => btn.textContent.includes('Website preview'));
+  if (!websiteButton) return;
+  websiteButton.onclick = () => fire('Build a branded website preview for Musser Biomass using BRAND_STYLE.md and any imported first-party website source context');
+}
+
 window.addEventListener('load', () => {
+  bindWebsitePreviewButton();
   const detectedRole = detectRoleFromUrl();
   applyRole(detectedRole);
 });

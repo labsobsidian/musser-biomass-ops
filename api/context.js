@@ -1,6 +1,6 @@
 // /api/context.js
 //
-// Builds the live system prompt Lumber Buddy uses to answer questions.
+// Builds the live system prompt Biomass Buddy uses to answer questions.
 // One source today (GitHub living docs). Designed so future connectors
 // (GHL pipeline, Sage 50 AR, route optimizer, etc.) slot in as siblings.
 //
@@ -13,7 +13,7 @@
 
 import { Octokit } from '@octokit/rest';
 
-// Living docs Lumber Buddy reads every context build.
+// Living docs Biomass Buddy reads every context build.
 // DEMO_CONTEXT.md, PRICING.md, and BRAND_STYLE.md are optional-but-expected;
 // missing files are skipped.
 const LIVING_DOCS = [
@@ -24,7 +24,9 @@ const LIVING_DOCS = [
   'GO_LIVE_CHECKLIST.md',
   'DEMO_CONTEXT.md',
   'PRICING.md',
-  'BRAND_STYLE.md'
+  'BRAND_STYLE.md',
+  'PLAYBOOK.md',
+  'LEARNING_LOG.md'
 ];
 
 // In-memory cache. 60s TTL per serverless instance. Keeps us far under
@@ -96,7 +98,7 @@ async function getContext({ force = false } = {}) {
 export { getContext };
 
 // HTTP handler — debugging / observability. Hit this URL to confirm what KB
-// Lumber Buddy is currently working with.
+// Biomass Buddy is currently working with.
 export default async function handler(req, res) {
   try {
     const force = req.query?.force === '1';

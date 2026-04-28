@@ -3,7 +3,7 @@
 // Accounts receivable endpoint. Returns Sage 50-shaped placeholder data until
 // Musser provides live Sage access.
 
-import { summarizeAR } from './connectors/sage50.js';
+import { summarizeAR } from '../lib/connectors/sage50.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {

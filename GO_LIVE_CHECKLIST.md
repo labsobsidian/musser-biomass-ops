@@ -6,7 +6,7 @@ _Last updated: 2026-04-24_
 ## Pre-Demo
 
 - [x] Scaffold `musser-biomass-ops` repo
-- [x] Build Lumber Buddy app (index.html, 9 tabs, seeded data, white-labeled)
+- [x] Build Biomass Buddy app (index.html, 9 tabs, seeded data, white-labeled)
 - [x] Build `/api/claude` streaming proxy
 - [x] Build `/api/context` living-docs fetcher
 - [x] Build `/api/quote` pricing calculator (real functional tool #1)
@@ -20,6 +20,8 @@ _Last updated: 2026-04-24_
 - [ ] Confirm streaming chat works end-to-end
 - [ ] Confirm pricing calculator returns correct quotes for 3 test scenarios
 - [ ] Confirm AR tab loads placeholder data and is hidden from yard/driver roles
+- [ ] Confirm manual correction capture creates a pending learning item
+- [ ] Confirm owner/admin can approve, reject, and generate `START_THE_WEEK.md`
 - [ ] Verify GHL messaging token and `CEO_GHL_CONTACT_ID` (prereq for `/api/send-email`)
 - [ ] Set `CEO_EMAIL` env var to a test address/contact, send a live email, confirm receipt
 - [ ] Replace `CEO_EMAIL` with actual CEO address before demo
@@ -57,7 +59,7 @@ _Last updated: 2026-04-24_
 
 ## Phase 2 — Dispatch & Routing (Week 2–3)
 
-- [ ] Morning dispatch view in Lumber Buddy (today's deliveries, map)
+- [ ] Morning dispatch view in Biomass Buddy (today's deliveries, map)
 - [ ] Driver route view (mobile-first, one stop at a time, gate/access notes visible)
 - [ ] Proof of delivery capture (photo + signature) → triggers invoice
 - [ ] Google Maps API key for route optimization
@@ -79,8 +81,20 @@ _Last updated: 2026-04-24_
 
 ## Final Sign-Off
 
-- [ ] Cold session smoke test — Lumber Buddy answers accurately from docs alone
+- [ ] Cold session smoke test — Biomass Buddy answers accurately from docs alone
 - [ ] Pricing calculator matches Conversation AI for 5 randomly chosen scenarios
 - [ ] Send-to-CEO verified in production
 - [ ] Client has been trained on editing `PRICING.md` themselves (or has a contact at Obsidian Labs to email for changes)
 - [ ] System runs for 2 weeks without Obsidian Labs intervention
+
+## Website, Marketing, and SMS Demo Add-On
+
+- [x] Build `/api/website-import` with DNS ownership verification
+- [x] Build `/api/ghl-contacts` and `/api/send-sms` for tag-based GHL SMS preview/send
+- [x] Add Biomass-branded Marketing suite: AEO Monitor, Competitors, Ad Performance, Content Studio, Monday Brief, GHL Texts
+- [ ] Add `IMPORT_VERIFICATION_SECRET` in Vercel
+- [ ] Add GoDaddy TXT record returned by `/api/website-import`, then import `https://musserbiomass.com/`
+- [ ] Create GHL tags: `biomass-demo-board`, `biomass-review-test`, `biomass-reorder-followup`
+- [ ] Tag Eric, Becky, Mark, and Mick with `biomass-demo-board`
+- [ ] Set `BIOMASS_BUDDY_DEMO_LINK`, `REVIEW_WORKFLOW_LINK`, and `VOICE_AGENT_PHONE`
+- [ ] Preview each SMS campaign in Biomass Buddy, then confirm one test send in GHL

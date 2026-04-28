@@ -12,6 +12,7 @@ _Last updated: 2026-04-24_
 | Knowledge base | This repo's living docs via `/api/context` | Grounds the brain |
 | Pricing logic | `/api/quote` (real calculator) | Real functional tool #1 |
 | Messaging | `/api/send-email` -> GHL for plain text, Resend for branded reports/PDF attachments | Real functional tool #2 |
+| Learning loop | `/api/learning/*` + `LEARNING_LOG.md` | Human-approved correction queue and weekly KB review |
 | CRM | GoHighLevel sub-account | Contacts, email, SMS, pipeline, Conversation AI |
 | Accounting / AR (planned) | Sage 50 | Accounts receivable, invoice aging, collections reporting |
 | Database (planned) | Supabase | Inventory, orders, delivery records |
@@ -22,7 +23,7 @@ _Last updated: 2026-04-24_
 ## Flow - "Send this update to the CEO" button
 
 ```
-Lumber Buddy UI  ->  POST /api/send-email
+Biomass Buddy UI  ->  POST /api/send-email
                     { preset: "to_ceo", subject, body, attachments? }
                            |
                            v
@@ -35,13 +36,41 @@ Lumber Buddy UI  ->  POST /api/send-email
 ```
 
 Preset hides the address from the UI - the UI only knows "send to CEO", destination is config.
+
+---
+
+## Website, Marketing, and GHL SMS flows
+
+Website importer:
+
+```
+GoDaddy DNS TXT proof -> /api/website-import -> safe public page fetch
+  -> imported page context -> /api/claude website previews and AEO drafts
+```
+
+GHL tag-based SMS:
+
+```
+Marketing tab -> /api/send-sms { dryRun:true } -> GHL contacts by tag
+  -> recipient preview -> /api/send-sms { dryRun:false } -> GHL Conversations SMS
+```
+
+Marketing suite:
+
+```
+Marketing tab -> AEO Monitor / Competitors / Ads / Content Studio / Monday Brief
+  -> /api/marketing-draft for branded article, social, and brief drafts
+```
+
+GoDaddy remains DNS/domain control. Vercel is the preferred publishing path for future Atlas-managed website/blog changes.
+
 ---
 
 ## Directory layout
 
 ```
 musser-biomass-ops/
-├── index.html              # Lumber Buddy app — single file, 10 tabs
+├── index.html              # Biomass Buddy app — single file, 10 tabs
 ├── api/
 │   ├── claude.js           # streaming proxy
 │   ├── context.js          # GitHub living-docs fetcher
@@ -101,7 +130,7 @@ All must be set in **Production** and **Preview** environments.
 └─────────────────────┬───────────────────┘
                       │ feeds from
 ┌─────────────────────▼───────────────────┐
-│    LAYER 2 — LUMBER BUDDY BRAIN         │
+│    LAYER 2 — BIOMASS BUDDY BRAIN         │
 │  Provider-toggle brain · reads this KB  │
 │  Can call pricing calc + send email     │
 └─────────────────────┬───────────────────┘

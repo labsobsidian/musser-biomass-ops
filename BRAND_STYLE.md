@@ -1,6 +1,6 @@
 # BRAND_STYLE.md - Musser Biomass
 _Last updated: 2026-04-27_
-_Source of truth for Lumber Buddy / Atlas customer-facing output._
+_Source of truth for Biomass Buddy / Atlas customer-facing output._
 
 ---
 

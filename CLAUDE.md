@@ -4,7 +4,7 @@ Instructions for Claude Code when working in this repo.
 
 ## What this is
 
-AI ops command center for **Musser Biomass**, delivered by Obsidian Labs. Branded as **"Lumber Buddy by Obsidian Labs."** Single-page demo app + living docs + real functional tools (pricing calculator, send-email-to-CEO, artifact previews, placeholder AR endpoint) + placeholder demo data everywhere else. Pattern forked from `hardesty-ops`.
+AI ops command center for **Musser Biomass**, delivered by Obsidian Labs. Branded as **"Biomass Buddy by Obsidian Labs."** Single-page demo app + living docs + real functional tools (pricing calculator, send-email-to-CEO, artifact previews, placeholder AR endpoint) + placeholder demo data everywhere else. Pattern forked from `hardesty-ops`.
 
 ## Living docs — the source of truth
 
@@ -24,7 +24,7 @@ When the user says "update state" / "log a decision" / "check off X," edit these
 ## Repo layout
 
 ```
-index.html              # Lumber Buddy app — 10 tabs, seeded data, streaming chat
+index.html              # Biomass Buddy app — 10 tabs, seeded data, streaming chat
 api/
   claude.js             # Vercel serverless: OpenAI-first / Anthropic fallback SSE proxy
   context.js            # Living-docs fetcher w/ 60s cache
@@ -53,14 +53,14 @@ No build step — static `index.html` + Node serverless functions on Vercel.
 - **Streaming matters.** `/api/claude` streams SSE; frontend parses chunks progressively. Don't refactor to buffered JSON.
 - **Provider toggle:** default `AI_PROVIDER=openai` with `OPENAI_MODEL`; `AI_PROVIDER=anthropic` stays supported. Keep frontend SSE normalized.
 - **Sage 50 is not connected yet.** `/api/ar` returns explicitly labeled placeholder AR data. Do not imply live accounting sync until real Sage access exists.
-- **Brand:** "Lumber Buddy by Obsidian Labs." Customer-facing content must follow `BRAND_STYLE.md`.
+- **Brand:** "Biomass Buddy by Obsidian Labs." Customer-facing content must follow `BRAND_STYLE.md`.
 - **Commit style:** short, lowercase-prefixed (`feat:`, `fix:`, `state:`, `price:`, `docs:`).
 - **Push only when asked.** Default is commit locally.
 
 ## When editing `index.html`
 
 - Single file, no bundler. Keep it that way until we outgrow it.
-- Tabs: Lumber Buddy, Operations, Sales, Pricing, Marketing, Finance, Accounts Receivable, Strategy, My Route, Settings.
+- Tabs: Biomass Buddy, Operations, Sales, Pricing, Marketing, Finance, Accounts Receivable, Strategy, My Route, Settings.
 - Seeded data should read as plausible Musser data: pellets / briquettes / Alpha Fiber, full-truckload mentality, NY/PA/TN destinations, real customers (Town & Country in Hamilton NY, TJ Coal in Spartansburg PA) where appropriate. **No firewood, mulch, cords, or Shenandoah Valley narrative** — that was inherited from the Hardesty fork and has been removed.
 
 ## When editing `api/quote.js`

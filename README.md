@@ -1,6 +1,6 @@
-# Musser Biomass — Lumber Buddy Deployment
+# Musser Biomass — Biomass Buddy Deployment
 
-**Lumber Buddy by Obsidian Labs** is the AI ops app for Musser Biomass. Pattern forked from Atlas (Hardesty). Single Vercel app that streams chat through an OpenAI-first / Anthropic-fallback brain, pulling its knowledge base live from this GitHub repo. Adds real tools on top: pricing, send-to-CEO email, branded artifact previews, and placeholder Accounts Receivable shaped for future Sage 50 sync.
+**Biomass Buddy by Obsidian Labs** is the AI ops app for Musser Biomass. Pattern forked from Atlas (Hardesty). Single Vercel app that streams chat through an OpenAI-first / Anthropic-fallback brain, pulling its knowledge base live from this GitHub repo. Adds real tools on top: pricing, send-to-CEO email, branded artifact previews, and placeholder Accounts Receivable shaped for future Sage 50 sync.
 
 ## Architecture
 
@@ -39,7 +39,7 @@ Vercel serverless functions
 | `CEO_GHL_CONTACT_ID` | `abc123` | GHL contact record used for CEO email timeline |
 | `GHL_SEND_FROM_EMAIL` | `sales@musserbiomass.com` | Optional GHL sender override |
 | `RESEND_API_KEY` | `re_...` | Branded/internal HTML reports and summaries |
-| `FROM_EMAIL` | `lumber-buddy@labsobsidian.co` | Verified sender for Resend report emails |
+| `FROM_EMAIL` | `biomass-buddy@labsobsidian.co` | Verified sender for Resend report emails |
 | `MESSAGE_PROVIDER` | `auto` | Optional hard override: `auto`, `ghl`, or `resend` |
 | `CEO_EMAIL` | `ceo@musserbiomass.com` | Destination for "send to CEO" button |
 
@@ -116,7 +116,7 @@ curl -X POST https://<your-deploy>/api/send-email \
   }'
 ```
 
-Returns `{ ok: true, provider, sentTo, messageId }` on success. The UI's "Send to CEO" button composes a draft from the current Lumber Buddy conversation and fires this through GHL Conversations.
+Returns `{ ok: true, provider, sentTo, messageId }` on success. The UI's "Send to CEO" button composes a draft from the current Biomass Buddy conversation and fires this through GHL Conversations.
 
 For AR/report emails, the UI can include `attachments: [{ filename, title, contentText }]`. `/api/send-email` turns `contentText` into a simple PDF attachment and sends it through Resend so Gmail does not have to render the entire report body inline.
 
@@ -146,8 +146,33 @@ The Musser GHL sub-account's Conversation AI should have **the full content of `
 3. Set the 8 env vars in both Production and Preview
 4. Push to `main` — auto-deploys
 5. Visit `/api/context` — confirm GitHub fetch works
-6. Open the root URL, open Lumber Buddy, ask a question — confirm streaming works
+6. Open the root URL, open Biomass Buddy, ask a question — confirm streaming works
 7. Open the Pricing tab, build a test quote, confirm numbers are right
 8. Click "Send to CEO" (use a test `CEO_EMAIL` first) — confirm receipt
 
 Once all four check, swap `CEO_EMAIL` to the real destination and you're demo-ready.
+
+## Website importer and marketing suite
+
+`/api/website-import` imports one public page only after DNS ownership proof. It returns the TXT record name/value to add in GoDaddy, then fetches safe public HTML and passes it into Biomass Buddy as first-party website context.
+
+The Marketing tab includes AEO Monitor, Competitors, Ad Performance, Content Studio, Monday Brief, and GHL Texts. Draft generation starts with `/api/marketing-draft`; live publishing to a Vercel-hosted blog or GHL Social Planner is the next adapter once the hosting/API path is confirmed.
+
+GoDaddy should keep DNS/domain ownership. Vercel is the preferred home for future Atlas-managed Musser site/blog updates because content changes can be versioned and deployed from GitHub.
+
+## GHL text campaigns
+
+Set these Vercel env vars for the text tools:
+
+| Name | Purpose |
+|---|---|
+| `IMPORT_VERIFICATION_SECRET` | Signs DNS TXT proof before website import |
+| `BIOMASS_BUDDY_DEMO_LINK` | Link sent in the executive demo SMS campaign |
+| `REVIEW_WORKFLOW_LINK` | Link sent in the review workflow SMS campaign |
+| `VOICE_AGENT_PHONE` | Voice agent number sent by SMS |
+| `EXEC_DEMO_TAG` | Defaults to `biomass-demo-board` |
+| `REVIEW_TEST_TAG` | Defaults to `biomass-demo-board` |
+| `REORDER_FOLLOWUP_TAG` | Defaults to `biomass-reorder-followup` |
+| `GHL_TAG_CONTACTS_JSON` | Optional demo fallback if GHL tag lookup is unavailable |
+
+Create GHL tags `biomass-demo-board`, `biomass-review-test`, and `biomass-reorder-followup`. Tag Eric, Becky, Mark, and Mick with `biomass-demo-board`. In Biomass Buddy, open Marketing -> GHL Texts, preview recipients, then confirm send.

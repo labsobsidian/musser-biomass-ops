@@ -5,7 +5,7 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 
 ## 2026-04-24 — Fork from Atlas (Hardesty) pattern
 
-**Decision:** Build the Musser Biomass ops app as a fork of the Atlas pattern established with Hardesty, rebranded as "Lumber Buddy by Obsidian Labs."
+**Decision:** Build the Musser Biomass ops app as a fork of the Atlas pattern established with Hardesty, rebranded as "Biomass Buddy by Obsidian Labs."
 
 **Context:** Atlas worked well for Hardesty — single-file app, streaming chat from a Claude backend that reads the repo's living docs. Same pattern fits Musser: owner-operator business with siloed tools, an owner bottleneck on pricing, and a need for operational visibility.
 
@@ -16,7 +16,7 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 **Consequences:**
 - Fast build (same scaffolding)
 - Reusable for future clients (skills library compounds)
-- Must maintain brand separation — "Lumber Buddy" is distinctly Musser's, not a rename of Atlas
+- Must maintain brand separation — "Biomass Buddy" is distinctly Musser's, not a rename of Atlas
 
 ---
 
@@ -39,7 +39,7 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 
 ## 2026-04-24 — Pricing source of truth = PRICING.md
 
-**Decision:** `PRICING.md` is the single authoritative document for all product pricing, delivery rules, and discount logic. It's read by three systems: (1) Lumber Buddy brain (via `/api/context`), (2) pricing calculator (mirrored in `/api/quote.js`), and (3) GHL Conversation AI (pasted into its system prompt).
+**Decision:** `PRICING.md` is the single authoritative document for all product pricing, delivery rules, and discount logic. It's read by three systems: (1) Biomass Buddy brain (via `/api/context`), (2) pricing calculator (mirrored in `/api/quote.js`), and (3) GHL Conversation AI (pasted into its system prompt).
 
 **Context:** When pricing lives in multiple places, the three systems will drift. Drift means the chat agent quotes one number, the calculator quotes another, and the team has no idea which is right.
 
@@ -113,7 +113,7 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 
 ## 2026-04-27 — Brand guide, provider toggle, premium UI, and Sage-ready AR
 
-**Decision:** Upgrade Lumber Buddy from a demo-style Atlas fork into a premium Musser-specific Atlas deployment. Add `BRAND_STYLE.md`, load it into the brain context, make `/api/claude` OpenAI-first with Anthropic fallback, add placeholder Accounts Receivable through `/api/ar`, and create a Sage 50 connector boundary at `api/connectors/sage50.js`.
+**Decision:** Upgrade Biomass Buddy from a demo-style Atlas fork into a premium Musser-specific Atlas deployment. Add `BRAND_STYLE.md`, load it into the brain context, make `/api/claude` OpenAI-first with Anthropic fallback, add placeholder Accounts Receivable through `/api/ar`, and create a Sage 50 connector boundary at `api/connectors/sage50.js`.
 
 **Context:** Musser needs Atlas to create branded websites, PDF-style briefs, slide previews, CEO emails, and operational reporting that matches the real business. Sage 50 access is not available yet, so AR must be useful in demo mode without pretending to be live accounting data.
 
@@ -127,7 +127,7 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 
 ## 2026-04-27 — GHL primary messaging provider
 
-**Decision:** Route Lumber Buddy's send-to-CEO email path through GoHighLevel Conversations when `GHL_API_KEY` exists. Keep `/api/send-email` as the compatibility endpoint, but make it a provider router with GHL primary and Resend as optional fallback only.
+**Decision:** Route Biomass Buddy's send-to-CEO email path through GoHighLevel Conversations when `GHL_API_KEY` exists. Keep `/api/send-email` as the compatibility endpoint, but make it a provider router with GHL primary and Resend as optional fallback only.
 
 **Context:** Musser already has an active GHL account, and customer/owner communication belongs in the CRM timeline when possible. Resend was only a placeholder email provider and has been removed from Vercel.
 
@@ -139,5 +139,5 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 - AR CEO summaries now send as Musser-branded HTML operating briefs rather than plain-text notes. The email template must carry explicit Musser signals, not just Atlas styling: the repo-root Musser logo served from `/musser-logo.png`, Musser Biomass & Wood Products, Rural Retreat, Appalachian hardwood fiber, Forest Fuel, Alpha Fiber, and the plant address. It should follow the website/logo feel with warm off-white surfaces, green bands, charcoal type, and restrained gold accents.
 - Messaging routing is split by content type: plain text emails stay on GHL so they live in the CRM timeline; branded HTML reports and summaries route to Resend when configured for stronger email rendering.
 - AR report emails should stay compact enough for Gmail: executive summary, four metrics, top five invoices, and three actions. Full aging detail belongs in the app/PDF brief.
-- If Gmail continues collapsing report sections, prioritize deliverability/readability over logo-heavy branding. AR report emails may omit the logo and address header, starting directly with the report title and a compact Musser/Lumber Buddy label.
+- If Gmail continues collapsing report sections, prioritize deliverability/readability over logo-heavy branding. AR report emails may omit the logo and address header, starting directly with the report title and a compact Musser/Biomass Buddy label.
 - Final AR email pattern: send a short Musser-branded cover email with the logo, then attach the full Accounts Receivable detail as a generated PDF. This keeps the inbox preview premium while avoiding Gmail clipping/collapse on long HTML tables.
