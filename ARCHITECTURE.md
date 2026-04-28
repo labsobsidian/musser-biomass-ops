@@ -55,6 +55,13 @@ Marketing tab -> /api/send-sms { dryRun:true } -> CRM contacts by tag
   -> recipient preview -> /api/send-sms { dryRun:false } -> Obsidian Labs CRM Conversations SMS
 ```
 
+CRM tag-based demo email:
+
+```
+Marketing tab / chat "email demo link" -> /api/send-campaign-email
+  -> CRM contacts by biomass-demo-board tag -> Obsidian Labs CRM Conversations Email
+```
+
 Marketing suite:
 
 ```

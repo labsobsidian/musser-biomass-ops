@@ -1362,9 +1362,9 @@ async function sendSmsCampaign() {
   }
 }
 
-async function emailDemoLinkToGroup() {
-  const ok = window.confirm('Email the Biomass Buddy demo link to contacts tagged biomass-demo-board?');
-  if (!ok) return;
+async function emailDemoLinkToGroup({ confirmSend = true } = {}) {
+  const ok = !confirmSend || window.confirm('Email the Biomass Buddy demo link to contacts tagged biomass-demo-board?');
+  if (!ok) return false;
   const systemMsg = addMsg('brain', 'Sending the Biomass Buddy demo link by email through Obsidian Labs CRM...', { withActions: false });
   try {
     const resp = await fetch('/api/send-campaign-email', {
@@ -1380,8 +1380,10 @@ async function emailDemoLinkToGroup() {
     if (!resp.ok) throw new Error(data.error || 'Email send failed');
     systemMsg.querySelector('.msg-bubble').textContent = `Demo link email sent through Obsidian Labs CRM: ${data.sent}/${data.attempted} delivered to the biomass-demo-board tag.`;
     history.push({ role: 'assistant', content: `CRM demo-link email sent. Sent ${data.sent}/${data.attempted}.` });
+    return true;
   } catch (e) {
     systemMsg.querySelector('.msg-bubble').textContent = 'Demo link email failed: ' + e.message;
+    return false;
   }
 }
 
@@ -1574,8 +1576,17 @@ function isCeoEmailIntent(text) {
     /(send|shoot|forward|share|mail)/.test(normalized);
 }
 
+function isDemoLinkEmailIntent(text) {
+  const normalized = String(text || '').toLowerCase();
+  const asksEmail = /(email|mail|send by email|send an email)/.test(normalized);
+  const namesDemoLink = /(demo link|biomass buddy link|biomass buddy demo|live link|check out biomass buddy)/.test(normalized);
+  const forbidsText = /(do not text|no text|email only|not sms|no sms)/.test(normalized);
+  return namesDemoLink && (asksEmail || forbidsText);
+}
+
 function detectSmsIntent(text) {
   const normalized = String(text || '').toLowerCase();
+  if (isDemoLinkEmailIntent(normalized)) return null;
   const asksToSend = /(send|blast|share|forward)/.test(normalized);
   const targetsDemoContacts = /(contact|tag|biomass-demo-board|demo board|exec demo|recipients)/.test(normalized);
   const namesSms = /(text|sms|message)/.test(normalized);
@@ -1909,6 +1920,12 @@ async function run(text) {
   document.getElementById('send-btn').disabled = true;
   addMsg('user', text);
   history.push({ role: 'user', content: text });
+  if (isDemoLinkEmailIntent(text)) {
+    await emailDemoLinkToGroup({ confirmSend: false });
+    loading = false;
+    document.getElementById('send-btn').disabled = false;
+    return;
+  }
   if (openSmsIntentFromChat(text)) {
     const msg = 'I opened the confirmed CRM text workflow. Preview the tagged recipients, then hit Confirm & send when the message looks right.';
     addMsg('brain', msg, { withActions: false });
