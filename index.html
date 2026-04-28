@@ -1240,20 +1240,29 @@ const SMS_CAMPAIGN_CONFIG = {
   }
 };
 
-function openSmsCampaign(campaign) {
+function openSmsCampaign(campaign, options = {}) {
   currentSmsCampaign = campaign || 'demo_link';
   currentSmsPreview = null;
   const config = SMS_CAMPAIGN_CONFIG[currentSmsCampaign] || SMS_CAMPAIGN_CONFIG.demo_link;
+  const selectedTag = options.tag || config.tag;
+  const draftMessage = ensureSmsOptOut(options.message || config.message);
   document.getElementById('sms-modal-title').textContent = config.title;
-  renderCrmTagOptions(config.tag);
-  loadCrmTagOptions(config.tag);
-  document.getElementById('sms-message').value = config.message;
+  renderCrmTagOptions(selectedTag);
+  loadCrmTagOptions(selectedTag);
+  document.getElementById('sms-message').value = draftMessage;
   document.getElementById('sms-preview-list').textContent = 'Preview recipients before sending.';
   const status = document.getElementById('sms-status');
   status.className = 'modal-status';
   status.textContent = '';
   document.getElementById('sms-send-btn').disabled = true;
   document.getElementById('sms-modal').classList.add('visible');
+}
+
+function ensureSmsOptOut(message) {
+  const text = String(message || '').trim();
+  if (!text) return 'Reply STOP to opt out.';
+  if (/(reply\s+stop|stop\s+to\s+opt\s*out|unsubscribe|opt\s*out)/i.test(text)) return text;
+  return `${text}\n\nReply STOP to opt out.`;
 }
 
 function renderCrmTagOptions(selectedTag) {
@@ -1599,13 +1608,48 @@ function detectSmsIntent(text) {
   return null;
 }
 
+function buildSmsDraftFromPrompt(campaign, promptText) {
+  const normalized = String(promptText || '').toLowerCase();
+  const config = SMS_CAMPAIGN_CONFIG[campaign] || SMS_CAMPAIGN_CONFIG.demo_link;
+  if (!promptText) return config.message;
+
+  if (campaign === 'reorder_followup') {
+    const mentionsEarlyBuy = /(early buy|early-buy|early season|pre[- ]season|busy season|before the busy season|spring special)/i.test(promptText);
+    const mentionsForestFuel = /(forest fuel|pellets|briquettes|alpha fiber|hardwood)/i.test(promptText);
+    const notTooSalesy = /(not too salesy|less salesy|casual|soft|friendly|low pressure)/i.test(promptText);
+    const tone = notTooSalesy ? 'just wanted to check in' : 'wanted to check in';
+    const productLine = mentionsForestFuel ? 'Forest Fuel pellets, briquettes, and Alpha Fiber' : 'your Musser Biomass product';
+    const timing = mentionsEarlyBuy
+      ? 'We are starting early-buy planning before the busy season, so it is a good time to get ahead of your next order.'
+      : 'It has been a little while since your last order, so I wanted to see how the product is treating you.';
+    return `Hi {{firstName}}, this is Musser Biomass. I ${tone} on ${productLine}. ${timing} If you are ready for another load, reply here and we can help line it up.`;
+  }
+
+  if (campaign === 'review_request') {
+    const casual = /(short|simple|casual|friendly)/i.test(promptText);
+    return casual
+      ? 'Hi {{firstName}}, thanks again for working with Musser Biomass. If you have a minute, would you leave us a quick review here? {{link}}'
+      : 'Hi {{firstName}}, thank you for supporting Musser Biomass. Would you be willing to leave a quick Google review about your experience? {{link}}';
+  }
+
+  if (campaign === 'voice_agent') {
+    return 'Hi {{firstName}}, here is the Biomass Buddy voice agent number if you want to try it during the demo: {{link}}';
+  }
+
+  if (campaign === 'demo_link') {
+    return 'Hi {{firstName}}, here is the live link to try Biomass Buddy during the demo: {{link}}';
+  }
+
+  return config.message;
+}
+
 function openSmsIntentFromChat(promptText) {
   const campaign = detectSmsIntent(promptText);
   if (!campaign) return false;
-  openSmsCampaign(campaign);
+  openSmsCampaign(campaign, { message: buildSmsDraftFromPrompt(campaign, promptText) });
   const status = document.getElementById('sms-status');
   status.className = 'modal-status sending';
-  status.textContent = 'Draft loaded from your chat command. Preview recipients, then confirm send.';
+  status.textContent = 'Draft updated from your chat command. Preview recipients, edit if needed, then confirm send.';
   setTimeout(() => { status.className = 'modal-status'; status.textContent = ''; }, 2200);
   return true;
 }
