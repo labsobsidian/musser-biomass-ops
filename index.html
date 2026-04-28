@@ -1428,8 +1428,9 @@ async function sendSmsCampaign() {
   }
 }
 
-async function emailDemoLinkToGroup({ confirmSend = true } = {}) {
-  openEmailCampaign('demo_link');
+async function emailDemoLinkToGroup({ confirmSend = true, promptText = '' } = {}) {
+  const draft = buildEmailDraftFromPrompt('demo_link', promptText);
+  openEmailCampaign('demo_link', draft);
   const status = document.getElementById('campaign-email-status');
   status.className = 'modal-status sending';
   status.textContent = confirmSend
@@ -1803,6 +1804,54 @@ function buildSmsDraftFromPrompt(campaign, promptText) {
   return config.message;
 }
 
+function buildEmailDraftFromPrompt(campaign, promptText) {
+  const config = EMAIL_CAMPAIGN_CONFIG[campaign] || EMAIL_CAMPAIGN_CONFIG.demo_link;
+  if (!promptText) return {};
+  const normalized = String(promptText || '').toLowerCase();
+
+  if (campaign === 'demo_link') {
+    const subject = normalized.includes('presentation')
+      ? 'Biomass Buddy presentation link'
+      : config.subject;
+    const shortFriendly = /(short|friendly|quick|simple)/i.test(promptText);
+    const customInstruction = extractEmailInstruction(promptText);
+    const lines = [
+      'Hi {{firstName}},',
+      '',
+      shortFriendly
+        ? 'Here is the live Biomass Buddy link for the demo:'
+        : 'Here is the live link to try Biomass Buddy during the demo:',
+      '{{link}}',
+      ''
+    ];
+    if (customInstruction) {
+      lines.push(customInstruction, '');
+    } else {
+      lines.push('Take a look when you have a minute and send over any notes.', '');
+    }
+    lines.push('- Biomass Buddy');
+    return { subject, body: lines.join('\n') };
+  }
+
+  return {};
+}
+
+function extractEmailInstruction(promptText) {
+  const text = String(promptText || '').replace(/\s+/g, ' ').trim();
+  const quoted = text.match(/["“]([^"”]{8,220})["”]/);
+  if (quoted) return quoted[1].trim();
+
+  const marker = text.match(/\b(?:tell them|say|message should say|include|mention|add in|add)\b[:\s-]*(.{8,220})/i);
+  if (!marker) return '';
+  return marker[1]
+    .replace(/\b(?:email|send|forward|share)\b.*?\b(?:demo link|biomass buddy link|biomass buddy demo)\b/ig, '')
+    .replace(/\b(?:to|for)\s+(?:the\s+)?(?:biomass-demo-board|demo board|tagged contacts|contacts)\b/ig, '')
+    .replace(/\b(?:email only|do not text|no text|not sms|no sms)\b/ig, '')
+    .replace(/\s+/g, ' ')
+    .replace(/^[,.;:\-\s]+|[,.;:\-\s]+$/g, '')
+    .trim();
+}
+
 function openSmsIntentFromChat(promptText) {
   const campaign = detectSmsIntent(promptText);
   if (!campaign) return false;
@@ -2125,7 +2174,7 @@ async function run(text) {
   addMsg('user', text);
   history.push({ role: 'user', content: text });
   if (isDemoLinkEmailIntent(text)) {
-    await emailDemoLinkToGroup({ confirmSend: false });
+    await emailDemoLinkToGroup({ confirmSend: false, promptText: text });
     loading = false;
     document.getElementById('send-btn').disabled = false;
     return;
