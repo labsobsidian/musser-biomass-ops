@@ -41,7 +41,7 @@ Build an AI-forward ops stack for Musser Biomass that takes pricing questions, d
 - `/api/claude` — streaming brain proxy; OpenAI-first with Anthropic fallback (reads live KB from this repo)
 - `/api/context` — living-docs fetcher w/ 60s cache
 - `/api/quote` — **real pricing calculator** (POST items + miles → itemized quote)
-- `/api/send-email` — **real email sender** via GoHighLevel Conversations ("to_ceo" preset wired)
+- `/api/send-email` — **real email sender** via Obsidian Labs CRM Conversations ("to_ceo" preset wired)
 - `/api/ar` — **placeholder Accounts Receivable source** shaped for future Sage 50 integration
 - Vercel deployment — TBD (push to main + wire env vars)
 
@@ -82,8 +82,8 @@ Build an AI-forward ops stack for Musser Biomass that takes pricing questions, d
 - [ ] Swap placeholder prices in `PRICING.md` + `api/quote.js` with Musser's real sheet
 - [ ] Custom domain (e.g. `musser.labsobsidian.co`)
 
-### Phase 1 — GHL Build (Post-Demo)
-- [ ] Create GHL sub-account for Musser Biomass
+### Phase 1 — Obsidian Labs CRM Build (Post-Demo)
+- [ ] Create CRM sub-account for Musser Biomass
 - [ ] Build pipeline: Quote Requested → Quoted → Scheduled → Delivered → Invoiced → Paid
 - [ ] Custom fields: product, quantity, delivery address, miles from yard, customer type, price quoted
 - [ ] Inbound quote form → webhook → auto-create opportunity + draft quote using `/api/quote`
@@ -115,18 +115,18 @@ Build an AI-forward ops stack for Musser Biomass that takes pricing questions, d
 
 - ~~Real price sheet from Musser~~ — received Apr 26, three SKUs deployed
 - CEO email address — placeholder `CEO_EMAIL` env var to be set
-- GoHighLevel Conversations access — required before send-to-CEO works live
+- Obsidian Labs CRM Conversations access — required before send-to-CEO works live
 - Sage 50 access path for AR sync (Phase 3)
 - Google Maps API key if we want a "verify mileage" upgrade button (Phase 2 — currently using free Zippopotam.us + 1.20 driving multiplier, ~95% accurate)
 
 ---
 
 ## Notes
-- Atlas Learning Loop is enabled: manual corrections enter `data/learning/LEARNING_QUEUE.json`; approved lessons append to `LEARNING_LOG.md`; future GHL, voice, Sage 50, Amazon SP-API, spreadsheet, and generic API sources should normalize into `/api/learning/source-event` instead of directly editing the KB.
+- Atlas Learning Loop is enabled: manual corrections enter `data/learning/LEARNING_QUEUE.json`; approved lessons append to `LEARNING_LOG.md`; future CRM, voice, Sage 50, Amazon SP-API, spreadsheet, and generic API sources should normalize into `/api/learning/source-event` instead of directly editing the KB.
 
 - Skills version: v0.2.0
 - DEMO_MODE: true — seeded data until accounting + live order intake are wired
-- `PRICING.md` is read by the Biomass Buddy brain AND should be pasted into GHL Conversation AI's system prompt so the chat agent quotes from the same source
+- `PRICING.md` is read by the Biomass Buddy brain AND should be pasted into Obsidian Labs CRM Conversation AI's system prompt so the chat agent quotes from the same source
 - Pricing calculator (`/api/quote.js`), distance lookup (`/api/distance.js`), and `PRICING.md` must be updated together — drift between any of them will cause the chat agent and the UI to disagree
 - Plant origin ZIP is `24368` — locked in `MUSSER_ORIGIN_ZIP` constant in `api/quote.js`, documented in PRICING.md
 - All seeded demo data across Operations / Sales / Finance / Strategy / My Route tabs and chat greetings reflects Musser's real product world (pellets / briquettes / Alpha Fiber, NY/PA destinations, full-truckload model). Older Hardesty-era firewood/mulch/cords narrative was scrubbed Apr 26.

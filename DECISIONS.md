@@ -39,7 +39,7 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 
 ## 2026-04-24 — Pricing source of truth = PRICING.md
 
-**Decision:** `PRICING.md` is the single authoritative document for all product pricing, delivery rules, and discount logic. It's read by three systems: (1) Biomass Buddy brain (via `/api/context`), (2) pricing calculator (mirrored in `/api/quote.js`), and (3) GHL Conversation AI (pasted into its system prompt).
+**Decision:** `PRICING.md` is the single authoritative document for all product pricing, delivery rules, and discount logic. It's read by three systems: (1) Biomass Buddy brain (via `/api/context`), (2) pricing calculator (mirrored in `/api/quote.js`), and (3) Obsidian Labs CRM Conversation AI (pasted into its system prompt).
 
 **Context:** When pricing lives in multiple places, the three systems will drift. Drift means the chat agent quotes one number, the calculator quotes another, and the team has no idea which is right.
 
@@ -49,7 +49,7 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 
 **Consequences:**
 - Price changes require editing `PRICING.md` + `api/quote.js` in the same commit
-- Whenever GHL Conversation AI is updated, re-paste the current `PRICING.md`
+- Whenever Obsidian Labs CRM Conversation AI is updated, re-paste the current `PRICING.md`
 - At some point we may generate `quote.js` price book from `PRICING.md` at build time — revisit if drift bites us
 
 ---
@@ -88,7 +88,7 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 - **New endpoint:** `/api/distance.js` — accepts `?from=24368&to=13346`, looks up centroid lat/lon for both ZIPs via the free public **Zippopotam.us** API (no API key required, CORS-enabled, GeoNames-sourced data). Computes great-circle (haversine) distance in miles and multiplies by **1.20** to estimate driving miles. 24-hour in-memory cache so repeat lookups don't hit the upstream API. Exports `computeDistance`, `lookupZip`, `haversineMiles` for reuse.
 - **`/api/quote.js`:** now imports `computeDistance` and accepts either `deliveryMiles` (legacy/manual) or `originZip` + `destinationZip`. If both, manual miles wins. Default origin ZIP = `24368` if not specified. Response now includes a `distanceInfo` block (`{from, to, estimatedDrivingMiles, greatCircleMiles, method}`) so the UI / chat AI can show "Sugar Grove, VA → Hamilton, NY · 577 driving miles" instead of just a number.
 - **Pricing tab UI:** the single miles field is replaced with two ZIP fields. Origin is locked (read-only, value 24368) with a tooltip explaining why. Destination is a 5-digit numeric input that triggers a recalculation as soon as the user types the fifth digit. A small info row below the inputs shows the resolved place names + estimated driving miles; on lookup error it shows the error message in red so the user can fall back to manual entry.
-- **PRICING.md:** new "How miles are computed" subsection under Freight, documenting the ZIP-based pipeline + the 1.20 multiplier + the manual override. Examples updated to mention origin ZIP 24368 and destination ZIPs 13346 / 16434 explicitly so the GHL Conversation AI quotes consistently.
+- **PRICING.md:** new "How miles are computed" subsection under Freight, documenting the ZIP-based pipeline + the 1.20 multiplier + the manual override. Examples updated to mention origin ZIP 24368 and destination ZIPs 13346 / 16434 explicitly so the Obsidian Labs CRM Conversation AI quotes consistently.
 - **DEMO_CONTEXT.md:** rewritten end-to-end. No more firewood, mulch, cords, kiln, splitter, Shenandoah Valley narrative, Pine Ridge Hardware, Bridgewater Landscaping, Henderson, Ashworth, Valley View HOA. Replaced with Musser's actual world: three SKUs, two real customer accounts (Town & Country, TJ Coal), Northeast Stove Supply as the speculative big bet, pellet line / briquette press / Alpha Fiber baler as the production narrative.
 - **`index.html` seeded data:** Operations tab now shows "this week's loads" not "today's deliveries" (truckload business is per-week, not per-day). Inventory pulse shows loads ready / bags on hand / bales on hand instead of cords/yards. Sales tab shows Northeast Stove Supply + Appalachian Coal & Stove in the approval queue, Town & Country + TJ Coal + Hudson Valley Hearth + Pocono Pellet Co. in recent quotes. Finance shows pellets / briquettes / fiber / freight revenue split. Strategy shows Northeast Stove Supply (NY chain), second pellet line, Alpha Fiber bedding push, and the pre-heating-season pre-buy as the four big bets. My Route tab shows a single long-haul load to Hamilton NY (522 mi) instead of five short local stops — matches the actual freight model. Chat greetings rewritten per role to reference real Musser numbers and customers. Prompt suggestions updated to use ZIP-based examples ("Quote 1 load pellets to ZIP 13346").
 
@@ -125,11 +125,11 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 
 ---
 
-## 2026-04-27 — GHL primary messaging provider
+## 2026-04-27 — CRM primary messaging provider
 
-**Decision:** Route Biomass Buddy's send-to-CEO email path through GoHighLevel Conversations when `GHL_API_KEY` exists. Keep `/api/send-email` as the compatibility endpoint, but make it a provider router with GHL primary and Resend as optional fallback only.
+**Decision:** Route Biomass Buddy's send-to-CEO email path through Obsidian Labs CRM Conversations when `GHL_API_KEY` exists. Keep `/api/send-email` as the compatibility endpoint, but make it a provider router with CRM primary and Resend as optional fallback only.
 
-**Context:** Musser already has an active GHL account, and customer/owner communication belongs in the CRM timeline when possible. Resend was only a placeholder email provider and has been removed from Vercel.
+**Context:** Musser already has an active CRM account, and customer/owner communication belongs in the CRM timeline when possible. Resend was only a placeholder email provider and has been removed from Vercel.
 
 **Consequences:**
 - CEO email now needs `CEO_EMAIL` plus `CEO_GHL_CONTACT_ID` so HighLevel has a contact timeline to attach the outbound email to.
@@ -137,7 +137,7 @@ _Append-only log. One entry per material decision. Newest at the bottom._
 - A later Atlas product version can replace the private integration token with OAuth without changing the app-level messaging workflow.
 - Owner/admin chat can detect direct "email the CEO" requests and call `/api/send-email` instead of only drafting copy.
 - AR CEO summaries now send as Musser-branded HTML operating briefs rather than plain-text notes. The email template must carry explicit Musser signals, not just Atlas styling: the repo-root Musser logo served from `/musser-logo.png`, Musser Biomass & Wood Products, Rural Retreat, Appalachian hardwood fiber, Forest Fuel, Alpha Fiber, and the plant address. It should follow the website/logo feel with warm off-white surfaces, green bands, charcoal type, and restrained gold accents.
-- Messaging routing is split by content type: plain text emails stay on GHL so they live in the CRM timeline; branded HTML reports and summaries route to Resend when configured for stronger email rendering.
+- Messaging routing is split by content type: plain text emails stay on CRM so they live in the CRM timeline; branded HTML reports and summaries route to Resend when configured for stronger email rendering.
 - AR report emails should stay compact enough for Gmail: executive summary, four metrics, top five invoices, and three actions. Full aging detail belongs in the app/PDF brief.
 - If Gmail continues collapsing report sections, prioritize deliverability/readability over logo-heavy branding. AR report emails may omit the logo and address header, starting directly with the report title and a compact Musser/Biomass Buddy label.
 - Final AR email pattern: send a short Musser-branded cover email with the logo, then attach the full Accounts Receivable detail as a generated PDF. This keeps the inbox preview premium while avoiding Gmail clipping/collapse on long HTML tables.

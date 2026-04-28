@@ -1,6 +1,6 @@
 # PRICING.md — Musser Biomass
 _Last updated: 2026-04-26_
-_Authoritative pricing source. Used by: Biomass Buddy brain, `/api/quote` endpoint, and the GHL Conversation AI prompt._
+_Authoritative pricing source. Used by: Biomass Buddy brain, `/api/quote` endpoint, and the Obsidian Labs CRM Conversation AI prompt._
 
 ---
 
@@ -96,4 +96,4 @@ If the request is partial-load, mixed-product on a single truck, ongoing contrac
 
 > "Let me get you a custom quote — I'll have someone from Musser Biomass call you within one business day with firm pricing."
 
-Then create a lead in GHL with all the details and tag it `custom-quote-needed`.
+Then create a lead in Obsidian Labs CRM with all the details and tag it `custom-quote-needed`.

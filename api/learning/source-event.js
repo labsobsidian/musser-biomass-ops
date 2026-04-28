@@ -1,7 +1,7 @@
 import { addLearningItem } from '../../lib/learning/store.js';
 
 const SOURCE_LABELS = {
-  ghl: 'GoHighLevel conversation',
+  ghl: 'Obsidian Labs CRM conversation',
   voice: 'Voice AI transcript',
   sage50: 'Sage 50 accounting event',
   amazon_sp_api: 'Amazon Selling Partner event',

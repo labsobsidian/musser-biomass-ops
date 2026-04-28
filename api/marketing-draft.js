@@ -38,7 +38,7 @@ export default async function handler(req, res) {
     ok: true,
     source: 'placeholder',
     status: 'draft-ready',
-    note: 'This is a branded draft foundation. Live publishing to Vercel blog or GHL Social Planner is a future adapter.',
+    note: 'This is a branded draft foundation. Live publishing to Vercel blog or Obsidian Labs CRM Social Planner is a future adapter.',
     draft: {
       ...draft,
       requestedTopic: topic || null,

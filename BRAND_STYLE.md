@@ -93,6 +93,12 @@ Gold and green are accents. Do not flood pages with brown, beige, or green. The 
 
 ## Artifact Rules
 
+### Logo Usage
+
+- Use `/musser-logo.png` as the preferred logo in reports, PDF-style briefs, website previews, and slide/deck previews.
+- Keep the logo scaled down and crisp, generally 120-170px wide in report headers.
+- Do not use `MB` initials, placeholder lettermarks, brown logo boxes, invented badges, or fake marks in customer-facing materials.
+
 ### Website Preview
 
 - Build a polished preview first, not a live-site claim.

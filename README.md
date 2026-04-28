@@ -9,7 +9,7 @@ Browser (index.html)
     │
     │  POST /api/claude  { role, messages }        ──► streams chat response
     │  POST /api/quote   { items, miles, ... }     ──► returns itemized quote (REAL)
-    │  POST /api/send-email { preset, subject... } ──► sends to CEO via GHL (REAL)
+    │  POST /api/send-email { preset, subject... } ──► sends to CEO via Obsidian Labs CRM (REAL)
     │  GET  /api/ar                              ──► placeholder AR aging (Sage 50 later)
     │
     ▼
@@ -17,7 +17,7 @@ Vercel serverless functions
     │
     ├─► /api/claude    ─► getContext() ─► GitHub living docs ─► OpenAI/Anthropic (SSE)
     ├─► /api/quote     ─► mirrors PRICING.md math
-    ├─► /api/send-email ─► GoHighLevel Conversations API
+    ├─► /api/send-email ─► Obsidian Labs CRM Conversations API
     └─► /api/ar         ─► Sage 50 connector boundary
 ```
 
@@ -36,8 +36,8 @@ Vercel serverless functions
 | `CLIENT_SLUG` | `musser-biomass` | Reserved for future connectors |
 | `GHL_API_KEY` | `pit-...` | HighLevel private integration token/OAuth token |
 | `GHL_LOCATION_ID` | `abc123` | Musser HighLevel location/sub-account ID |
-| `CEO_GHL_CONTACT_ID` | `abc123` | GHL contact record used for CEO email timeline |
-| `GHL_SEND_FROM_EMAIL` | `sales@musserbiomass.com` | Optional GHL sender override |
+| `CEO_GHL_CONTACT_ID` | `abc123` | CRM contact record used for CEO email timeline |
+| `GHL_SEND_FROM_EMAIL` | `sales@musserbiomass.com` | Optional CRM sender override |
 | `RESEND_API_KEY` | `re_...` | Branded/internal HTML reports and summaries |
 | `FROM_EMAIL` | `biomass-buddy@labsobsidian.co` | Verified sender for Resend report emails |
 | `MESSAGE_PROVIDER` | `auto` | Optional hard override: `auto`, `ghl`, or `resend` |
@@ -55,15 +55,15 @@ All must be set in **Production** and **Preview** environments.
 6. Generate, copy, paste into Vercel env var `GITHUB_TOKEN`
 7. Token expires — calendar a reminder to rotate.
 
-### Setting up GoHighLevel messaging
+### Setting up Obsidian Labs CRM messaging
 
-1. In the Musser GHL sub-account, create a Private Integration Token with Contacts/Conversations scopes.
+1. In the Musser CRM sub-account, create a Private Integration Token with Contacts/Conversations scopes.
 2. Paste it into Vercel as `GHL_API_KEY`.
 3. Add `GHL_LOCATION_ID`.
-4. Create or identify a CEO/internal contact in GHL and set `CEO_GHL_CONTACT_ID`.
+4. Create or identify a CEO/internal contact in Obsidian Labs CRM and set `CEO_GHL_CONTACT_ID`.
 5. Set `CEO_EMAIL`; the UI never exposes this address.
 
-`/api/send-email` auto-routes by message type: plain text uses GHL when configured; branded HTML reports/summaries use Resend when configured. AR CEO summaries send a compact logo email plus a generated PDF attachment for the full invoice/aging detail. `MESSAGE_PROVIDER` is only for hard overrides.
+`/api/send-email` auto-routes by message type: plain text uses Obsidian Labs CRM when configured; branded HTML reports/summaries use Resend when configured. AR CEO summaries send a compact logo email plus a generated PDF attachment for the full invoice/aging detail. `MESSAGE_PROVIDER` is only for hard overrides.
 
 ## Local dev
 
@@ -98,7 +98,7 @@ curl -X POST https://<your-deploy>/api/quote \
   }'
 ```
 
-Returns a fully itemized quote (line items, discounts applied, delivery breakdown, total). The Pricing tab in the UI calls this on every input change. Same math is documented in `PRICING.md` — which is what the AI brain and the GHL Conversation AI read when answering pricing questions.
+Returns a fully itemized quote (line items, discounts applied, delivery breakdown, total). The Pricing tab in the UI calls this on every input change. Same math is documented in `PRICING.md` — which is what the AI brain and the Obsidian Labs CRM Conversation AI read when answering pricing questions.
 
 **Keep `PRICING.md` and `api/quote.js` in sync.** They must produce identical numbers.
 
@@ -116,7 +116,7 @@ curl -X POST https://<your-deploy>/api/send-email \
   }'
 ```
 
-Returns `{ ok: true, provider, sentTo, messageId }` on success. The UI's "Send to CEO" button composes a draft from the current Biomass Buddy conversation and fires this through GHL Conversations.
+Returns `{ ok: true, provider, sentTo, messageId }` on success. The UI's "Send to CEO" button composes a draft from the current Biomass Buddy conversation and fires this through Obsidian Labs CRM Conversations.
 
 For AR/report emails, the UI can include `attachments: [{ filename, title, contentText }]`. `/api/send-email` turns `contentText` into a simple PDF attachment and sends it through Resend so Gmail does not have to render the entire report body inline.
 
@@ -135,9 +135,9 @@ For AR/report emails, the UI can include `attachments: [{ filename, title, conte
 
 `/api/ar` currently returns placeholder Accounts Receivable data so the UI and brain can demonstrate Sage-ready reporting without pretending Sage 50 is connected. Future live sync should replace `api/connectors/sage50.js` with the confirmed access path: Sage AR Automation, Sage-supported API/connector, ODBC/SDK/export, or middleware.
 
-## GHL Conversation AI — pricing consistency
+## Obsidian Labs CRM Conversation AI — pricing consistency
 
-The Musser GHL sub-account's Conversation AI should have **the full content of `PRICING.md`** pasted into its system prompt. This is how the chat/SMS agent quotes the same numbers as the in-app calculator. When prices change, update `PRICING.md`, update `api/quote.js`, and re-paste into the GHL agent config. All three must match.
+The Musser CRM sub-account's Conversation AI should have **the full content of `PRICING.md`** pasted into its system prompt. This is how the chat/SMS agent quotes the same numbers as the in-app calculator. When prices change, update `PRICING.md`, update `api/quote.js`, and re-paste into the CRM agent config. All three must match.
 
 ## Deploy steps (first-time)
 
@@ -156,11 +156,11 @@ Once all four check, swap `CEO_EMAIL` to the real destination and you're demo-re
 
 `/api/website-import` imports one public page only after DNS ownership proof. It returns the TXT record name/value to add in GoDaddy, then fetches safe public HTML and passes it into Biomass Buddy as first-party website context.
 
-The Marketing tab includes AEO Monitor, Competitors, Ad Performance, Content Studio, Monday Brief, and GHL Texts. Draft generation starts with `/api/marketing-draft`; live publishing to a Vercel-hosted blog or GHL Social Planner is the next adapter once the hosting/API path is confirmed.
+The Marketing tab includes AEO Monitor, Competitors, Ad Performance, Content Studio, Monday Brief, and Text Campaigns. Draft generation starts with `/api/marketing-draft`; live publishing to a Vercel-hosted blog or Obsidian Labs CRM Social Planner is the next adapter once the hosting/API path is confirmed.
 
 GoDaddy should keep DNS/domain ownership. Vercel is the preferred home for future Atlas-managed Musser site/blog updates because content changes can be versioned and deployed from GitHub.
 
-## GHL text campaigns
+## CRM text campaigns
 
 Set these Vercel env vars for the text tools:
 
@@ -173,6 +173,6 @@ Set these Vercel env vars for the text tools:
 | `EXEC_DEMO_TAG` | Defaults to `biomass-demo-board` |
 | `REVIEW_TEST_TAG` | Defaults to `biomass-demo-board` |
 | `REORDER_FOLLOWUP_TAG` | Defaults to `biomass-reorder-followup` |
-| `GHL_TAG_CONTACTS_JSON` | Optional demo fallback if GHL tag lookup is unavailable |
+| `GHL_TAG_CONTACTS_JSON` | Optional demo fallback if CRM tag lookup is unavailable |
 
-Create GHL tags `biomass-demo-board`, `biomass-review-test`, and `biomass-reorder-followup`. Tag Eric, Becky, Mark, and Mick with `biomass-demo-board`. In Biomass Buddy, open Marketing -> GHL Texts, preview recipients, then confirm send.
+Create CRM tags `biomass-demo-board`, `biomass-review-test`, and `biomass-reorder-followup`. Tag Eric, Becky, Mark, and Mick with `biomass-demo-board`. In Biomass Buddy, open Marketing -> Text Campaigns, preview recipients, then confirm send.

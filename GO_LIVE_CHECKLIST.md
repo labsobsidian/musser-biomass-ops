@@ -10,27 +10,27 @@ _Last updated: 2026-04-24_
 - [x] Build `/api/claude` streaming proxy
 - [x] Build `/api/context` living-docs fetcher
 - [x] Build `/api/quote` pricing calculator (real functional tool #1)
-- [x] Build `/api/send-email` via GoHighLevel Conversations (real functional tool #2)
+- [x] Build `/api/send-email` via Obsidian Labs CRM Conversations (real functional tool #2)
 - [x] Build `/api/ar` placeholder Accounts Receivable source for future Sage 50 sync
 - [x] Add `BRAND_STYLE.md` for brand-safe artifacts
 - [x] Write 7 living docs incl. `PRICING.md`
 - [ ] Push to GitHub
-- [ ] Create Vercel project, wire env vars (OpenAI, Anthropic fallback, GitHub, GHL)
+- [ ] Create Vercel project, wire env vars (OpenAI, Anthropic fallback, GitHub, CRM)
 - [ ] Confirm `/api/context` returns the 7 living docs
 - [ ] Confirm streaming chat works end-to-end
 - [ ] Confirm pricing calculator returns correct quotes for 3 test scenarios
 - [ ] Confirm AR tab loads placeholder data and is hidden from yard/driver roles
 - [ ] Confirm manual correction capture creates a pending learning item
 - [ ] Confirm owner/admin can approve, reject, and generate `START_THE_WEEK.md`
-- [ ] Verify GHL messaging token and `CEO_GHL_CONTACT_ID` (prereq for `/api/send-email`)
+- [ ] Verify CRM messaging token and `CEO_GHL_CONTACT_ID` (prereq for `/api/send-email`)
 - [ ] Set `CEO_EMAIL` env var to a test address/contact, send a live email, confirm receipt
 - [ ] Replace `CEO_EMAIL` with actual CEO address before demo
 - [ ] Walk through demo flow dry-run once before live
 
-## Phase 1 — GHL Stack (Week 1–2 post-demo)
+## Phase 1 — Obsidian Labs CRM Stack (Week 1–2 post-demo)
 
 ### Sub-account
-- [ ] Create white-labeled GHL sub-account for Musser under Obsidian Labs
+- [ ] Create white-labeled CRM sub-account for Musser under Obsidian Labs
 - [ ] A2P registration if SMS will go out
 
 ### Pipeline
@@ -44,7 +44,7 @@ _Last updated: 2026-04-24_
 
 ### Quote request form
 - [ ] Build quote request form (product, quantity, ZIP, customer type)
-- [ ] Webhook → auto-create GHL opportunity
+- [ ] Webhook → auto-create CRM opportunity
 - [ ] Auto-draft quote email using `/api/quote`
 
 ### Workflows
@@ -90,11 +90,11 @@ _Last updated: 2026-04-24_
 ## Website, Marketing, and SMS Demo Add-On
 
 - [x] Build `/api/website-import` with DNS ownership verification
-- [x] Build `/api/ghl-contacts` and `/api/send-sms` for tag-based GHL SMS preview/send
-- [x] Add Biomass-branded Marketing suite: AEO Monitor, Competitors, Ad Performance, Content Studio, Monday Brief, GHL Texts
+- [x] Build `/api/ghl-contacts` and `/api/send-sms` for tag-based CRM SMS preview/send
+- [x] Add Biomass-branded Marketing suite: AEO Monitor, Competitors, Ad Performance, Content Studio, Monday Brief, Text Campaigns
 - [ ] Add `IMPORT_VERIFICATION_SECRET` in Vercel
 - [ ] Add GoDaddy TXT record returned by `/api/website-import`, then import `https://musserbiomass.com/`
-- [ ] Create GHL tags: `biomass-demo-board`, `biomass-review-test`, `biomass-reorder-followup`
+- [ ] Create CRM tags: `biomass-demo-board`, `biomass-review-test`, `biomass-reorder-followup`
 - [ ] Tag Eric, Becky, Mark, and Mick with `biomass-demo-board`
 - [ ] Set `BIOMASS_BUDDY_DEMO_LINK`, `REVIEW_WORKFLOW_LINK`, and `VOICE_AGENT_PHONE`
-- [ ] Preview each SMS campaign in Biomass Buddy, then confirm one test send in GHL
+- [ ] Preview each SMS campaign in Biomass Buddy, then confirm one test send in Obsidian Labs CRM

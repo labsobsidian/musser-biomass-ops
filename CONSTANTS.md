@@ -16,7 +16,7 @@ _Never store secrets here. API keys and tokens live in Vercel env vars._
 | Public email | marketing@musserbiomass.com |
 | CEO name | TODO (email via `CEO_EMAIL` env var) |
 
-## GoHighLevel
+## Obsidian Labs CRM
 
 | Constant | Value |
 |---|---|
@@ -57,7 +57,7 @@ _Never store secrets here. API keys and tokens live in Vercel env vars._
 | API | Base URL | Used for |
 |---|---|---|
 | Anthropic | `https://api.anthropic.com` | Biomass Buddy brain |
-| GoHighLevel | `https://services.leadconnectorhq.com` | Contacts, email, SMS, pipeline |
+| Obsidian Labs CRM | `https://services.leadconnectorhq.com` | Contacts, email, SMS, pipeline |
 | GitHub | `https://api.github.com` | KB fetch |
 | Sage 50 (planned) | TBD | Accounts receivable and invoice sync |
 | Google Maps (planned) | `https://maps.googleapis.com` | Route optimization |
@@ -72,7 +72,7 @@ _Never store secrets here. API keys and tokens live in Vercel env vars._
 - [x] Plant address
 - [x] Service phone
 - [ ] CEO name and email (env var only)
-- [ ] GHL location ID
+- [ ] CRM location ID
 - [ ] Sage 50 access path (AR Automation, API/connector, ODBC/SDK/export, or middleware)
 - [ ] Supabase project ref (Phase 3)
 - [ ] Real product SKUs from Musser's internal system (for bidirectional sync later)
@@ -90,4 +90,4 @@ _Never store secrets here. API keys and tokens live in Vercel env vars._
 | `EXEC_DEMO_TAG` | Defaults to `biomass-demo-board` |
 | `REVIEW_TEST_TAG` | Defaults to `biomass-demo-board` unless overridden |
 | `REORDER_FOLLOWUP_TAG` | Defaults to `biomass-reorder-followup` |
-| `GHL_TAG_CONTACTS_JSON` | Optional tag-to-contact fallback for demos if GHL tag search is unavailable |
+| `GHL_TAG_CONTACTS_JSON` | Optional tag-to-contact fallback for demos if CRM tag search is unavailable |

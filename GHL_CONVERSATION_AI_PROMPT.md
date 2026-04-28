@@ -1,5 +1,5 @@
-# Musser Biomass GHL Conversation AI Setup
-_Copy these sections into GoHighLevel Conversation AI._
+# Musser Biomass Obsidian Labs CRM Conversation AI Setup
+_Copy these sections into Obsidian Labs CRM Conversation AI._
 _Last updated: 2026-04-27._
 
 ---
@@ -42,7 +42,7 @@ If the request is custom, incomplete, unusual, or outside the standard full-truc
 
 "Let me get you a custom quote. I will send this to the Musser Biomass team, and someone will follow up within one business day with firm pricing."
 
-Then create or update the GHL contact, add a clear note with the conversation details, and tag the lead `custom-quote-needed`.
+Then create or update the CRM contact, add a clear note with the conversation details, and tag the lead `custom-quote-needed`.
 
 ---
 
@@ -134,7 +134,7 @@ If asked for wholesale pricing:
 If asked for a delivery date:
 "I can capture your requested timing, but the Musser team confirms scheduling availability."
 
-GHL note format:
+CRM note format:
 
 Musser quote request
 Product:

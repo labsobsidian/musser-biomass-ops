@@ -5,7 +5,7 @@ _Atlas Learning Loop source map for Musser Biomass._
 
 ## Purpose
 
-This document tells Biomass Buddy where approved lessons belong. Raw corrections, GHL logs, voice transcripts, Sage data, Amazon data, spreadsheets, and future APIs must enter the learning queue first. Only reviewed and approved lessons become live knowledge.
+This document tells Biomass Buddy where approved lessons belong. Raw corrections, CRM logs, voice transcripts, Sage data, Amazon data, spreadsheets, and future APIs must enter the learning queue first. Only reviewed and approved lessons become live knowledge.
 
 ## Target Documents
 

@@ -11,9 +11,9 @@ _Last updated: 2026-04-24_
 | AI brain | OpenAI-first / Anthropic fallback via `/api/claude` (SSE stream) | Answers operational questions and creates branded artifacts |
 | Knowledge base | This repo's living docs via `/api/context` | Grounds the brain |
 | Pricing logic | `/api/quote` (real calculator) | Real functional tool #1 |
-| Messaging | `/api/send-email` -> GHL for plain text, Resend for branded reports/PDF attachments | Real functional tool #2 |
+| Messaging | `/api/send-email` -> CRM for plain text, Resend for branded reports/PDF attachments | Real functional tool #2 |
 | Learning loop | `/api/learning/*` + `LEARNING_LOG.md` | Human-approved correction queue and weekly KB review |
-| CRM | GoHighLevel sub-account | Contacts, email, SMS, pipeline, Conversation AI |
+| CRM | Obsidian Labs CRM sub-account | Contacts, email, SMS, pipeline, Conversation AI |
 | Accounting / AR (planned) | Sage 50 | Accounts receivable, invoice aging, collections reporting |
 | Database (planned) | Supabase | Inventory, orders, delivery records |
 | Automation (planned) | n8n self-hosted | Webhook orchestration |
@@ -28,7 +28,7 @@ Biomass Buddy UI  ->  POST /api/send-email
                            |
                            v
                     Provider router
-                    - Plain text: GoHighLevel Conversations API
+                    - Plain text: Obsidian Labs CRM Conversations API
                     - AR/report: Resend + generated PDF attachment
                            |
                            v
@@ -39,7 +39,7 @@ Preset hides the address from the UI - the UI only knows "send to CEO", destinat
 
 ---
 
-## Website, Marketing, and GHL SMS flows
+## Website, Marketing, and CRM SMS flows
 
 Website importer:
 
@@ -48,11 +48,11 @@ GoDaddy DNS TXT proof -> /api/website-import -> safe public page fetch
   -> imported page context -> /api/claude website previews and AEO drafts
 ```
 
-GHL tag-based SMS:
+CRM tag-based SMS:
 
 ```
-Marketing tab -> /api/send-sms { dryRun:true } -> GHL contacts by tag
-  -> recipient preview -> /api/send-sms { dryRun:false } -> GHL Conversations SMS
+Marketing tab -> /api/send-sms { dryRun:true } -> CRM contacts by tag
+  -> recipient preview -> /api/send-sms { dryRun:false } -> Obsidian Labs CRM Conversations SMS
 ```
 
 Marketing suite:
@@ -110,8 +110,8 @@ No framework, no bundler, no build step. Push to `main` → Vercel auto-deploys.
 | `CLIENT_SLUG` | `musser-biomass` |
 | `GHL_API_KEY` | HighLevel private integration token/OAuth token for messaging |
 | `GHL_LOCATION_ID` | Musser HighLevel location/sub-account ID |
-| `CEO_GHL_CONTACT_ID` | GHL contact record used for CEO email timeline |
-| `GHL_SEND_FROM_EMAIL` | Optional GHL sender override |
+| `CEO_GHL_CONTACT_ID` | CRM contact record used for CEO email timeline |
+| `GHL_SEND_FROM_EMAIL` | Optional CRM sender override |
 | `RESEND_API_KEY` | Branded/internal HTML reports and summaries |
 | `FROM_EMAIL` | Verified sender for Resend report emails |
 | `MESSAGE_PROVIDER` | Optional hard override: `auto`, `ghl`, or `resend` |

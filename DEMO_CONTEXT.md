@@ -50,7 +50,7 @@ Musser Biomass is a Sugar Grove, VA (ZIP 24368) manufacturer of wood-fiber heati
 
 Eric is fielding 10–15 pricing calls a day personally — wholesale dealers asking "what's your price to my ZIP?" and existing customers checking on next month's prices. Every call is a 2–5 minute interruption (look up the customer, check the freight to their city, do the math, quote it back). During pre-heating-season pre-buy season (Aug–Oct) this hits 25+ calls/day and becomes the single biggest throughput limit on the business.
 
-The goal of Biomass Buddy + GHL Conversation AI is to move 80%+ of those pricing conversations to self-serve chat + SMS, with the AI quoting from `PRICING.md` (with ZIP-based freight built in) and booking callbacks only for custom/edge cases (multi-load pricing, contract terms, unusual lanes).
+The goal of Biomass Buddy + Obsidian Labs CRM Conversation AI is to move 80%+ of those pricing conversations to self-serve chat + SMS, with the AI quoting from `PRICING.md` (with ZIP-based freight built in) and booking callbacks only for custom/edge cases (multi-load pricing, contract terms, unusual lanes).
 
 ## Production (seed)
 
