@@ -2,8 +2,8 @@ import { searchGhlContactsByTag } from '../lib/connectors/ghl.js';
 
 const TAG_DEFAULTS = {
   demo_link: process.env.EXEC_DEMO_TAG || 'biomass-demo-board',
-  review_request: process.env.REVIEW_TEST_TAG || process.env.EXEC_DEMO_TAG || 'biomass-demo-board',
-  reorder_followup: process.env.REORDER_FOLLOWUP_TAG || 'biomass-reorder-followup',
+  review_request: process.env.EXEC_DEMO_TAG || 'biomass-demo-board',
+  reorder_followup: process.env.EXEC_DEMO_TAG || 'biomass-demo-board',
   voice_agent: process.env.EXEC_DEMO_TAG || 'biomass-demo-board'
 };
 

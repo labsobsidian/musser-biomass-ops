@@ -12,15 +12,15 @@ const CAMPAIGNS = {
   },
   review_request: {
     label: 'Review workflow request',
-    tagEnv: 'REVIEW_TEST_TAG',
+    tagEnv: 'EXEC_DEMO_TAG',
     defaultTag: 'biomass-demo-board',
     envLink: 'REVIEW_WORKFLOW_LINK',
     fallbackText: "Hi {{firstName}}, here's the review request workflow link for Biomass Buddy: {{link}}"
   },
   reorder_followup: {
     label: 'Reorder follow-up',
-    tagEnv: 'REORDER_FOLLOWUP_TAG',
-    defaultTag: 'biomass-reorder-followup',
+    tagEnv: 'EXEC_DEMO_TAG',
+    defaultTag: 'biomass-demo-board',
     envLink: null,
     fallbackText: "Hi {{firstName}}, this is Musser Biomass checking in. It has been a little while since your last order, so I wanted to see how the product is treating you and whether you are ready for another load."
   },

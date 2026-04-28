@@ -456,6 +456,7 @@
           <button class="btn btn-secondary" onclick="fire('Create a branded PDF-style AR brief for the CEO using current placeholder AR data')">PDF brief</button>
           <button class="btn btn-secondary" onclick="fire('Create a branded slide-deck preview for Musser Biomass products and Atlas rollout')">Slides</button>
           <button class="btn btn-secondary" onclick="openCeoEmailComposer()">Email CEO</button>
+          <button class="btn btn-secondary" onclick="emailDemoLinkToGroup()">Email demo link</button>
           <button class="btn btn-secondary" onclick="openSmsCampaign('demo_link')">Text demo link</button>
         </div>
         <div class="website-source-chip" id="website-source-chip"></div>
@@ -722,9 +723,10 @@
     <div class="marketing-panel" id="marketing-sms">
       <div class="demo-banner"><div class="demo-dot"></div>Obsidian Labs CRM texts use tags for long-term maintainability. Biomass Buddy previews recipients and message copy before sending.</div>
       <div class="sms-actions">
+        <button class="sms-action" onclick="emailDemoLinkToGroup()"><strong>Email Biomass Buddy link</strong><span>Tag: biomass-demo-board</span></button>
         <button class="sms-action" onclick="openSmsCampaign('demo_link')"><strong>Biomass Buddy link</strong><span>Tag: biomass-demo-board</span></button>
-        <button class="sms-action" onclick="openSmsCampaign('review_request')"><strong>Review workflow</strong><span>Tag: biomass-demo-board or biomass-review-test</span></button>
-        <button class="sms-action" onclick="openSmsCampaign('reorder_followup')"><strong>Reorder follow-up</strong><span>Tag: biomass-reorder-followup</span></button>
+        <button class="sms-action" onclick="openSmsCampaign('review_request')"><strong>Review workflow</strong><span>Tag: biomass-demo-board</span></button>
+        <button class="sms-action" onclick="openSmsCampaign('reorder_followup')"><strong>Reorder follow-up</strong><span>Tag: biomass-demo-board</span></button>
         <button class="sms-action" onclick="openSmsCampaign('voice_agent')"><strong>Voice agent number</strong><span>Tag: biomass-demo-board</span></button>
       </div>
     </div>
@@ -1225,7 +1227,7 @@ const SMS_CAMPAIGN_CONFIG = {
   },
   reorder_followup: {
     title: 'Send reorder follow-up',
-    tag: 'biomass-reorder-followup',
+    tag: 'biomass-demo-board',
     message: "Hi {{firstName}}, this is Musser Biomass checking in. It has been a little while since your last order, so I wanted to see how the product is treating you and whether you are ready for another load.\n\nReply STOP to opt out."
   },
   voice_agent: {
@@ -1334,6 +1336,29 @@ async function sendSmsCampaign() {
   }
 }
 
+async function emailDemoLinkToGroup() {
+  const ok = window.confirm('Email the Biomass Buddy demo link to contacts tagged biomass-demo-board?');
+  if (!ok) return;
+  const systemMsg = addMsg('brain', 'Sending the Biomass Buddy demo link by email through Obsidian Labs CRM...', { withActions: false });
+  try {
+    const resp = await fetch('/api/send-campaign-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        campaign: 'demo_link',
+        tag: 'biomass-demo-board',
+        dryRun: false
+      })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Email send failed');
+    systemMsg.querySelector('.msg-bubble').textContent = `Demo link email sent through Obsidian Labs CRM: ${data.sent}/${data.attempted} delivered to the biomass-demo-board tag.`;
+    history.push({ role: 'assistant', content: `CRM demo-link email sent. Sent ${data.sent}/${data.attempted}.` });
+  } catch (e) {
+    systemMsg.querySelector('.msg-bubble').textContent = 'Demo link email failed: ' + e.message;
+  }
+}
+
 function addMsg(role, text, opts = {}) {
   const c = document.getElementById('chat-messages');
   const d = document.createElement('div');
@@ -1373,6 +1398,7 @@ function addMsg(role, text, opts = {}) {
     c.appendChild(actions);
   }
   c.scrollTop = c.scrollHeight;
+  return d;
 }
 
 function addStreamingMsg() {
