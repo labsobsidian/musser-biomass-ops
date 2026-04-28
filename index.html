@@ -1524,10 +1524,14 @@ function isCeoEmailIntent(text) {
 
 function detectSmsIntent(text) {
   const normalized = String(text || '').toLowerCase();
-  if (!/(text|sms|message)/.test(normalized) || !/(send|blast|share|forward)/.test(normalized)) return null;
+  const asksToSend = /(send|blast|share|forward)/.test(normalized);
+  const targetsDemoContacts = /(contact|tag|biomass-demo-board|demo board|exec demo|recipients)/.test(normalized);
+  const namesSms = /(text|sms|message)/.test(normalized);
+  const namesDemoCampaign = /(biomass buddy demo link|demo link|review workflow|review flow|google business|voice agent|phone number|marketing message|customer follow-up|customer follow up|forest fuel)/.test(normalized);
+  if (!asksToSend || (!namesSms && !targetsDemoContacts && !namesDemoCampaign)) return null;
   if (normalized.includes('voice') || normalized.includes('phone number') || normalized.includes('call')) return 'voice_agent';
-  if (normalized.includes('review')) return 'review_request';
-  if (normalized.includes('last order') || normalized.includes('reorder') || normalized.includes('couple months') || normalized.includes('follow up') || normalized.includes('follow-up')) return 'reorder_followup';
+  if (normalized.includes('review') || normalized.includes('google business')) return 'review_request';
+  if (normalized.includes('marketing') || normalized.includes('forest fuel') || normalized.includes('last order') || normalized.includes('reorder') || normalized.includes('couple months') || normalized.includes('follow up') || normalized.includes('follow-up')) return 'reorder_followup';
   if (normalized.includes('link') || normalized.includes('biomass buddy') || normalized.includes('demo')) return 'demo_link';
   return null;
 }
