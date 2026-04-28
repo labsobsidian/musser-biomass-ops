@@ -930,6 +930,41 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="campaign-email-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="campaign-email-modal-title">Send CRM email</div>
+      <button class="modal-close" onclick="closeEmailCampaignModal()">x</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-status" id="campaign-email-status"></div>
+      <div class="modal-field">
+        <label>CRM tag</label>
+        <select id="campaign-email-tag">
+          <option value="biomass-demo-board">biomass-demo-board</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Subject</label>
+        <input type="text" id="campaign-email-subject" placeholder="Email subject...">
+      </div>
+      <div class="modal-field">
+        <label>Message</label>
+        <textarea id="campaign-email-body" placeholder="Email message..."></textarea>
+      </div>
+      <div style="font-size:11px;color:var(--brown-light);line-height:1.5;">
+        Sends through Obsidian Labs CRM Conversations after preview. Use <code style="font-size:11px">{{firstName}}</code> for personalization and <code style="font-size:11px">{{link}}</code> for the configured demo link.
+      </div>
+      <div class="sms-preview-list" id="campaign-email-preview-list">Preview recipients before sending.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="background:var(--surface);color:var(--brown-mid)" onclick="closeEmailCampaignModal()">Cancel</button>
+      <button class="btn btn-secondary" id="campaign-email-preview-btn" onclick="previewEmailCampaign()">Preview recipients</button>
+      <button class="btn btn-gold" id="campaign-email-send-btn" onclick="sendEmailCampaign()" disabled>Confirm & send</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="sms-modal">
   <div class="modal">
     <div class="modal-header">
@@ -1091,6 +1126,8 @@ let arCache = null;
 let websiteSources = [];
 let currentSmsCampaign = null;
 let currentSmsPreview = null;
+let currentEmailCampaign = null;
+let currentEmailPreview = null;
 let crmTagOptions = ['biomass-demo-board'];
 
 function detectRoleFromUrl() {
@@ -1240,6 +1277,15 @@ const SMS_CAMPAIGN_CONFIG = {
   }
 };
 
+const EMAIL_CAMPAIGN_CONFIG = {
+  demo_link: {
+    title: 'Email Biomass Buddy link',
+    tag: 'biomass-demo-board',
+    subject: 'Your Biomass Buddy demo link',
+    body: "Hi {{firstName}},\n\nHere is the live link to try Biomass Buddy during the demo:\n{{link}}\n\nTake a look when you have a minute and send over any notes.\n\n- Biomass Buddy"
+  }
+};
+
 function openSmsCampaign(campaign, options = {}) {
   currentSmsCampaign = campaign || 'demo_link';
   currentSmsPreview = null;
@@ -1266,7 +1312,16 @@ function ensureSmsOptOut(message) {
 }
 
 function renderCrmTagOptions(selectedTag) {
-  const select = document.getElementById('sms-tag');
+  renderCrmTagSelect('sms-tag', selectedTag);
+}
+
+function renderEmailTagOptions(selectedTag) {
+  renderCrmTagSelect('campaign-email-tag', selectedTag);
+}
+
+function renderCrmTagSelect(selectId, selectedTag) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
   const tags = Array.from(new Set([selectedTag, ...crmTagOptions, 'biomass-demo-board'].filter(Boolean)));
   select.innerHTML = tags.map(tag => `<option value="${escapeUi(tag)}">${escapeUi(tag)}</option>`).join('');
   select.value = selectedTag || tags[0] || 'biomass-demo-board';
@@ -1280,10 +1335,12 @@ async function loadCrmTagOptions(selectedTag) {
     if (Array.isArray(data.tags) && data.tags.length) {
       crmTagOptions = data.tags;
       renderCrmTagOptions(selectedTag);
+      renderEmailTagOptions(selectedTag);
     }
   } catch (e) {
     crmTagOptions = Array.from(new Set([selectedTag, ...crmTagOptions, 'biomass-demo-board'].filter(Boolean)));
     renderCrmTagOptions(selectedTag);
+    renderEmailTagOptions(selectedTag);
   }
 }
 
@@ -1372,27 +1429,130 @@ async function sendSmsCampaign() {
 }
 
 async function emailDemoLinkToGroup({ confirmSend = true } = {}) {
-  const ok = !confirmSend || window.confirm('Email the Biomass Buddy demo link to contacts tagged biomass-demo-board?');
-  if (!ok) return false;
-  const systemMsg = addMsg('brain', 'Sending the Biomass Buddy demo link by email through Obsidian Labs CRM...', { withActions: false });
+  openEmailCampaign('demo_link');
+  const status = document.getElementById('campaign-email-status');
+  status.className = 'modal-status sending';
+  status.textContent = confirmSend
+    ? 'Preview tagged recipients, then confirm send.'
+    : 'Email draft loaded from your chat command. Preview recipients, then confirm send.';
+  setTimeout(() => { status.className = 'modal-status'; status.textContent = ''; }, 2600);
+  return true;
+}
+
+function openEmailCampaign(campaign = 'demo_link', options = {}) {
+  currentEmailCampaign = campaign;
+  currentEmailPreview = null;
+  const config = EMAIL_CAMPAIGN_CONFIG[currentEmailCampaign] || EMAIL_CAMPAIGN_CONFIG.demo_link;
+  const selectedTag = options.tag || config.tag;
+  document.getElementById('campaign-email-modal-title').textContent = config.title;
+  renderEmailTagOptions(selectedTag);
+  loadCrmTagOptions(selectedTag);
+  document.getElementById('campaign-email-subject').value = options.subject || config.subject;
+  document.getElementById('campaign-email-body').value = options.body || config.body;
+  document.getElementById('campaign-email-preview-list').textContent = 'Preview recipients before sending.';
+  const status = document.getElementById('campaign-email-status');
+  status.className = 'modal-status';
+  status.textContent = '';
+  document.getElementById('campaign-email-send-btn').disabled = true;
+  document.getElementById('campaign-email-modal').classList.add('visible');
+}
+
+function closeEmailCampaignModal() {
+  document.getElementById('campaign-email-modal').classList.remove('visible');
+}
+
+async function previewEmailCampaign() {
+  const tag = document.getElementById('campaign-email-tag').value.trim();
+  const subject = document.getElementById('campaign-email-subject').value.trim();
+  const body = document.getElementById('campaign-email-body').value.trim();
+  const status = document.getElementById('campaign-email-status');
+  const btn = document.getElementById('campaign-email-preview-btn');
+  if (!tag || !subject || !body) {
+    status.className = 'modal-status error';
+    status.textContent = 'Tag, subject, and message are required.';
+    return;
+  }
+  btn.disabled = true;
+  status.className = 'modal-status sending';
+  status.textContent = 'Looking up tagged CRM contacts...';
   try {
     const resp = await fetch('/api/send-campaign-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        campaign: 'demo_link',
-        tag: 'biomass-demo-board',
+        campaign: currentEmailCampaign || 'demo_link',
+        tag,
+        subject,
+        body,
+        dryRun: true
+      })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Preview failed');
+    currentEmailPreview = data;
+    renderEmailPreview(data.contacts || [], data.subject, data.body, data.source);
+    status.className = 'modal-status success';
+    status.textContent = `${(data.contacts || []).length} recipient${(data.contacts || []).length === 1 ? '' : 's'} found from ${data.source}.`;
+    document.getElementById('campaign-email-send-btn').disabled = !(data.contacts || []).length;
+  } catch (e) {
+    status.className = 'modal-status error';
+    status.textContent = 'Preview failed: ' + e.message;
+    document.getElementById('campaign-email-send-btn').disabled = true;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderEmailPreview(contacts, subject, body, source) {
+  const list = document.getElementById('campaign-email-preview-list');
+  if (!contacts.length) {
+    list.textContent = 'No contacts found for this tag.';
+    return;
+  }
+  list.innerHTML = `
+    <div style="font-size:11px;color:var(--brown-mid);margin:2px 6px 8px">Source: ${escapeUi(source)}. Email preview uses first-name personalization when sent.</div>
+    ${contacts.map(contact => `
+      <div class="sms-recipient">
+        <span><strong>${escapeUi(contact.name || contact.firstName || 'Contact')}</strong><br><span style="color:var(--brown-light)">${escapeUi(contact.email || contact.phone || contact.id)}</span></span>
+        <span style="color:var(--brown-mid)">${escapeUi((contact.tags || []).slice(0, 2).join(', '))}</span>
+      </div>
+    `).join('')}
+    <div style="font-size:12px;color:var(--brown-mid);margin:10px 6px 6px"><strong>Subject:</strong> ${escapeUi(subject)}</div>
+    <div style="font-size:12px;color:var(--brown-mid);margin:0 6px 2px;white-space:pre-wrap">${escapeUi(body)}</div>
+  `;
+}
+
+async function sendEmailCampaign() {
+  const tag = document.getElementById('campaign-email-tag').value.trim();
+  const subject = document.getElementById('campaign-email-subject').value.trim();
+  const body = document.getElementById('campaign-email-body').value.trim();
+  const status = document.getElementById('campaign-email-status');
+  const btn = document.getElementById('campaign-email-send-btn');
+  btn.disabled = true;
+  status.className = 'modal-status sending';
+  status.textContent = 'Sending through Obsidian Labs CRM Conversations...';
+  try {
+    const resp = await fetch('/api/send-campaign-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        campaign: currentEmailCampaign || 'demo_link',
+        tag,
+        subject,
+        body,
         dryRun: false
       })
     });
     const data = await resp.json();
     if (!resp.ok) throw new Error(data.error || 'Email send failed');
-    systemMsg.querySelector('.msg-bubble').textContent = `Demo link email sent through Obsidian Labs CRM: ${data.sent}/${data.attempted} delivered to the biomass-demo-board tag.`;
-    history.push({ role: 'assistant', content: `CRM demo-link email sent. Sent ${data.sent}/${data.attempted}.` });
-    return true;
+    status.className = data.failed ? 'modal-status error' : 'modal-status success';
+    status.textContent = `Sent ${data.sent}/${data.attempted} email${data.attempted === 1 ? '' : 's'} through Obsidian Labs CRM.`;
+    history.push({ role: 'assistant', content: `CRM email campaign sent: ${data.label}. Sent ${data.sent}/${data.attempted}.` });
+    setTimeout(() => { closeEmailCampaignModal(); btn.disabled = false; }, data.failed ? 3000 : 1600);
   } catch (e) {
-    systemMsg.querySelector('.msg-bubble').textContent = 'Demo link email failed: ' + e.message;
-    return false;
+    status.className = 'modal-status error';
+    status.textContent = 'Email send failed: ' + e.message;
+    btn.disabled = false;
   }
 }
 
@@ -2554,6 +2714,10 @@ async function sendEmailToCeo() {
 
 document.getElementById('email-modal').addEventListener('click', (e) => {
   if (e.target.id === 'email-modal') closeEmailModal();
+});
+
+document.getElementById('campaign-email-modal').addEventListener('click', (e) => {
+  if (e.target.id === 'campaign-email-modal') closeEmailCampaignModal();
 });
 
 document.getElementById('sms-modal').addEventListener('click', (e) => {
