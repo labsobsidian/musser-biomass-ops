@@ -940,7 +940,9 @@
       <div class="modal-status" id="sms-status"></div>
       <div class="modal-field">
         <label>CRM tag</label>
-        <input type="text" id="sms-tag" placeholder="biomass-demo-board">
+        <select id="sms-tag">
+          <option value="biomass-demo-board">biomass-demo-board</option>
+        </select>
       </div>
       <div class="modal-field">
         <label>Message</label>
@@ -1089,6 +1091,7 @@ let arCache = null;
 let websiteSources = [];
 let currentSmsCampaign = null;
 let currentSmsPreview = null;
+let crmTagOptions = ['biomass-demo-board'];
 
 function detectRoleFromUrl() {
   const params = new URLSearchParams(window.location.search);
@@ -1242,7 +1245,8 @@ function openSmsCampaign(campaign) {
   currentSmsPreview = null;
   const config = SMS_CAMPAIGN_CONFIG[currentSmsCampaign] || SMS_CAMPAIGN_CONFIG.demo_link;
   document.getElementById('sms-modal-title').textContent = config.title;
-  document.getElementById('sms-tag').value = config.tag;
+  renderCrmTagOptions(config.tag);
+  loadCrmTagOptions(config.tag);
   document.getElementById('sms-message').value = config.message;
   document.getElementById('sms-preview-list').textContent = 'Preview recipients before sending.';
   const status = document.getElementById('sms-status');
@@ -1250,6 +1254,28 @@ function openSmsCampaign(campaign) {
   status.textContent = '';
   document.getElementById('sms-send-btn').disabled = true;
   document.getElementById('sms-modal').classList.add('visible');
+}
+
+function renderCrmTagOptions(selectedTag) {
+  const select = document.getElementById('sms-tag');
+  const tags = Array.from(new Set([selectedTag, ...crmTagOptions, 'biomass-demo-board'].filter(Boolean)));
+  select.innerHTML = tags.map(tag => `<option value="${escapeUi(tag)}">${escapeUi(tag)}</option>`).join('');
+  select.value = selectedTag || tags[0] || 'biomass-demo-board';
+}
+
+async function loadCrmTagOptions(selectedTag) {
+  try {
+    const resp = await fetch('/api/ghl-tags');
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Could not load CRM tags');
+    if (Array.isArray(data.tags) && data.tags.length) {
+      crmTagOptions = data.tags;
+      renderCrmTagOptions(selectedTag);
+    }
+  } catch (e) {
+    crmTagOptions = Array.from(new Set([selectedTag, ...crmTagOptions, 'biomass-demo-board'].filter(Boolean)));
+    renderCrmTagOptions(selectedTag);
+  }
 }
 
 function closeSmsModal() {
