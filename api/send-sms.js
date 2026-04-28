@@ -1,5 +1,7 @@
 import { searchGhlContactsByTag, sendBulkGhlSms } from '../lib/connectors/ghl.js';
 
+const SMS_OPT_OUT = 'Reply STOP to opt out.';
+
 const CAMPAIGNS = {
   demo_link: {
     label: 'Biomass Buddy demo link',
@@ -82,9 +84,19 @@ export default async function handler(req, res) {
 }
 
 function buildMessage(template, linkValue) {
-  return String(template || '')
+  const message = String(template || '')
     .replace(/\{\{\s*link\s*\}\}/gi, linkValue || '[link not configured]')
     .trim();
+  return ensureSmsOptOut(message);
+}
+
+function ensureSmsOptOut(message) {
+  const text = String(message || '').trim();
+  if (!text) return SMS_OPT_OUT;
+  if (/(reply\s+stop|stop\s+to\s+opt\s*out|unsubscribe|opt\s*out)/i.test(text)) {
+    return text;
+  }
+  return `${text}\n\n${SMS_OPT_OUT}`;
 }
 
 function publicContact(contact) {

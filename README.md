@@ -175,4 +175,4 @@ Set these Vercel env vars for the text tools:
 | `REORDER_FOLLOWUP_TAG` | Defaults to `biomass-reorder-followup` |
 | `GHL_TAG_CONTACTS_JSON` | Optional demo fallback if CRM tag lookup is unavailable |
 
-Create CRM tags `biomass-demo-board`, `biomass-review-test`, and `biomass-reorder-followup`. Tag Eric, Becky, Mark, and Mick with `biomass-demo-board`. In Biomass Buddy, open Marketing -> Text Campaigns, preview recipients, then confirm send.
+Create CRM tags `biomass-demo-board`, `biomass-review-test`, and `biomass-reorder-followup`. Tag Eric, Becky, Mark, and Mick with `biomass-demo-board`. In Biomass Buddy, open Marketing -> Text Campaigns, preview recipients, then confirm send. `/api/send-sms` enforces `Reply STOP to opt out.` on every outbound SMS, including custom prompt-written messages.

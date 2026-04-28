@@ -76,7 +76,7 @@ Demo with dry-run/preview first:
 - Reorder follow-up.
 - Voice agent phone number.
 
-Say: "It previews recipients and copy before anything sends."
+Say: "It previews recipients and copy before anything sends." Every outbound text includes `Reply STOP to opt out.` and should be previewed before confirming the send.
 
 ### 7. Close With Website Path
 
