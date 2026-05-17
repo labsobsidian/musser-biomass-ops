@@ -5,7 +5,7 @@
   "description": "Biomass Buddy by Obsidian Labs — AI ops command center for Musser Biomass",
   "type": "module",
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   },
   "dependencies": {
     "@octokit/rest": "^21.0.0",
