@@ -28,8 +28,8 @@ index.html              # Biomass Buddy app — 10 tabs, seeded data, streaming 
 api/
   claude.js             # Vercel serverless: OpenAI-first / Anthropic fallback SSE proxy
   context.js            # Living-docs fetcher w/ 60s cache
-  ar.js                 # Placeholder Accounts Receivable data until Sage 50 access
-  connectors/sage50.js  # Future Sage 50 connector boundary
+  ar.js                 # Accounts Receivable — reads sage_invoices via Supabase (live when Atlas Sage Bridge runs)
+  bridge/                # Atlas Sage Bridge protocol endpoints (register/heartbeat/sync/commands)
   quote.js              # REAL TOOL #1: pricing calculator
   send-email.js         # REAL TOOL #2: send email via Obsidian Labs CRM, Resend optional fallback
   connectors/ghl.js     # Obsidian Labs CRM Conversations boundary
@@ -52,7 +52,7 @@ No build step — static `index.html` + Node serverless functions on Vercel.
 - **DEMO_MODE is implicitly on.** Seeded data in the UI is intentional. Don't "fix" it by pulling live data.
 - **Streaming matters.** `/api/claude` streams SSE; frontend parses chunks progressively. Don't refactor to buffered JSON.
 - **Provider toggle:** default `AI_PROVIDER=openai` with `OPENAI_MODEL`; `AI_PROVIDER=anthropic` stays supported. Keep frontend SSE normalized.
-- **Sage 50 is not connected yet.** `/api/ar` returns explicitly labeled placeholder AR data. Do not imply live accounting sync until real Sage access exists.
+- **Sage 50 access is mock-only.** `/api/ar` reads `sage_invoices` from Supabase, populated by Atlas Sage Bridge (separate repo: `labsobsidian/atlas-sage-bridge`). Until Musser provides Sage 50 SDK access, the bridge runs against a mock adapter — data shape is Sage-50-realistic but the source isn't a real Sage company file yet.
 - **Brand:** "Biomass Buddy by Obsidian Labs." Customer-facing content must follow `BRAND_STYLE.md`.
 - **Commit style:** short, lowercase-prefixed (`feat:`, `fix:`, `state:`, `price:`, `docs:`).
 - **Push only when asked.** Default is commit locally.

@@ -82,8 +82,8 @@ musser-biomass-ops/
 │   ├── claude.js           # streaming proxy
 │   ├── context.js          # GitHub living-docs fetcher
 │   ├── quote.js            # pricing calculator (real)
-│   ├── ar.js               # placeholder AR endpoint
-│   ├── connectors/sage50.js # future Sage 50 boundary
+│   ├── ar.js               # AR endpoint — reads sage_invoices via Supabase
+│   ├── bridge/*            # Atlas Sage Bridge protocol endpoints
 │   └── send-email.js       # email to CEO (real)
 ├── PROJECT_STATE.md
 ├── ARCHITECTURE.md         # this file

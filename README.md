@@ -133,7 +133,7 @@ For AR/report emails, the UI can include `attachments: [{ filename, title, conte
 
 ## Accounts Receivable — `/api/ar`
 
-`/api/ar` currently returns placeholder Accounts Receivable data so the UI and brain can demonstrate Sage-ready reporting without pretending Sage 50 is connected. Future live sync should replace `api/connectors/sage50.js` with the confirmed access path: Sage AR Automation, Sage-supported API/connector, ODBC/SDK/export, or middleware.
+`/api/ar` reads live invoices from Supabase (`sage_invoices` + `sage_customers`), which Atlas Sage Bridge populates from Sage 50 via the `/api/bridge/*` protocol (see [`BRIDGE_PROTOCOL.md`](BRIDGE_PROTOCOL.md)). Until the bridge runs its first sync, the endpoint returns an empty payload with `source: 'no_data'`. When real data flows, `source: 'sage_50'` and the AR tab shows live invoices, aging, and collection priority — no UI changes needed.
 
 ## Obsidian Labs CRM Conversation AI — pricing consistency
 
